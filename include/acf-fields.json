@@ -1,0 +1,252 @@
+[
+    {
+        "key": "group_video_fields",
+        "title": "Детали видеозаписи",
+        "fields": [
+            {
+                "key": "field_video_thumbnail",
+                "label": "Обложка видео",
+                "name": "video_thumbnail",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "medium",
+                "library": "all"
+            },
+            {
+                "key": "field_video_url",
+                "label": "Ссылка на видео",
+                "name": "video_url",
+                "type": "url",
+                "placeholder": "https://"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "video"
+                }
+            ]
+        ]
+    },
+    {
+        "key": "group_review_fields",
+        "title": "Детали отзыва",
+        "fields": [
+            {
+                "key": "field_review_author",
+                "label": "Имя автора",
+                "name": "review_author",
+                "type": "text",
+                "placeholder": "Введите имя"
+            },
+            {
+                "key": "field_review_rating",
+                "label": "Оценка",
+                "name": "review_rating",
+                "type": "select",
+                "choices": {
+                    "1": "⭐",
+                    "2": "⭐⭐",
+                    "3": "⭐⭐⭐",
+                    "4": "⭐⭐⭐⭐",
+                    "5": "⭐⭐⭐⭐⭐"
+                },
+                "default_value": "5",
+                "return_format": "value"
+            },
+            {
+                "key": "field_review_comment",
+                "label": "Комментарий",
+                "name": "review_comment",
+                "type": "textarea",
+                "rows": 4,
+                "new_lines": "br"
+            },
+            {
+                "key": "field_review_images",
+                "label": "Фотографии",
+                "name": "review_images",
+                "type": "gallery",
+                "return_format": "array",
+                "preview_size": "thumbnail"
+            },
+            {
+                "key": "field_review_master",
+                "label": "Мастер",
+                "name": "review_master",
+                "type": "post_object",
+                "post_type": ["users"],
+                "return_format": "id"
+            },
+            {
+                "key": "field_review_global",
+                "label": "Выводить на всех страницах",
+                "name": "review_global",
+                "type": "true_false",
+                "message": "Показывать этот отзыв на всех страницах",
+                "default_value": 0,
+                "ui": 1
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "reviews"
+                }
+            ]
+        ]
+    },
+    {
+        "key": "group_service_fields",
+        "title": "Детали услуги",
+        "fields": [
+            {
+                "key": "field_service_category",
+                "label": "Категория услуги",
+                "name": "service_category",
+                "type": "post_object",
+                "post_type": ["service_category"],
+                "return_format": "id"
+            },
+            {
+                "key": "field_show_price_on_main",
+                "label": "Выводить цену на главной",
+                "name": "show_price_on_main",
+                "type": "true_false",
+                "ui": 1
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "service"
+                }
+            ]
+        ]
+    },
+    {
+        "key": "group_master_fields",
+        "title": "Детали мастера",
+        "fields": [
+            {
+                "key": "field_master_rank",
+                "label": "Звание мастера",
+                "name": "master_rank",
+                "type": "text",
+                "placeholder": "Например: ТОП-мастер"
+            },
+            {
+                "key": "field_master_experience",
+                "label": "Стаж (лет)",
+                "name": "master_experience",
+                "type": "number",
+                "min": 0,
+                "step": 1
+            },
+            {
+                "key": "field_master_name",
+                "label": "Имя",
+                "name": "master_name",
+                "type": "text"
+            },
+            {
+                "key": "field_master_surname",
+                "label": "Фамилия",
+                "name": "master_surname",
+                "type": "text"
+            },
+            {
+                "key": "field_master_bio",
+                "label": "Немного слов о себе",
+                "name": "master_bio",
+                "type": "textarea",
+                "rows": 4
+            },
+            {
+                "key": "field_master_photo",
+                "label": "Фото мастера",
+                "name": "master_photo",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "medium"
+            },
+            {
+                "key": "field_master_likes",
+                "label": "Количество лайков",
+                "name": "master_likes",
+                "type": "number",
+                "default_value": 0
+            },
+            {
+                "key": "field_master_show_global",
+                "label": "Показывать мастера по всему сайту",
+                "name": "master_show_global",
+                "type": "true_false",
+                "ui": 1
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "master"
+                }
+            ]
+        ]
+    },
+    {
+        "key": "group_enibrow_discount_block",
+        "title": "Рекламный блок Enibrow",
+        "fields": [
+            {
+                "key": "field_discount_title",
+                "label": "Заголовок",
+                "name": "discount_title",
+                "type": "text",
+                "default_value": "Рейтинг на Яндекс Картах 5.0",
+                "placeholder": "Введите заголовок..."
+            },
+            {
+                "key": "field_discount_text",
+                "label": "Текст скидки",
+                "name": "discount_text",
+                "type": "textarea",
+                "default_value": "Скидка на первую процедуру по удалению татуажа ремувером в студии естественного татуажа Enibrow",
+                "placeholder": "Введите описание скидки...",
+                "rows": 3
+            },
+            {
+                "key": "field_discount_link",
+                "label": "Ссылка на карты",
+                "name": "discount_link",
+                "type": "url",
+                "default_value": "https://yandex.ru/maps/",
+                "placeholder": "Введите ссылку..."
+            },
+            {
+                "key": "field_discount_button_text",
+                "label": "Текст кнопки",
+                "name": "discount_button_text",
+                "type": "text",
+                "default_value": "Перейти на карты",
+                "placeholder": "Введите текст кнопки..."
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "block",
+                    "operator": "==",
+                    "value": "acf/enibrow_discount_block"
+                }
+            ]
+        ]
+    }
+]
