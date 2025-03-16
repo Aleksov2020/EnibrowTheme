@@ -26,6 +26,13 @@ add_action('acf/init', function() {
                     'type' => 'url',
                     'placeholder' => 'https://',
                 ),
+                array(
+                    'key'   => 'field_video_show',
+                    'label' => 'Отображать на главной',
+                    'name'  => 'video_show',
+                    'type'  => 'true_false', 
+                    'ui'    => true,        
+                ),
             ),
             'location' => array(
                 array(
@@ -111,41 +118,6 @@ add_action('acf/init', function() {
         ));
     }
 
-
-    //service
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key' => 'group_service_fields',
-            'title' => 'Детали услуги',
-            'fields' => array(
-                array(
-                    'key' => 'field_service_category',
-                    'label' => 'Категория услуги',
-                    'name' => 'service_category',
-                    'type' => 'post_object',
-                    'post_type' => array('service_category'),
-                    'return_format' => 'id',
-                ),
-                array(
-                    'key' => 'field_show_price_on_main',
-                    'label' => 'Выводить цену на главной',
-                    'name' => 'show_price_on_main',
-                    'type' => 'true_false',
-                    'ui' => 1,
-                )
-            ),
-            'location' => array(
-                array(
-                    array(
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'service',
-                    ),
-                ),
-            ),
-        ));
-    }
-
     // masters
     if (function_exists('acf_add_local_field_group')) {
         acf_add_local_field_group(array(
@@ -185,6 +157,14 @@ add_action('acf/init', function() {
                     'name'  => 'master_bio',
                     'type'  => 'textarea',
                     'rows'  => 4,
+                ),
+                array(
+                    'key'   => 'field_master_short_description',
+                    'label' => 'Краткое описание',
+                    'name'  => 'short_description',
+                    'type'  => 'textarea',
+                    'rows'  => 2,
+                    'instructions' => 'Введите краткое описание мастера для отображения в блоке'
                 ),
                 array(
                     'key'   => 'field_master_education',
@@ -269,6 +249,48 @@ add_action('acf/init', function() {
             ),
         ));
     }
+    //услуги у мастера
+    acf_add_local_field_group(array(
+        'key'    => 'group_master_services',
+        'title'  => 'Услуги мастера',
+        'fields' => array(
+            array(
+                'key'   => 'field_master_services',
+                'label' => 'Услуги мастера',
+                'name'  => 'master_services',
+                'type'  => 'repeater',
+                'layout' => 'table',
+                'sub_fields' => array(
+                    array(
+                        'key'   => 'field_service_name',
+                        'label' => 'Услуга',
+                        'name'  => 'service',
+                        'type'  => 'post_object',
+                        'post_type' => array('service'),
+                        'return_format' => 'id',
+                    ),
+                    array(
+                        'key'   => 'field_service_price',
+                        'label' => 'Цена',
+                        'name'  => 'service_price',
+                        'type'  => 'number',
+                        'prepend' => '₽',
+                    )
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'master',
+                ),
+            ),
+        ),
+    ));
+    
+    
 
     // recommendations
     acf_add_local_field_group(array(
@@ -307,49 +329,6 @@ add_action('acf/init', function() {
             ),
         ),
     ));
-
-    // Service Category
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key'    => 'group_service_category_fields',
-            'title'  => 'Настройки категории услуг',
-            'fields' => array(
-                array(
-                    'key'   => 'field_full_service_name',
-                    'label' => 'Полное имя категории',
-                    'name'  => 'full_service_name',
-                    'type'  => 'text',
-                    'placeholder' => 'Введите полное имя категории...',
-                ),
-                array(
-                    'key'   => 'field_service_recommendations',
-                    'label' => 'Рекомендации',
-                    'name'  => 'service_recommendations',
-                    'type'  => 'relationship',
-                    'post_type' => array('recommendation'),
-                    'max' => 4, // Ограничение до 4 рекомендаций
-                    'return_format' => 'id',
-                ),
-                array(
-                    'key'   => 'field_linked_services',
-                    'label' => 'Связанные услуги',
-                    'name'  => 'linked_services',
-                    'type'  => 'message',
-                    'message' => 'Этот список заполняется автоматически на основе выбранной категории в услугах.',
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'service_category',
-                    ),
-                ),
-            ),
-        ));
-    }
-
 
     // Portfolio
     if (function_exists('acf_add_local_field_group')) {
@@ -396,6 +375,14 @@ add_action('acf/init', function() {
                     'preview_size' => 'medium',
                     'library' => 'all',
                 ),
+                array(
+                    'key'   => 'field_portfolio_page',
+                    'label' => 'Страница портфолио',
+                    'name'  => 'portfolio_page',
+                    'type'  => 'post_object',
+                    'post_type' => array('page'),
+                    'return_format' => 'id',
+                ),
             ),
             'location' => array(
                 array(
@@ -409,6 +396,7 @@ add_action('acf/init', function() {
         ));
     }
     
+    // услуги
     if (function_exists('acf_add_local_field_group')) {
         acf_add_local_field_group(array(
             'key'    => 'group_service_fields',
@@ -474,6 +462,13 @@ add_action('acf/init', function() {
                     'post_type' => array('portfolio_work'),
                     'return_format' => 'id',
                 ),
+                array(
+                    'key'   => 'field_master_show_on_home',
+                    'label' => 'Отображать на главной',
+                    'name'  => 'master_show_on_home',
+                    'type'  => 'true_false', 
+                    'ui'    => true,        
+                ),
             ),
             'location' => array(
                 array(
@@ -486,11 +481,131 @@ add_action('acf/init', function() {
             ),
         ));
     }
-    
-    
+    // для услуг подтягиваем рекомендации
+    acf_add_local_field_group(array(
+        'key'    => 'group_service_fields',
+        'title'  => 'Детали услуги',
+        'fields' => array(
+            array(
+                'key'   => 'field_service_recommendations',
+                'label' => 'Выберите рекомендации для вывода',
+                'name'  => 'service_recommendations',
+                'type'  => 'relationship',
+                'post_type' => array('recommendation'),
+                'return_format' => 'id',
+                'instructions' => 'Выберите рекомендации, которые будут выводиться в блоке рекомендаций для этой услуги.',
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'service',
+                ),
+            ),
+        ),
+    ));
+
+    // для блока на странице услуг
+    acf_add_local_field_group(array(
+        'key'    => 'group_service_content_links',
+        'title'  => 'Якорные ссылки на блоки страницы',
+        'fields' => array(
+            array(
+                'key'   => 'field_service_content_links',
+                'label' => 'Секции страницы',
+                'name'  => 'service_content_links',
+                'type'  => 'repeater',
+                'button_label' => 'Добавить ссылку',
+                'sub_fields' => array(
+                    array(
+                        'key'   => 'field_section_name',
+                        'label' => 'Название секции',
+                        'name'  => 'section_name',
+                        'type'  => 'text',
+                    ),
+                    array(
+                        'key'   => 'field_section_anchor',
+                        'label' => 'Якорь (ID секции)',
+                        'name'  => 'section_anchor',
+                        'type'  => 'text',
+                        'instructions' => 'Пример: "about", "pricing", "gallery"',
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'service',
+                ),
+            ),
+        ),
+    ));
+
+    // категория услуг
+    if (function_exists('acf_add_local_field_group')) {
+        acf_add_local_field_group(array(
+            'key'    => 'group_service_category_fields',
+            'title'  => 'Детали категории услуг',
+            'fields' => array(
+                array(
+                    'key'   => 'field_category_full_name',
+                    'label' => 'Полное имя категории услуг',
+                    'name'  => 'category_full_name',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_category_subtitle',
+                    'label' => 'Подзаголовок категории',
+                    'name'  => 'category_subtitle',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_category_duration',
+                    'label' => 'Длительность услуги',
+                    'name'  => 'category_duration',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_category_price_from',
+                    'label' => 'Цена от',
+                    'name'  => 'category_price_from',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_category_persistence',
+                    'label' => 'Сохранение результата',
+                    'name'  => 'category_persistence',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_category_services',
+                    'label' => 'Список услуг',
+                    'name'  => 'category_services',
+                    'type'  => 'relationship',
+                    'post_type' => array('service'),
+                    'return_format' => 'id',
+                    'filters' => array('search'),
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param'    => 'taxonomy',
+                        'operator' => '==',
+                        'value'    => 'service_category',
+                    ),
+                ),
+            ),
+        ));
+    }
 
 
-    // Группа полей для рекламного блока Enibrow
+    // Группа полей для яндекс блока
     acf_add_local_field_group(array(
         'key'    => 'group_enibrow_discount_block',
         'title'  => 'Рекламный блок Enibrow',
@@ -580,6 +695,340 @@ add_action('acf/init', function() {
                     'param'    => 'block',
                     'operator' => '==',
                     'value'    => 'acf/reviews_list',
+                ),
+            ),
+        ),
+    ));
+
+    // Roll block
+    acf_add_local_field_group(array(
+        'key'    => 'group_roll_block',
+        'title'  => 'Разворачиваемый текст',
+        'fields' => array(
+            array(
+                'key'   => 'field_roll_content',
+                'label' => 'Содержимое блока',
+                'name'  => 'roll_content',
+                'type'  => 'flexible_content',
+                'button_label' => 'Добавить элемент',
+                'layouts' => array(
+                    'title_block' => array(
+                        'key' => 'layout_title_block',
+                        'name' => 'title_block',
+                        'label' => 'Заголовок',
+                        'display' => 'row',
+                        'sub_fields' => array(
+                            array(
+                                'key'   => 'field_title_block',
+                                'label' => 'Заголовок',
+                                'name'  => 'title',
+                                'type'  => 'text',
+                            ),
+                        ),
+                    ),
+                    'text_block' => array(
+                        'key' => 'layout_text_block',
+                        'name' => 'text_block',
+                        'label' => 'Текстовый блок',
+                        'display' => 'row',
+                        'sub_fields' => array(
+                            array(
+                                'key'   => 'field_text_block',
+                                'label' => 'Текст',
+                                'name'  => 'text',
+                                'type'  => 'textarea',
+                                'rows'  => 3,
+                            ),
+                        ),
+                    ),
+                    'list_item' => array(
+                        'key' => 'layout_list_item',
+                        'name' => 'list_item',
+                        'label' => 'Элемент списка',
+                        'display' => 'row',
+                        'sub_fields' => array(
+                            array(
+                                'key'   => 'field_list_item_title',
+                                'label' => 'Название элемента',
+                                'name'  => 'list_title',
+                                'type'  => 'text',
+                            ),
+                            array(
+                                'key'   => 'field_list_item_text',
+                                'label' => 'Описание элемента',
+                                'name'  => 'list_text',
+                                'type'  => 'textarea',
+                                'rows'  => 2,
+                            ),
+                        ),
+                    ),
+                    'danger_block' => array(
+                        'key' => 'layout_danger_block',
+                        'name' => 'danger_block',
+                        'label' => 'Блок с предупреждением',
+                        'display' => 'row',
+                        'sub_fields' => array(
+                            array(
+                                'key'   => 'field_danger_text',
+                                'label' => 'Текст предупреждения',
+                                'name'  => 'danger_text',
+                                'type'  => 'textarea',
+                                'rows'  => 3,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'block',
+                    'operator' => '==',
+                    'value'    => 'acf/roll-block',
+                ),
+            ),
+        ),
+    ));
+
+    // акции
+    acf_add_local_field_group(array(
+        'key'    => 'group_promotion_fields',
+        'title'  => 'Настройки акции',
+        'fields' => array(
+            array(
+                'key'   => 'field_promotion_name',
+                'label' => 'Название акции',
+                'name'  => 'promotion_name',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_promotion_description',
+                'label' => 'Описание акции',
+                'name'  => 'promotion_description',
+                'type'  => 'textarea',
+                'rows'  => 3,
+            ),
+            array(
+                'key'   => 'field_promotion_discount',
+                'label' => 'Скидка (рубли)',
+                'name'  => 'promotion_discount',
+                'type'  => 'number',
+                'min'   => 0,
+                'max'   => 100000,
+                'step'  => 1,
+            ),
+            array(
+                'key'   => 'field_promotion_image',
+                'label' => 'Изображение акции',
+                'name'  => 'promotion_image',
+                'type'  => 'image',
+                'return_format' => 'array',
+                'preview_size'  => 'medium',
+                'library'       => 'all',
+            ),
+            array(
+                'key'   => 'field_promotion_services',
+                'label' => 'Связанные услуги',
+                'name'  => 'promotion_services',
+                'type'  => 'relationship',
+                'post_type' => array('service'),
+                'return_format' => 'id',
+                'instructions' => 'Выберите услуги, на которые распространяется акция',
+                'max' => 5,
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'promotion',
+                ),
+            ),
+        ),
+    ));
+    
+    
+    // блок слайдер
+    acf_add_local_field_group(array(
+        'key' => 'group_slider_fields',
+        'title' => 'Настройки слайдера',
+        'fields' => array(
+            array(
+                'key' => 'field_slider_title',
+                'label' => 'Заголовок',
+                'name' => 'slider_title',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_slider_subtitle',
+                'label' => 'Подзаголовок',
+                'name' => 'slider_subtitle',
+                'type' => 'textarea',
+                'rows' => 2,
+            ),
+            array(
+                'key' => 'field_slider_nav_items',
+                'label' => 'Элементы навигации',
+                'name' => 'slider_nav_items',
+                'type' => 'repeater',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_nav_title',
+                        'label' => 'Название',
+                        'name' => 'nav_title',
+                        'type' => 'text',
+                    ),
+                ),
+            ),
+            array(
+                'key' => 'field_slider_map_image',
+                'label' => 'Карта',
+                'name' => 'slider_map_image',
+                'type' => 'image',
+                'return_format' => 'array',
+            ),
+            array(
+                'key' => 'field_slider_address',
+                'label' => 'Адрес',
+                'name' => 'slider_address',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_slider_work_time',
+                'label' => 'Режим работы',
+                'name' => 'slider_work_time',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_slider_work_days',
+                'label' => 'Дни работы',
+                'name' => 'slider_work_days',
+                'type' => 'repeater',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_day_name',
+                        'label' => 'День',
+                        'name' => 'day_name',
+                        'type' => 'text',
+                    ),
+                    array(
+                        'key' => 'field_day_inactive',
+                        'label' => 'Выходной?',
+                        'name' => 'inactive',
+                        'type' => 'true_false',
+                        'ui' => 1,
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'custom_slider',
+                ),
+            ),
+        ),
+    ));
+
+    // Блог
+    acf_add_local_field_group(array(
+        'key' => 'group_blog_fields',
+        'title' => 'Дополнительные поля блога',
+        'fields' => array(
+            array(
+                'key' => 'field_blog_views',
+                'label' => 'Количество просмотров',
+                'name' => 'blog_views',
+                'type' => 'number',
+                'default_value' => 0,
+            ),
+            array(
+                'key' => 'field_blog_read_time',
+                'label' => 'Время чтения (минут)',
+                'name' => 'blog_read_time',
+                'type' => 'number',
+                'default_value' => 5,
+            ),
+            array(
+                'key' => 'field_blog_image',
+                'label' => 'Изображение статьи',
+                'name' => 'blog_image',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size'  => 'medium',
+                'library'       => 'all',
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'blog',
+                ),
+            ),
+        ),
+    ));
+
+
+    // наши услуги
+    acf_add_local_field_group(array(
+        'key'    => 'group_our_services_block',
+        'title'  => 'Блок "Наши услуги"',
+        'fields' => array(
+            array(
+                'key'           => 'field_selected_services',
+                'label'         => 'Выберите услуги',
+                'name'          => 'selected_services',
+                'type'          => 'relationship',
+                'post_type'     => array('service'),
+                'filters'       => array('search'),
+                'max'           => 4,
+                'return_format' => 'object',
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'block',
+                    'operator' => '==',
+                    'value'    => 'acf/our-services',
+                ),
+            ),
+        ),
+    ));
+
+    // вопросы
+    acf_add_local_field_group(array(
+        'key'    => 'group_faq_fields',
+        'title'  => 'Детали вопроса',
+        'fields' => array(
+            array(
+                'key'   => 'field_faq_views',
+                'label' => 'Количество просмотров',
+                'name'  => 'faq_views',
+                'type'  => 'number',
+                'default_value' => 0,
+            ),
+            array(
+                'key'   => 'field_faq_date',
+                'label' => 'Дата создания',
+                'name'  => 'faq_date',
+                'type'  => 'date_picker',
+                'display_format' => 'd.m.Y',
+                'return_format'  => 'd.m.Y',
+            )
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'faq',
                 ),
             ),
         ),

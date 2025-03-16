@@ -1,13 +1,3 @@
-/*
-Theme Name: Enibrow theme
-Theme URI:  http://enibrow.ru
-Author: alexov
-Author URI: http://enibrow.ru
-Description: Описание темы
-Version: 1.0
-Text Domain: enibrow-theme
-*/
-
 * {
     margin: 0;
     box-sizing: border-box;
@@ -82,10 +72,7 @@ img {
     border: 1px solid #FFF;
 }
 
-a {
-    text-decoration: none;
-    color: unset;
-}
+
 
 .button {
     height: 50px;
@@ -239,34 +226,7 @@ a {
     color: #00000066;
 }
 /*====================== TYPOGRAPHY ======================*/
-h1 {
-    font-family: "Oranienbaum";
-    font-size: 90px;
-    font-weight: 400;
-    line-height: 103.95px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;    
-    color: #fff;
-}
-
-h2 {
-    font-size: 55px;
-    font-weight: 400;
-    font-family: "Oranienbaum", serif;
-}
-
-h3 {
-    font-family: "Oranienbaum", serif;
-    font-size: 40px;
-    font-weight: 400;
-    line-height: 46.2px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
-    color: #fff;
-}
-
+    
 .light-text {
     font-size: 14px;
     font-weight: 400;
@@ -1036,7 +996,6 @@ nav {
     background: linear-gradient(180deg, #A37381 0%, #654B53 100%);
     -webkit-background-clip: text;
 	background-clip: text;
-    text-fill-color: transparent;
     color: transparent;
 }
 
@@ -3498,8 +3457,6 @@ padding-top: 22px;
     font-size: 65px;
     line-height: 75.08px;
     letter-spacing: 0%;
-    text-fill-color: transparent;
-    color: transparent;
 }
 
 .sale-archive-page {

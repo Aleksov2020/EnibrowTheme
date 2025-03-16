@@ -165,12 +165,14 @@ $master_extra_education = get_field('master_extra_education') ?: [];
     <!-- Блок Опыт работы, Биография и Образование -->
     <div class="master-page-about-wrapper wrapper row">
         <div class="master-page-about col">
+            <?php if ($master_experience): ?>
             <div class="master-page-about-title colored-text text-20-500">
                 Опыт работы
             </div>
             <div class="master-page-about-text text-16-300">
                 С <?php echo date('Y') - esc_html($master_experience); ?> года
             </div>
+            <?php endif; ?>
             <div class="master-page-about-title colored-text text-20-500">
                 Немного слов о себе
             </div>
