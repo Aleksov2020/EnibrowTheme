@@ -1,8 +1,9 @@
 <?php 
 $roll_content = get_field('roll_content'); 
+$skip_roll = get_field('skip_roll_block'); // Получаем значение чекбокса
 if ($roll_content): 
 ?>
-    <div class="roll-block wrapper wrapper-laptop col">
+    <div class="roll-block wrapper wrapper-laptop col <?php echo $skip_roll ? 'skip' : ''; ?>">
         <?php foreach ($roll_content as $block): ?>
             <?php if ($block['acf_fc_layout'] == 'title_block'): ?>
                 <div class="roll-block-title text-30-400">
@@ -41,7 +42,10 @@ if ($roll_content):
         <?php endforeach; ?>
     </div>
 
-    <div class="button-roll-block text-16-300 clickable">
-        Свернуть текст
-    </div>
+    <?php if (!$skip_roll): // Если чекбокс не включен, показываем кнопку ?>
+        <div class="button-roll-block text-16-300 clickable">
+            Свернуть текст
+        </div>
+    <?php endif; ?>
+
 <?php endif; ?>

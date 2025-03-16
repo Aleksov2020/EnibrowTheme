@@ -33,6 +33,15 @@ add_action('acf/init', function() {
                     'type'  => 'true_false', 
                     'ui'    => true,        
                 ),
+                array(
+                    'key'          => 'field_video_page',
+                    'label'        => 'Выбрать страницу',
+                    'name'         => 'video_page',
+                    'type'         => 'post_object',
+                    'post_type'    => array('page'),
+                    'return_format' => 'id',
+                    'required'     => 1,
+                ),
             ),
             'location' => array(
                 array(
@@ -590,7 +599,7 @@ add_action('acf/init', function() {
                     'post_type' => array('service'),
                     'return_format' => 'id',
                     'filters' => array('search'),
-                ),
+                )
             ),
             'location' => array(
                 array(
@@ -779,6 +788,14 @@ add_action('acf/init', function() {
                     ),
                 ),
             ),
+            array(
+                'key'   => 'field_skip_roll_block',
+                'label' => 'Не скрывать блок',
+                'name'  => 'skip_roll_block',
+                'type'  => 'true_false',
+                'ui'    => 1,
+                'default_value' => 0,
+            ),
         ),
         'location' => array(
             array(
@@ -962,6 +979,15 @@ add_action('acf/init', function() {
                 'preview_size'  => 'medium',
                 'library'       => 'all',
             ),
+            array(
+                'key' => 'field_blog_page',
+                'label' => 'Принадлежит странице',
+                'name' => 'blog_page',
+                'type' => 'post_object',
+                'post_type' => array('page'), // Позволяет выбрать любую страницу
+                'return_format' => 'id',
+                'instructions' => 'Выберите страницу, к которой относится эта статья',
+            ),
         ),
         'location' => array(
             array(
@@ -1021,7 +1047,27 @@ add_action('acf/init', function() {
                 'type'  => 'date_picker',
                 'display_format' => 'd.m.Y',
                 'return_format'  => 'd.m.Y',
-            )
+            ),
+            array(
+                'key'          => 'field_faq_related_page',
+                'label'        => 'Связанная страница',
+                'name'         => 'faq_related_page',
+                'type'         => 'post_object',
+                'post_type'    => array('page'),
+                'return_format'=> 'id',
+                'required'     => 1,
+                'instructions' => 'Выберите страницу, к которой относится этот вопрос.',
+            ),
+            array(
+                'key'          => 'field_faq_image',
+                'label'        => 'Изображение вопроса',
+                'name'         => 'faq_image',
+                'type'         => 'image',
+                'return_format'=> 'array',
+                'preview_size' => 'medium',
+                'library'      => 'all',
+                'instructions' => 'Загрузите изображение для этого вопроса (если необходимо).',
+            ),
         ),
         'location' => array(
             array(
@@ -1033,6 +1079,39 @@ add_action('acf/init', function() {
             ),
         ),
     ));
+
+    //содержание статьи
+    acf_add_local_field_group(array(
+        'key'      => 'group_content_table',
+        'title'    => 'Содержание статьи',
+        'fields'   => array(
+            array(
+                'key'          => 'field_content_items',
+                'label'        => 'Пункты содержания',
+                'name'         => 'content_items',
+                'type'         => 'repeater',
+                'button_label' => 'Добавить пункт',
+                'sub_fields'   => array(
+                    array(
+                        'key'   => 'field_content_title',
+                        'label' => 'Название пункта',
+                        'name'  => 'content_title',
+                        'type'  => 'text',
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'block',
+                    'operator' => '==',
+                    'value'    => 'acf/content-table',
+                ),
+            ),
+        ),
+    ));
+
 });
 
 

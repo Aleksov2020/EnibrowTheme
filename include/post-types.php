@@ -134,10 +134,36 @@ function register_service_post_type() {
         'show_in_rest' => true,
         'supports'     => array('title', 'editor', 'thumbnail'),
         'menu_icon'    => 'dashicons-hammer',
+        'rewrite'       => array('slug' => 'services', 'with_front' => false),
     );
     register_post_type('service', $args);
 }
 
+function register_service_category_post_type() {
+    $labels = array(
+        'name'          => 'Категории услуг',
+        'singular_name' => 'Категория услуги',
+        'menu_name'     => 'Категории услуг',
+        'all_items'     => 'Все категории',
+        'add_new'       => 'Добавить категорию',
+        'add_new_item'  => 'Добавить новую категорию',
+        'edit_item'     => 'Редактировать категорию',
+        'view_item'     => 'Просмотреть категорию',
+    );
+
+    $args = array(
+        'labels'        => $labels,
+        'public'        => true,
+        'menu_position' => 5,
+        'supports'      => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'show_in_rest'  => true, // Включает Gutenberg
+        'has_archive'   => false,
+        'rewrite'       => array('slug' => 'services', 'with_front' => false),
+    );
+
+    register_post_type('service_category', $args);
+}
+add_action('init', 'register_service_category_post_type');
 
 //сервис категория
 function register_service_category_taxonomy() {
@@ -151,6 +177,8 @@ function register_service_category_taxonomy() {
         'hierarchical'      => true,
         'show_ui'           => true,
         'show_admin_column' => true,
+        'show_in_rest' => true,
+        'rewrite'      => array('slug' => 'services'),
     );
     register_taxonomy('service_category', array('service'), $args);
 }
@@ -234,11 +262,16 @@ function register_blog_post_type() {
     $args = array(
         'labels'             => $labels,
         'public'             => true,
-        'has_archive'        => true,
+        'hierarchical'       => true, // Включаем иерархию (дочерние записи)
+        'has_archive'        => false, // Отключаем архив, чтобы он не конфликтовал
         'menu_icon'          => 'dashicons-welcome-write-blog',
         'supports'           => array('title', 'editor', 'thumbnail'),
         'show_in_rest'       => true,
-        'rewrite'            => array('slug' => 'blog'),
+        'rewrite' => array(
+            //'slug'          => 'blog-page',
+            'with_front'    => false,
+            'hierarchical'  => true, // Включаем вложенные ссылки
+        ),
     );
 
     register_post_type('blog', $args);
@@ -263,11 +296,12 @@ function register_faq_post_type() {
     $args = array(
         'labels'             => $labels,
         'public'             => true,
-        'has_archive'        => true,
         'menu_icon'          => 'dashicons-editor-help',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
         'show_in_rest'       => true,
-        'rewrite'            => array('slug' => 'faq'),
+        'rewrite' => array(
+        //    'slug' => 'questions',
+        ),
     );
 
     register_post_type('faq', $args);

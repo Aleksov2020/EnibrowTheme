@@ -1,0 +1,27 @@
+{
+    "key": "group_author_signature",
+    "title": "Подпись автора",
+    "fields": [
+        {
+            "key": "field_author_master",
+            "label": "Выберите автора",
+            "name": "author_master",
+            "type": "post_object",
+            "post_type": ["master"],
+            "return_format": "id",
+            "required": 1
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/author_signature"
+            }
+        ]
+    ],
+    "active": true,
+    "description": "",
+    "show_in_graphql": false
+}

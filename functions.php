@@ -93,6 +93,10 @@ add_action('pre_get_posts', function($query) {
   }
 });
 
+
+
+
+
 // Подключаем файлы
 require_once get_template_directory() . '/include/post-types.php';
 require_once get_template_directory() . '/include/acf-blocks.php';
