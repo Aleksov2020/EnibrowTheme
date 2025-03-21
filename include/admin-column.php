@@ -10,7 +10,7 @@ function show_master_columns($column, $post_id) {
         $prices = get_field('services_prices', $post_id);
         if ($prices) {
             foreach ($prices as $price) {
-                echo get_the_title($price['service']) . ' - ' . esc_html($price['price']) . ' ₽<br>';
+                echo get_the_title($price['uslyga']) . ' - ' . esc_html($price['price']) . ' ₽<br>';
             }
         } else {
             echo 'Нет услуг';

@@ -1,7 +1,7 @@
 <?php
 // Получаем все услуги, отмеченные для отображения
 $services = get_posts([
-    'post_type'      => 'service',
+    'post_type'      => 'uslyga',
     'posts_per_page' => -1,
     'meta_query'     => [
         [
@@ -15,7 +15,7 @@ $services = get_posts([
 // Группируем услуги по категориям
 $services_by_category = [];
 foreach ($services as $service) {
-    $categories = get_term(get_field('service_category', $service->ID), 'service_category');
+    $categories = get_term(get_field('cat_uslyga', $service->ID), 'cat_uslyga');
 
     $category_name = !empty($categories) ? $categories->name : 'Без категории';
 
@@ -99,7 +99,7 @@ $masters = get_posts([
 
                                     if (!empty($master_services) && is_array($master_services)) {
                                         foreach ($master_services as $entry) {
-                                            if ($entry['service'] == $service->ID) { // Проверяем соответствие услуги
+                                            if ($entry['uslyga'] == $service->ID) { // Проверяем соответствие услуги
                                                 $price = $entry['service_price'] . " ₽";
                                                 break;
                                             }

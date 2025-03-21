@@ -94,6 +94,45 @@ add_action('pre_get_posts', function($query) {
 });
 
 
+// Кастомные пермалинки для услуг
+function uslyga_permalink($permalink, $post) {
+    if ($post->post_type === 'uslyga') {
+        $terms = wp_get_post_terms($post->ID, 'tax_uslyga');
+        if (!empty($terms) && !is_wp_error($terms)) {
+            $term_slug = $terms[0]->slug;
+            $permalink = str_replace('%tax_uslyga%', $term_slug, $permalink);
+        } else {
+            $permalink = str_replace('%tax_uslyga%', 'no-category', $permalink);
+        }
+    }
+    return $permalink;
+}
+add_filter('post_type_link', 'uslyga_permalink', 10, 2);
+
+// Кастомные правила перезаписи ссылок
+function custom_rewrite_rules() {
+    // Страница категории услуг
+    add_rewrite_rule('^cat_uslyga/([^/]+)/?$', 'index.php?cat_uslyga=$matches[1]', 'top');
+    // Страница услуги
+    add_rewrite_rule('^cat_uslyga/([^/]+)/([^/]+)/?$', 'index.php?uslyga=$matches[2]&cat_uslyga=$matches[1]', 'top');
+}
+add_action('init', 'custom_rewrite_rules');
+
+// Сброс перезаписей при активации
+function flush_rewrite_on_activation() {
+    register_uslyga();
+    register_cat_uslyga();
+    register_tax_uslyga();
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'flush_rewrite_on_activation');
+
+// Сброс перезаписей при деактивации
+function flush_rewrite_on_deactivation() {
+    flush_rewrite_rules();
+}
+register_deactivation_hook(__FILE__, 'flush_rewrite_on_deactivation');
+
 
 
 

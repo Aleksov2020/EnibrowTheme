@@ -119,7 +119,7 @@ $master_extra_education = get_field('master_extra_education') ?: [];
                                     <?php foreach ($services_prices as $service) : ?>
                                         <div class="master-page-slider-price-item-wrapper row">
                                             <div class="master-page-slider-price-item-value">
-                                                <?php echo get_the_title($service['service']); ?>
+                                                <?php echo get_the_title($service['uslyga']); ?>
                                             </div>
                                             <div class="master-page-slider-price-item-separator"></div>
                                             <div class="master-page-slider-price-value">

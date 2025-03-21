@@ -1,21 +1,21 @@
 <?php
-// Получаем все категории услуг (таксономия "service_category")
+// Получаем все категории услуг (таксономия "tax_uslyga")
 $categories = get_terms(array(
-    'taxonomy'   => 'service_category',
+    'taxonomy'   => 'tax_uslyga',
     'hide_empty' => true, // Не показывать пустые категории
 ));
 
-if (!empty($categories)): ?>
+if (!is_wp_error($categories) && !empty($categories)): ?>
     <div class="services wrapper wrapper-laptop row">
         <?php foreach ($categories as $category): ?>
             <?php
             // Получаем услуги, относящиеся к этой категории (максимум 6)
             $services = get_posts(array(
-                'post_type'      => 'service', // Подставь нужный тип постов для услуг
+                'post_type'      => 'uslyga', // Тип поста "услуга"
                 'posts_per_page' => 6,
                 'tax_query'      => array(
                     array(
-                        'taxonomy' => 'service_category',
+                        'taxonomy' => 'tax_uslyga', // Таксономия "tax_uslyga"
                         'field'    => 'term_id',
                         'terms'    => $category->term_id,
                     ),
@@ -32,7 +32,7 @@ if (!empty($categories)): ?>
                         <?php if (!empty($services)): ?>
                             <?php foreach ($services as $service): ?>
                                 <div class="service-item colored-text">
-                                    <?php echo esc_html($service->service_short_name); ?>
+                                    <?php echo esc_html(get_the_title($service->ID)); ?>
                                 </div>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -40,10 +40,12 @@ if (!empty($categories)): ?>
                         <?php endif; ?>
                     </div>
                     <div class="show-more-button clickable text-16-500 colored-text">
-                        <a href="<?php echo get_term_link($category); ?>">Все техники</a>
+                        <a href="<?php echo esc_url(get_term_link($category)); ?>">Все техники</a>
                     </div>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+<?php else: ?>
+    <p>Категории услуг не найдены.</p>
 <?php endif; ?>

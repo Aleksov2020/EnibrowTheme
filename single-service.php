@@ -4,7 +4,7 @@
 <?php
 // Данные услуги
 $service_name = get_the_title();
-$service_category = get_field('service_category'); // Категория услуги
+$service_category = get_field('cat_uslyga'); // Категория услуги
 $service_duration = get_field('service_duration');
 $service_persistence = get_field('service_persistence');
 $service_price = get_field('service_price');
@@ -21,7 +21,7 @@ $portfolio_works = get_field('service_portfolio_works');
                     <div class="breabcrumbs-page-name light-text-300">
                         <a href="<?php echo site_url(); ?>">Главная</a>
                     </div>
-                    <div class="breabcrumbs-separator">/</div>
+                    <div class="breabcrumbs-separator"></div>
                     <div class="breabcrumbs-page-name light-text-300 active">
                         <?php echo esc_html(get_the_title()); ?>
                     </div>

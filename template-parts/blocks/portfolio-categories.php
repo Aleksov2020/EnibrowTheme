@@ -1,7 +1,7 @@
 <?php
 // Получаем услуги с привязанными работами портфолио
 $services = get_posts(array(
-    'post_type'      => 'service',
+    'post_type'      => 'uslyga',
     'posts_per_page' => -1,
 ));
 

@@ -273,9 +273,9 @@ add_action('acf/init', function() {
                     array(
                         'key'   => 'field_service_name',
                         'label' => 'Услуга',
-                        'name'  => 'service',
+                        'name'  => 'uslyga',
                         'type'  => 'post_object',
-                        'post_type' => array('service'),
+                        'post_type' => array('uslyga'),
                         'return_format' => 'id',
                     ),
                     array(
@@ -420,9 +420,9 @@ add_action('acf/init', function() {
                 array(
                     'key'   => 'field_service_category',
                     'label' => 'Категория услуги',
-                    'name'  => 'service_category',
+                    'name'  => 'cat_uslyga',
                     'type'  => 'taxonomy',
-                    'taxonomy' => 'service_category',
+                    'taxonomy' => 'cat_uslyga',
                     'field_type' => 'select',
                     'return_format' => 'id',
                 ),
@@ -484,7 +484,7 @@ add_action('acf/init', function() {
                     array(
                         'param'    => 'post_type',
                         'operator' => '==',
-                        'value'    => 'service',
+                        'value'    => 'uslyga',
                     ),
                 ),
             ),
@@ -510,7 +510,7 @@ add_action('acf/init', function() {
                 array(
                     'param'    => 'post_type',
                     'operator' => '==',
-                    'value'    => 'service',
+                    'value'    => 'uslyga',
                 ),
             ),
         ),
@@ -549,12 +549,14 @@ add_action('acf/init', function() {
                 array(
                     'param'    => 'post_type',
                     'operator' => '==',
-                    'value'    => 'service',
+                    'value'    => 'uslyga',
                 ),
             ),
         ),
     ));
 
+
+    
     // категория услуг
     if (function_exists('acf_add_local_field_group')) {
         acf_add_local_field_group(array(
@@ -596,7 +598,7 @@ add_action('acf/init', function() {
                     'label' => 'Список услуг',
                     'name'  => 'category_services',
                     'type'  => 'relationship',
-                    'post_type' => array('service'),
+                    'post_type' => array('uslyga'),
                     'return_format' => 'id',
                     'filters' => array('search'),
                 )
@@ -606,7 +608,7 @@ add_action('acf/init', function() {
                     array(
                         'param'    => 'taxonomy',
                         'operator' => '==',
-                        'value'    => 'service_category',
+                        'value'    => 'cat_uslyga',
                     ),
                 ),
             ),
@@ -849,7 +851,7 @@ add_action('acf/init', function() {
                 'label' => 'Связанные услуги',
                 'name'  => 'promotion_services',
                 'type'  => 'relationship',
-                'post_type' => array('service'),
+                'post_type' => array('uslyga'),
                 'return_format' => 'id',
                 'instructions' => 'Выберите услуги, на которые распространяется акция',
                 'max' => 5,
@@ -1011,7 +1013,7 @@ add_action('acf/init', function() {
                 'label'         => 'Выберите услуги',
                 'name'          => 'selected_services',
                 'type'          => 'relationship',
-                'post_type'     => array('service'),
+                'post_type'     => array('uslyga'),
                 'filters'       => array('search'),
                 'max'           => 4,
                 'return_format' => 'object',
@@ -1112,6 +1114,112 @@ add_action('acf/init', function() {
         ),
     ));
 
+    //header
+    if (function_exists('acf_add_local_field_group')) {
+        acf_add_local_field_group(array(
+            'key'      => 'group_header_settings',
+            'title'    => 'Настройки хедера',
+            'fields'   => array(
+                array(
+                    'key'   => 'field_header_logo',
+                    'label' => 'Логотип',
+                    'name'  => 'header_logo',
+                    'type'  => 'image',
+                    'return_format' => 'array',
+                ),
+                array(
+                    'key'   => 'field_header_phone',
+                    'label' => 'Телефон',
+                    'name'  => 'header_phone',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_header_work_time',
+                    'label' => 'Время работы',
+                    'name'  => 'header_work_time',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_header_address',
+                    'label' => 'Адрес',
+                    'name'  => 'header_address',
+                    'type'  => 'text',
+                ),
+                array(
+                    'key'   => 'field_header_social_links',
+                    'label' => 'Социальные сети',
+                    'name'  => 'header_social_links',
+                    'type'  => 'repeater',
+                    'sub_fields' => array(
+                        array(
+                            'key'   => 'field_social_icon',
+                            'label' => 'Иконка',
+                            'name'  => 'social_icon',
+                            'type'  => 'image',
+                            'return_format' => 'array',
+                        ),
+                        array(
+                            'key'   => 'field_social_url',
+                            'label' => 'Ссылка',
+                            'name'  => 'social_url',
+                            'type'  => 'url',
+                        ),
+                    ),
+                    'min' => 1,
+                ),
+                array(
+                    'key'   => 'field_header_menu',
+                    'label' => 'Главное меню',
+                    'name'  => 'header_menu',
+                    'type'  => 'repeater',
+                    'sub_fields' => array(
+                        array(
+                            'key'   => 'field_menu_item_title',
+                            'label' => 'Название пункта',
+                            'name'  => 'menu_item_title',
+                            'type'  => 'text',
+                        ),
+                        array(
+                            'key'   => 'field_menu_item_link',
+                            'label' => 'Ссылка',
+                            'name'  => 'menu_item_link',
+                            'type'  => 'url',
+                        ),
+                        array(
+                            'key'   => 'field_menu_item_submenu',
+                            'label' => 'Подменю',
+                            'name'  => 'menu_item_submenu',
+                            'type'  => 'repeater',
+                            'sub_fields' => array(
+                                array(
+                                    'key'   => 'field_submenu_title',
+                                    'label' => 'Название подменю',
+                                    'name'  => 'submenu_title',
+                                    'type'  => 'text',
+                                ),
+                                array(
+                                    'key'   => 'field_submenu_link',
+                                    'label' => 'Ссылка подменю',
+                                    'name'  => 'submenu_link',
+                                    'type'  => 'url',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param'    => 'options_page',
+                        'operator' => '==',
+                        'value'    => 'acf-options-header',
+                    ),
+                ),
+            ),
+        ));
+    }
+    
 });
 
 

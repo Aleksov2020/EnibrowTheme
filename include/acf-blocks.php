@@ -214,7 +214,7 @@ function register_custom_acf_blocks() {
         'render_template'   => '/template-parts/blocks/service-to-show-category.php',
         'category'          => 'enibrow',
         'icon'              => 'admin-tools',
-        'keywords'          => array('услуги', 'категория', 'service'),
+        'keywords'          => array('услуги', 'категория', 'uslyga'),
     ));
     
 
@@ -432,6 +432,15 @@ function register_custom_acf_blocks() {
 }
 
 
+if (function_exists('acf_add_options_page')) {
+    acf_add_options_page(array(
+        'page_title'  => 'Настройки хедера',
+        'menu_title'  => 'Хедер',
+        'menu_slug'   => 'acf-options-header',
+        'capability'  => 'edit_posts',
+        'redirect'    => false,
+    ));
+}
 
 
 // Хук для инициализации ACF блоков

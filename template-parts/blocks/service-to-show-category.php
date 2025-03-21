@@ -4,7 +4,7 @@ $current_page_slug = get_post_field('post_name', the_ID());
 print_r(get_post( the_ID()));
 
 // Проверяем, есть ли таксономия с таким же слагом
-$category = get_term_by('slug', $current_page_slug, 'service_category');
+$category = get_term_by('slug', $current_page_slug, 'cat_uslyga');
 
 echo $category;
 
@@ -15,11 +15,11 @@ if (!$category) {
 
 // Получаем услуги, которые принадлежат этой категории
 $args = array(
-    'post_type'      => 'service',
+    'post_type'      => 'uslyga',
     'posts_per_page' => -1,
     'tax_query'      => array(
         array(
-            'taxonomy' => 'service_category',
+            'taxonomy' => 'cat_uslyga',
             'field'    => 'slug',
             'terms'    => $category->slug,
         ),
