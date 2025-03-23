@@ -1,15 +1,19 @@
 {
-    "key": "group_author_signature",
-    "title": "Подпись автора",
+    "key": "group_category_service_price",
+    "title": "Настройки блока таблицы цен",
     "fields": [
         {
-            "key": "field_author_master",
-            "label": "Выберите автора",
-            "name": "author_master",
-            "type": "post_object",
-            "post_type": ["master"],
+            "key": "field_category_service_price",
+            "label": "Категория услуг",
+            "name": "category_service_price",
+            "type": "taxonomy",
+            "taxonomy": "tax_uslyga",
+            "field_type": "select",
+            "add_term": 1,
+            "save_terms": 1,
+            "load_terms": 1,
             "return_format": "id",
-            "required": 1
+            "multiple": 0
         }
     ],
     "location": [
@@ -17,11 +21,10 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf/author_signature"
+                "value": "acf/service-price-table"
             }
         ]
     ],
     "active": true,
-    "description": "",
-    "show_in_graphql": false
+    "description": "Блок с таблицей цен услуг по категории"
 }

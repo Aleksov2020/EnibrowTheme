@@ -3,6 +3,10 @@
     box-sizing: border-box;
 }
 
+html :where(.wp-block) {
+    max-width: 1200px !important;
+}
+
 body {
     font-family: "Montserrat", serif;
     font-weight: 400;

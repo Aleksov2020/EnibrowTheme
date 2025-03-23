@@ -429,16 +429,106 @@ function register_custom_acf_blocks() {
         'keywords'        => array('author', 'signature', 'bio'),
         'supports'        => array('align' => true),
     ));
+
+    acf_register_block_type(array(
+        'name'              => 'service_content_table',
+        'title'             => __('Оглавление услуги', 'textdomain'),
+        'description'       => __('Блок оглавления для страницы услуги', 'textdomain'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/service-content-table.php',
+        'category'          => 'enibrow',
+        'icon'              => 'list-view',
+        'keywords'          => array('content', 'table', 'service', 'uslyga'),
+        'supports'          => array(
+            'align' => true,
+            'mode' => true,
+            'multiple' => true,
+        ),
+    ));
+
+    acf_register_block_type(array(
+        'name'              => 'related_services',
+        'title'             => __('Связанные услуги (Категория)', 'textdomain'),
+        'description'       => __('Вывод связанных услуг по выбранной категории', 'textdomain'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/related-services.php',
+        'category'          => 'enibrow',
+        'icon'              => 'networking',
+        'keywords'          => array('service', 'related', 'uslyga', 'категория'),
+        'supports'          => array(
+            'align' => true,
+            'mode' => true,
+            'multiple' => true,
+        ),
+    ));
+    
+    acf_register_block_type(array(
+        'name'              => 'recommendations_block',
+        'title'             => __('Рекомендации', 'textdomain'),
+        'description'       => __('Блок с рекомендациями', 'textdomain'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/recommendations.php',
+        'category'          => 'enibrow',
+        'icon'              => 'admin-comments',
+        'keywords'          => array('recommendation', 'post', 'service'),
+        'supports'          => array(
+            'align' => true,
+            'mode' => true,
+            'multiple' => true,
+        ),
+    ));
+
+    acf_register_block_type(array(
+        'name'              => 'service_price_table',
+        'title'             => __('Service Price Table'),
+        'description'       => __('Таблица цен на услуги в категории'),
+        'render_template'   => 'template-parts/blocks/price-category.php',
+        'category'          => 'formatting',
+        'icon'              => 'money',
+        'keywords'          => array('price', 'service', 'table'),
+        'supports'          => array(
+            'align' => false,
+            'multiple' => true,
+        ),
+    ));
+
+    acf_register_block_type(array(
+        'name'              => 'faq_block',
+        'title'             => __('5 Вопросов FAQ', 'textdomain'),
+        'description'       => __('Блок с часто задаваемыми вопросами', 'textdomain'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/faq.php',
+        'category'          => 'enibrow',
+        'icon'              => 'editor-help',
+        'keywords'          => array('faq', 'вопросы', 'поддержка'),
+        'supports'          => array(
+            'align' => true,
+            'mode' => true,
+            'multiple' => true,
+        ),
+    ));
+
+    acf_register_block_type(array(
+        'name'              => 'not-found-block',
+        'title'             => __('404 Страница'),
+        'description'       => __('Статический блок для отображения страницы 404'),
+        'render_template'   => 'template-parts/blocks/404-block.php',
+        'category'          => 'enibrow',
+        'icon'              => 'warning',
+        'keywords'          => array( '404', 'not found', 'страница' ),
+        'supports'          => array(
+            'align' => false,
+            'mode' => false,
+            'multiple' => false,
+        ),
+    ));
+
 }
 
-
-if (function_exists('acf_add_options_page')) {
+// Добавляем страницу настроек в админку
+if( function_exists('acf_add_options_page') ) {
     acf_add_options_page(array(
-        'page_title'  => 'Настройки хедера',
-        'menu_title'  => 'Хедер',
-        'menu_slug'   => 'acf-options-header',
-        'capability'  => 'edit_posts',
-        'redirect'    => false,
+        'page_title'    => 'Настройки хедера',
+        'menu_title'    => 'Настройки хедера',
+        'menu_slug'     => 'header-settings',
+        'capability'    => 'edit_posts',
+        'redirect'      => false
     ));
 }
 

@@ -42,7 +42,7 @@ if (!$portfolio_works) {
             $master_likes = get_field('master_likes', $master_id);
             $master_rank = get_field('master_rank', $master_id);
         ?>
-        <div class="gallery-item">
+        <div class="gallery-item" onclick="openGallery(<?= $index; ?>, window.galleryData);">
             <div class="gallery-photo">
                 <?php if ($image): ?>
                     <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($work->post_title); ?>" width="276" height="276">

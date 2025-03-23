@@ -69,7 +69,9 @@ add_action('manage_portfolio_work_posts_custom_column', function($column, $post_
           echo '—';
       }
   }
-}, 10, 2);
+}, 
+10, 
+2);
 
 // Убедимся, что колонка сортируемая (опционально)
 add_filter('manage_edit-portfolio_work_sortable_columns', function($columns) {
@@ -84,7 +86,6 @@ add_action('template_redirect', function() {
 
 global $post;
 error_log('Current page ID: ' . get_the_ID());
-error_log('Current page slug: ' . $post->post_name);
 error_log('Current page title: ' . get_the_title());
 
 add_action('pre_get_posts', function($query) {
@@ -93,50 +94,131 @@ add_action('pre_get_posts', function($query) {
   }
 });
 
+// Функция для получения данных мастеров
+function get_masters_data() {
+  $masters = get_posts([
+      'post_type' => 'master',
+      'posts_per_page' => -1,
+      'meta_query' => [
+          [
+              'key' => 'master_show_global',
+              'value' => '1',
+              'compare' => '='
+          ]
+      ]
+  ]);
 
-// Кастомные пермалинки для услуг
-function uslyga_permalink($permalink, $post) {
-    if ($post->post_type === 'uslyga') {
-        $terms = wp_get_post_terms($post->ID, 'tax_uslyga');
-        if (!empty($terms) && !is_wp_error($terms)) {
-            $term_slug = $terms[0]->slug;
-            $permalink = str_replace('%tax_uslyga%', $term_slug, $permalink);
-        } else {
-            $permalink = str_replace('%tax_uslyga%', 'no-category', $permalink);
-        }
-    }
-    return $permalink;
+  $masters_data = array_map(function ($master) {
+      $photo = get_field('master_photo', $master->ID);
+      $photo_url = !empty($photo) ? $photo['url'] : get_template_directory_uri() . '/assets/avatar-placeholder.png';
+
+      return [
+          'id' => $master->ID,
+          'name' => get_the_title($master->ID),
+          'rank' => get_field('master_rank', $master->ID),
+          'photo' => $photo_url,
+      ];
+  }, $masters);
+
+  return $masters_data;
 }
-add_filter('post_type_link', 'uslyga_permalink', 10, 2);
 
-// Кастомные правила перезаписи ссылок
-function custom_rewrite_rules() {
-    // Страница категории услуг
-    add_rewrite_rule('^cat_uslyga/([^/]+)/?$', 'index.php?cat_uslyga=$matches[1]', 'top');
-    // Страница услуги
-    add_rewrite_rule('^cat_uslyga/([^/]+)/([^/]+)/?$', 'index.php?uslyga=$matches[2]&cat_uslyga=$matches[1]', 'top');
+// Функция для получения данных услуг
+function get_services_data() {
+  $categories = get_terms([
+      'taxonomy' => 'tax_uslyga',
+      'hide_empty' => false,
+  ]);
+
+  $services_data = [];
+  foreach ($categories as $category) {
+      $services = get_posts([
+          'post_type' => 'uslyga',
+          'posts_per_page' => -1,
+          'tax_query' => [
+              [
+                  'taxonomy' => 'tax_uslyga',
+                  'field' => 'term_id',
+                  'terms' => $category->term_id,
+              ]
+          ],
+      ]);
+
+      $services_list = array_map(function ($service) {
+          $portfolio_works = get_field('service_portfolio_works', $service->ID);
+
+          // Проверяем наличие массива и его содержимое
+          if (is_array($portfolio_works) && !empty($portfolio_works)) {
+              $last_work_id = end($portfolio_works);
+              $image_data = get_field('portfolio_image', $last_work_id);
+              $image = !empty($image_data) ? $image_data['url'] : get_template_directory_uri() . '/assets/avatar-placeholder.png';
+          } else {
+              $image = get_template_directory_uri() . '/assets/avatar-placeholder.png';
+          }
+
+          return [
+              'id' => $service->ID,
+              'name' => get_the_title($service->ID),
+              'image' => $image,
+          ];
+      }, $services);
+
+      $services_data[] = [
+          'name' => $category->name,
+          'services' => $services_list,
+      ];
+  }
+
+  return $services_data;
 }
-add_action('init', 'custom_rewrite_rules');
 
-// Сброс перезаписей при активации
-function flush_rewrite_on_activation() {
-    register_uslyga();
-    register_cat_uslyga();
-    register_tax_uslyga();
-    flush_rewrite_rules();
+// Подключаем скрипты с передачей данных мастеров и услуг
+function enqueue_custom_scripts() {
+  wp_enqueue_script('custom-js', get_template_directory_uri() . '/js/order.js', ['jquery'], null, true);
+
+  // Передаем данные мастеров в JavaScript
+  wp_localize_script('custom-js', 'mastersData', get_masters_data());
+  wp_localize_script('custom-js', 'servicesData', get_services_data());
 }
-register_activation_hook(__FILE__, 'flush_rewrite_on_activation');
 
-// Сброс перезаписей при деактивации
-function flush_rewrite_on_deactivation() {
-    flush_rewrite_rules();
-}
-register_deactivation_hook(__FILE__, 'flush_rewrite_on_deactivation');
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
 
+acf_add_local_field_group(array(
+  'key' => 'group_404_page',
+  'title' => 'Настройки страницы 404',
+  'fields' => array(
+      array(
+          'key' => 'field_404_page',
+          'label' => 'Страница 404',
+          'name' => '404_page',
+          'type' => 'post_object',
+          'post_type' => array('page'),
+          'return_format' => 'id',
+          'ui' => 1,
+      ),
+  ),
+  'location' => array(
+      array(
+          array(
+              'param' => 'options_page',
+              'operator' => '==',
+              'value' => 'acf-options',
+          ),
+      ),
+  ),
+));
 
+acf_add_options_page(array(
+  'page_title' => 'Настройки темы',
+  'menu_title' => 'Настройки темы',
+  'menu_slug' => 'theme-settings',
+  'capability' => 'edit_posts',
+  'redirect' => false
+));
 
 // Подключаем файлы
+require_once get_template_directory() . '/include/permalinks.php';
 require_once get_template_directory() . '/include/post-types.php';
 require_once get_template_directory() . '/include/acf-blocks.php';
 require_once get_template_directory() . '/include/acf-fields.php';

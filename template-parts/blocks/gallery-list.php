@@ -47,7 +47,7 @@ if ($portfolio_query->have_posts()) :
             $master_rank = get_field('master_rank', $master_id);
             ?>
 
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="openGallery(<?= $index; ?>, window.galleryData);">
                 <div class="gallery-photo">
                     <img src="<?php echo esc_url($portfolio_image['url']); ?>" alt="gallery-photo" width="276" height="276">
                 </div>

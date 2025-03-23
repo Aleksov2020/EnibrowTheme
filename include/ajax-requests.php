@@ -40,7 +40,7 @@ function filter_portfolio() {
         wp_die();
     }
 
-    foreach ($portfolio_works as $work) {
+    foreach ($portfolio_works as $index => $work) {
         $work_id = is_object($work) ? $work->ID : $work;
         $image = get_field('portfolio_image', $work_id);
         $master_id = get_field('portfolio_master', $work_id);
@@ -49,8 +49,8 @@ function filter_portfolio() {
         $master_likes = get_field('master_likes', $master_id);
         $master_rank = get_field('master_rank', $master_id);
         ?>
-        <div class="gallery-item">
-            <div class="gallery-photo">
+        <div class="gallery-item" >
+            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, window.galleryData);">
                 <?php if ($image): ?>
                     <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
                 <?php endif; ?>

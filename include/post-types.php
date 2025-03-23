@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// видео
 function register_video_post_type() {
     $labels = array(
         'name'               => 'Видеозаписи',
@@ -41,6 +42,7 @@ function register_video_post_type() {
     register_post_type('video', $args);
 }
 
+// мастер
 function register_master_post_type() {
     $args = array(
         'labels' => array(
@@ -58,6 +60,7 @@ function register_master_post_type() {
     register_post_type('master', $args);
 }
 
+// отзывы
 function register_reviews_post_type() {
     $labels = array(
         'name'               => 'Отзывы',
@@ -205,7 +208,7 @@ function register_blog_post_type() {
         'supports'           => array('title', 'editor', 'thumbnail'),
         'show_in_rest'       => true,
         'rewrite' => array(
-            //'slug'          => 'blog-page',
+            'slug'          => 'blog-page',
             'with_front'    => false,
             'hierarchical'  => true, // Включаем вложенные ссылки
         ),
@@ -214,6 +217,7 @@ function register_blog_post_type() {
     register_post_type('blog', $args);
 }
 
+// FAQ
 function register_faq_post_type() {
     $labels = array(
         'name'               => 'Вопросы',
@@ -263,12 +267,11 @@ function register_uslyga() {
         ),
         'public' => true,
         'has_archive' => false,
-        'rewrite' => array('slug' => 'uslyga'), // ЧПУ для услуги
+        'rewrite' => array('slug' => '%tax_uslyga%'), // Динамический slug для услуги
         'supports' => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes'),
-        'show_in_rest' => true, // Поддержка Gutenberg
+        'show_in_rest' => true,
     ));
 }
-
 
 // Регистрация кастомного типа "Категория услуг" (cat_uslyga)
 function register_cat_uslyga() {
@@ -284,15 +287,13 @@ function register_cat_uslyga() {
         'show_in_rest' => true, // Поддержка Gutenberg
     ));
 }
-// Регистрация таксономии для связи "Категория услуг" с "Услуга" (tax_uslyga)
+// Регистрация таксономии "Категория услуг" (tax_uslyga)
 function register_tax_uslyga() {
     $labels = array(
         'name' => 'Категории услуг',
         'singular_name' => 'Категория услуги',
         'search_items' => 'Искать категории услуг',
         'all_items' => 'Все категории услуг',
-        'parent_item' => 'Родительская категория',
-        'parent_item_colon' => 'Родительская категория:',
         'edit_item' => 'Редактировать категорию',
         'update_item' => 'Обновить категорию',
         'add_new_item' => 'Добавить новую категорию',
@@ -302,17 +303,10 @@ function register_tax_uslyga() {
 
     $args = array(
         'labels' => $labels,
-        'hierarchical' => true,
         'public' => true,
-        'show_ui' => true,
-        'show_admin_column' => true,
-        'show_in_nav_menus' => true,
-        'show_tagcloud' => false,
+        'hierarchical' => true,
+        'rewrite' => array('slug' => '', 'with_front' => false), // Без префикса
         'show_in_rest' => true,
-        'rewrite' => array(
-            'slug' => 'tax_uslyga',
-            'with_front' => true,
-        ),
     );
 
     register_taxonomy('tax_uslyga', array('uslyga'), $args);

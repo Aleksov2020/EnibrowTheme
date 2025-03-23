@@ -217,31 +217,56 @@
                 </div>
               </div>
             </div>
-
-            <!-- Пример вызова динамического меню (после регистрации в functions.php) -->
             <?php
-            /*
-              wp_nav_menu(array(
-                'theme_location'  => 'header_menu',      // 'header_menu' - это slug, который вы укажете при регистрации
-                'container'       => 'div',
-                'container_class' => 'nav-menu-container',
-                'menu_class'      => 'nav-menu',
-              ));
-            */
+            // Получаем выбранные категории и услуги через ACF
+            $selected_categories = get_field('header_categories', 'option');
+            $selected_services = get_field('header_services', 'option');
+            $background_image = get_field('header_background_image', 'option');
             ?>
 
-            <!-- Ниже — статичные пункты меню. Если хотите, чтобы все редактировалось,
-                 уберите это и используйте wp_nav_menu() (с вложенным подменю).
-                 Сейчас оставим, как есть из вашего кода. -->
             <div class="nav__item text-17-400 colored-text">
-              <div class="label-nav__item row">
-                Услуги
-                <img
-                  src="<?php echo esc_url(get_template_directory_uri() . '/assets/arrowBotIcon.svg'); ?>"
-                  alt="arrow"
-                  width="9"
-                  height="5">
-              </div>
+                <div class="label-nav__item row">
+                    Услуги
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/arrowBotIcon.svg'); ?>" alt="arrow" width="9" height="5">
+                </div>
+                <div class="services-header-wrapper full-width-container row">
+                  <div class="wrapper row service-header-wrapper-inner">
+                      <?php if ($selected_categories): ?>
+                          <?php foreach ($selected_categories as $category_id): ?>
+                              <?php $category = get_term($category_id); ?>
+                              <?php if ($category): ?>
+                                  <div class="full-width-container-col col">
+                                      <div class="full-width-container-title row">
+                                          <div class="full-width-container-title-icon icon">
+                                              <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/liIcon.svg'); ?>" alt="li" width="6" height="10">
+                                          </div>
+                                          <div class="full-width-container-title-value text-16-500">
+                                              <?php echo esc_html($category->name); ?>
+                                          </div>
+                                      </div>
+                                      <div class="full-width-container-separator"></div>
+                                      <?php if ($selected_services): ?>
+                                          <?php foreach ($selected_services as $service_id): ?>
+                                              <?php $service = get_post($service_id); ?>
+                                              <?php if ($service && has_term($category->term_id, 'tax_uslyga', $service)): ?>
+                                                  <div class="full-width-container-item text-16-300">
+                                                      <?php echo esc_html($service->post_title); ?>
+                                                  </div>
+                                              <?php endif; ?>
+                                          <?php endforeach; ?>
+                                      <?php endif; ?>
+                                  </div>
+                              <?php endif; ?>
+                          <?php endforeach; ?>
+                      <?php endif; ?>
+                      <div class="full-width-container-image" style="background-image: url('<?php echo esc_url($background_image); ?>');">
+                      </div>
+                  </div>
+                </div>
+
+
+
+
               <div class="services-header-wrapper full-width-container row">
                 <div class="wrapper row service-header-wrapper-inner">
                   <!-- Здесь блоки «Брови», «Пудровое напыление» и т. д. -->
@@ -250,20 +275,20 @@
               </div>
             </div>
             <div class="nav__item text-17-400 colored-text">
-              <div class="label-nav__item row">Цены</div>
+              <a href="/prices/" class="label-nav__item row">Цены</a>
             </div>
             <div class="nav__item text-17-400 colored-text">
               <div class="label-nav__item row">Портфолио</div>
             </div>
             <div class="nav__item text-17-400 colored-text">
-              <div class="label-nav__item row">
+              <a href="/about/" class="label-nav__item row">
                 О студии
                 <img
                   src="<?php echo esc_url(get_template_directory_uri() . '/assets/arrowBotIcon.svg'); ?>"
                   alt="arrow"
                   width="9"
                   height="5">
-              </div>
+              </a>
               <div class="services-header-wrapper container-about col">
                 <div class="service-header-wrapper-item row colored-text">
                   О нас
@@ -320,7 +345,7 @@
                 Пн-Пт с 08:00 до 21:00
               </div>
             </div>
-            <div class="button row button-primary button-animation-left-to-right">
+            <div class="button row button-primary button-animation-left-to-right order-button">
               <img
                 src="<?php echo esc_url(get_template_directory_uri() . '/assets/whitePlus.svg'); ?>"
                 alt="plus"

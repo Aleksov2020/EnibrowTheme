@@ -4,7 +4,6 @@
  * Регистрируем настройки и контролы в кастомайзере (Theme Customizer)
  */
 function mytheme_customize_register($wp_customize) {
-
     // 1) Добавляем секцию «Настройки шапки»
     $wp_customize->add_section('mytheme_header_section', array(
         'title'    => 'Настройки шапки',

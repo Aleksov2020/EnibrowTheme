@@ -418,15 +418,6 @@ add_action('acf/init', function() {
                     'type'  => 'text',
                 ),
                 array(
-                    'key'   => 'field_service_category',
-                    'label' => 'Категория услуги',
-                    'name'  => 'cat_uslyga',
-                    'type'  => 'taxonomy',
-                    'taxonomy' => 'cat_uslyga',
-                    'field_type' => 'select',
-                    'return_format' => 'id',
-                ),
-                array(
                     'key'   => 'field_service_short_description',
                     'label' => 'Краткое описание (для таблицы)',
                     'name'  => 'service_short_description',
@@ -455,15 +446,6 @@ add_action('acf/init', function() {
                     'prepend' => '₽',
                 ),
                 array(
-                    'key'   => 'field_service_recommendations',
-                    'label' => 'Рекомендации',
-                    'name'  => 'service_recommendations',
-                    'type'  => 'relationship',
-                    'post_type' => array('recommendation'),
-                    'max' => 4,
-                    'return_format' => 'id',
-                ),
-                array(
                     'key'   => 'field_service_portfolio_works',
                     'label' => 'Работы портфолио',
                     'name'  => 'service_portfolio_works',
@@ -490,31 +472,6 @@ add_action('acf/init', function() {
             ),
         ));
     }
-    // для услуг подтягиваем рекомендации
-    acf_add_local_field_group(array(
-        'key'    => 'group_service_fields',
-        'title'  => 'Детали услуги',
-        'fields' => array(
-            array(
-                'key'   => 'field_service_recommendations',
-                'label' => 'Выберите рекомендации для вывода',
-                'name'  => 'service_recommendations',
-                'type'  => 'relationship',
-                'post_type' => array('recommendation'),
-                'return_format' => 'id',
-                'instructions' => 'Выберите рекомендации, которые будут выводиться в блоке рекомендаций для этой услуги.',
-            ),
-        ),
-        'location' => array(
-            array(
-                array(
-                    'param'    => 'post_type',
-                    'operator' => '==',
-                    'value'    => 'uslyga',
-                ),
-            ),
-        ),
-    ));
 
     // для блока на странице услуг
     acf_add_local_field_group(array(
@@ -606,7 +563,7 @@ add_action('acf/init', function() {
             'location' => array(
                 array(
                     array(
-                        'param'    => 'taxonomy',
+                        'param'    => 'post_type',
                         'operator' => '==',
                         'value'    => 'cat_uslyga',
                     ),
@@ -1114,111 +1071,58 @@ add_action('acf/init', function() {
         ),
     ));
 
-    //header
-    if (function_exists('acf_add_local_field_group')) {
+    
+
+    // Подключаем ACF локально
+    if( function_exists('acf_add_local_field_group') ):
+    
         acf_add_local_field_group(array(
-            'key'      => 'group_header_settings',
-            'title'    => 'Настройки хедера',
-            'fields'   => array(
+            'key' => 'group_header_settings',
+            'title' => 'Настройки хедера',
+            'fields' => array(
                 array(
-                    'key'   => 'field_header_logo',
-                    'label' => 'Логотип',
-                    'name'  => 'header_logo',
-                    'type'  => 'image',
-                    'return_format' => 'array',
+                    'key' => 'field_header_categories',
+                    'label' => 'Категории для отображения',
+                    'name' => 'header_categories',
+                    'type' => 'taxonomy',
+                    'taxonomy' => 'tax_uslyga',
+                    'field_type' => 'multi_select',
+                    'add_term' => true,
+                    'allow_null' => false,
+                    'return_format' => 'id',
+                    'multiple' => true,
                 ),
                 array(
-                    'key'   => 'field_header_phone',
-                    'label' => 'Телефон',
-                    'name'  => 'header_phone',
-                    'type'  => 'text',
+                    'key' => 'field_header_services',
+                    'label' => 'Услуги для отображения',
+                    'name' => 'header_services',
+                    'type' => 'post_object',
+                    'post_type' => array('uslyga'),
+                    'multiple' => true,
+                    'return_format' => 'id',
                 ),
                 array(
-                    'key'   => 'field_header_work_time',
-                    'label' => 'Время работы',
-                    'name'  => 'header_work_time',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_header_address',
-                    'label' => 'Адрес',
-                    'name'  => 'header_address',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_header_social_links',
-                    'label' => 'Социальные сети',
-                    'name'  => 'header_social_links',
-                    'type'  => 'repeater',
-                    'sub_fields' => array(
-                        array(
-                            'key'   => 'field_social_icon',
-                            'label' => 'Иконка',
-                            'name'  => 'social_icon',
-                            'type'  => 'image',
-                            'return_format' => 'array',
-                        ),
-                        array(
-                            'key'   => 'field_social_url',
-                            'label' => 'Ссылка',
-                            'name'  => 'social_url',
-                            'type'  => 'url',
-                        ),
-                    ),
-                    'min' => 1,
-                ),
-                array(
-                    'key'   => 'field_header_menu',
-                    'label' => 'Главное меню',
-                    'name'  => 'header_menu',
-                    'type'  => 'repeater',
-                    'sub_fields' => array(
-                        array(
-                            'key'   => 'field_menu_item_title',
-                            'label' => 'Название пункта',
-                            'name'  => 'menu_item_title',
-                            'type'  => 'text',
-                        ),
-                        array(
-                            'key'   => 'field_menu_item_link',
-                            'label' => 'Ссылка',
-                            'name'  => 'menu_item_link',
-                            'type'  => 'url',
-                        ),
-                        array(
-                            'key'   => 'field_menu_item_submenu',
-                            'label' => 'Подменю',
-                            'name'  => 'menu_item_submenu',
-                            'type'  => 'repeater',
-                            'sub_fields' => array(
-                                array(
-                                    'key'   => 'field_submenu_title',
-                                    'label' => 'Название подменю',
-                                    'name'  => 'submenu_title',
-                                    'type'  => 'text',
-                                ),
-                                array(
-                                    'key'   => 'field_submenu_link',
-                                    'label' => 'Ссылка подменю',
-                                    'name'  => 'submenu_link',
-                                    'type'  => 'url',
-                                ),
-                            ),
-                        ),
-                    ),
+                    'key' => 'field_header_background_image',
+                    'label' => 'Фоновое изображение',
+                    'name' => 'header_background_image',
+                    'type' => 'image',
+                    'return_format' => 'url',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
                 ),
             ),
             'location' => array(
                 array(
                     array(
-                        'param'    => 'options_page',
+                        'param' => 'options_page',
                         'operator' => '==',
-                        'value'    => 'acf-options-header',
+                        'value' => 'header-settings',
                     ),
                 ),
             ),
         ));
-    }
+    
+    endif;
     
 });
 

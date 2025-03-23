@@ -1,31 +1,5 @@
 <?php
-// Получаем все услуги, отмеченные для отображения
-$services = get_posts([
-    'post_type'      => 'uslyga',
-    'posts_per_page' => -1,
-    'meta_query'     => [
-        [
-            'key'     => 'master_show_on_home',
-            'value'   => '1',
-            'compare' => '='
-        ]
-    ]
-]);
-
-// Группируем услуги по категориям
-$services_by_category = [];
-foreach ($services as $service) {
-    $categories = get_term(get_field('cat_uslyga', $service->ID), 'cat_uslyga');
-
-    $category_name = !empty($categories) ? $categories->name : 'Без категории';
-
-    if (!isset($services_by_category[$category_name])) {
-        $services_by_category[$category_name] = [];
-    }
-    $services_by_category[$category_name][] = $service;
-}
-
-// Получаем всех мастеров
+// Получаем всех мастеров с чекбоксом "master_show_global"
 $masters = get_posts([
     'post_type'      => 'master',
     'posts_per_page' => -1,
@@ -38,6 +12,34 @@ $masters = get_posts([
     ]
 ]);
 
+// Группируем услуги по категориям
+$services_by_category = [];
+
+// Проходим по каждому мастеру и получаем его услуги с ценами
+foreach ($masters as $master) {
+    $master_services = get_field('master_services', $master->ID); // Репитер "Услуги мастера"
+
+    if (!empty($master_services) && is_array($master_services)) {
+        foreach ($master_services as $entry) {
+            $service_id = $entry['uslyga'];
+            $service_price = !empty($entry['service_price']) ? $entry['service_price'] . " ₽" : "-";
+
+            // Получаем категорию услуги
+            $categories = get_the_terms($service_id, 'tax_uslyga');
+            $category_name = !empty($categories) && !is_wp_error($categories) ? $categories[0]->name : 'Без категории';
+
+            // Группируем услуги по категориям
+            if (!isset($services_by_category[$category_name])) {
+                $services_by_category[$category_name] = [];
+            }
+
+            // Добавляем услугу в категорию с ценой от текущего мастера
+            $services_by_category[$category_name][$service_id]['title'] = get_the_title($service_id);
+            $services_by_category[$category_name][$service_id]['short_description'] = get_field('service_short_description', $service_id);
+            $services_by_category[$category_name][$service_id]['masters'][$master->ID] = $service_price;
+        }
+    }
+}
 ?>
 
 <div class="services-price wrapper-price-content col">
@@ -55,15 +57,27 @@ $masters = get_posts([
         </div>
     </div>
 
+    <div class="price-wrapper-animation-outer">
+        <div class="price-animation-wrapper row">
+            <div class="price-animation-item">
+                Листай таблицу влево или вправо
+            </div>
+        </div>
+    </div>
+
     <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
-                    <th>Услуга/Процедура</th>
+                    <th>
+                        <div class="services-price-header-name">
+                            Услуга/Процедура
+                        </div>
+                    </th>
                     <?php foreach ($masters as $master) : ?>
-                        <th class="<?= get_field('master_rank', $master->ID) == 'TOP-мастер' ? 'top-master-label' : ''; ?>">
-                            <?php if (get_field('master_rank', $master->ID) == 'TOP-мастер') : ?>
-                                <div class="label-for-top-master">TOP-МАСТЕР</div>
+                        <th class="<?= get_field('master_rank', $master->ID) ? 'top-master-label' : ''; ?>">
+                            <?php if ($master_rank = get_field('master_rank', $master->ID)) : ?>
+                                <div class="label-fot-top-master"><?= esc_html($master_rank); ?></div>
                             <?php endif; ?>
                             <?= esc_html(get_field('master_name', $master->ID)); ?>
                         </th>
@@ -73,20 +87,22 @@ $masters = get_posts([
             <tbody>
                 <?php foreach ($services_by_category as $category_name => $services) : ?>
                     <tr class="first-row">
-                        <td><div class="services-price-title text-20-400"><?= esc_html($category_name); ?></div></td>
+                        <td>
+                            <div class="services-price-title text-20-400"><?= esc_html($category_name); ?></div>
+                        </td>
                     </tr>
 
-                    <?php foreach ($services as $service) : ?>
+                    <?php foreach ($services as $service_id => $service) : ?>
                         <tr class="content-row">
                             <td>
                                 <div class="services-price-wrapper-name col">
-                                    <div class="services-price-name-wrapper row"> 
-                                        <div class="services-price-name text-20-400"><?= esc_html(get_the_title($service->ID)); ?></div>
-                                        <?php if (get_field('is_promotion', $service->ID)) : ?>
+                                    <div class="services-price-name-wrapper row">
+                                        <div class="services-price-name text-20-400"><?= esc_html($service['title']); ?></div>
+                                        <?php if (get_field('is_promotion', $service_id)) : ?>
                                             <div class="services-price-sale-badge text-16-500">Акция</div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="services-price-short-description light-text-300"><?= esc_html(get_field('service_short_description', $service->ID)); ?></div>
+                                    <div class="services-price-short-description light-text-300"><?= esc_html($service['short_description']); ?></div>
                                     <div class="services-price-link colored-text light-text-300">Подробнее об услуге</div>
                                 </div>
                             </td>
@@ -94,26 +110,16 @@ $masters = get_posts([
                             <?php foreach ($masters as $master) : ?>
                                 <td class="price text-18-400">
                                     <?php
-                                    $price = "-"; // Значение по умолчанию
-                                    $master_services = get_field('master_services', $master->ID); // Репитер "Услуги мастера"
-
-                                    if (!empty($master_services) && is_array($master_services)) {
-                                        foreach ($master_services as $entry) {
-                                            if ($entry['uslyga'] == $service->ID) { // Проверяем соответствие услуги
-                                                $price = $entry['service_price'] . " ₽";
-                                                break;
-                                            }
-                                        }
-                                    }
+                                    $price = isset($service['masters'][$master->ID]) ? $service['masters'][$master->ID] : "-";
                                     ?>
                                     <div class="price-button-service"><?= esc_html($price); ?></div>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
-
                 <?php endforeach; ?>
-                <tr class="first-row"> 
+                
+                <tr class="first-row">
                     <td colspan="<?= count($masters) + 1; ?>">
                         * <span class="text-16-500">Примечание</span> - Итоговая стоимость зависит от желаемого вида татуажа и мастера
                     </td>
@@ -122,7 +128,7 @@ $masters = get_posts([
         </table>
     </div>
 
-    <div class="button button-primary all-masters">
+    <a class="button button-primary all-masters" href='/prices'>
         Посмотреть все цены
-    </div>
+    </a>
 </div>

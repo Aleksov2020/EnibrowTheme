@@ -524,4 +524,32 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    const buttonOrder = document.querySelectorAll('.order-button');
+    const modal = document.querySelector('.modal-order-background');
+    const body = document.querySelector('body');
+
+    // Открытие модального окна
+    buttonOrder.forEach(button => {
+        button.addEventListener('click', function () {
+            modal.classList.add('show');
+            body.style.overflow = 'hidden'; // Блокируем прокрутку
+        });
+    });
+
+    // Закрытие модального окна по клику на фон
+    modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.classList.remove('show');
+            body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+        }
+    });
+
+    // Закрытие модального окна по кнопке закрытия
+    const closeButton = document.querySelector('.modal-order-button-close');
+    closeButton.addEventListener('click', function () {
+        modal.classList.remove('show');
+        body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+    });
+});
 
