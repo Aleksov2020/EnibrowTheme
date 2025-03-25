@@ -460,6 +460,14 @@ add_action('acf/init', function() {
                     'type'  => 'true_false', 
                     'ui'    => true,        
                 ),
+                array(
+                    'key'   => 'field_cat_uslyga',
+                    'label' => 'Категория услуги',
+                    'name'  => 'usl_cat_field',
+                    'type'  => 'post_object',
+                    'post_type' => array('uslyga_category'),
+                    'return_format' => 'id',
+                ),
             ),
             'location' => array(
                 array(
@@ -1071,7 +1079,7 @@ add_action('acf/init', function() {
         ),
     ));
 
-    
+
 
     // Подключаем ACF локально
     if( function_exists('acf_add_local_field_group') ):

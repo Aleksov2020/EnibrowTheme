@@ -1,46 +1,57 @@
 <?php
-// Получаем все категории услуг (таксономия "tax_uslyga")
-$categories = get_terms(array(
-    'taxonomy'   => 'tax_uslyga',
-    'hide_empty' => true, // Не показывать пустые категории
+// Защита от прямого доступа
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Получаем все категории услуг (тип поста "uslyga_category")
+$categories = get_posts(array(
+    'post_type'      => 'uslyga_category',
+    'posts_per_page' => -1,
+    'post_status'    => 'publish'
 ));
 
-if (!is_wp_error($categories) && !empty($categories)): ?>
+if (!empty($categories)): ?>
     <div class="services wrapper wrapper-laptop row">
         <?php foreach ($categories as $category): ?>
             <?php
-            // Получаем услуги, относящиеся к этой категории (максимум 6)
+            // Получаем связанные услуги для этой категории через ACF
             $services = get_posts(array(
                 'post_type'      => 'uslyga', // Тип поста "услуга"
-                'posts_per_page' => 6,
-                'tax_query'      => array(
+                'posts_per_page' => -1,
+                'meta_query'     => array(
                     array(
-                        'taxonomy' => 'tax_uslyga', // Таксономия "tax_uslyga"
-                        'field'    => 'term_id',
-                        'terms'    => $category->term_id,
+                        'key'     => 'usl_cat_field', // ACF поле для связи
+                        'value'   => $category->ID,
+                        'compare' => '=',
                     ),
                 ),
             ));
+
+            // Пропускаем категорию, если в ней нет услуг
+            if (empty($services)) {
+                continue;
+            }
             ?>
 
             <div class="service first-service col">
                 <div class="service-filter col">
-                    <div class="service-title text-30-400 colored-text"> 
-                        <?php echo esc_html($category->name); ?>
+                    <div class="service-title text-30-400 colored-text">
+                        <a href="<?php echo esc_url(get_permalink($category->ID)); ?>">
+                            <?php echo esc_html(get_the_title($category->ID)); ?>
+                        </a>
                     </div>
                     <div class="service-item-wrapper col">
-                        <?php if (!empty($services)): ?>
-                            <?php foreach ($services as $service): ?>
-                                <div class="service-item colored-text">
+                        <?php foreach ($services as $service): ?>
+                            <div class="service-item colored-text">
+                                <a href="<?php echo esc_url(get_permalink($service->ID)); ?>">
                                     <?php echo esc_html(get_the_title($service->ID)); ?>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="service-item colored-text">Нет услуг в этой категории</div>
-                        <?php endif; ?>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                     <div class="show-more-button clickable text-16-500 colored-text">
-                        <a href="<?php echo esc_url(get_term_link($category)); ?>">Все техники</a>
+                        <a href="<?php echo esc_url(get_permalink($category->ID)); ?>">Все техники</a>
                     </div>
                 </div>
             </div>

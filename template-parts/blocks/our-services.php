@@ -29,7 +29,9 @@ if ($services): ?>
                     </div>
                     <div class="subservice-item-wrapper col">
                         <div class="subservice-item-title colored-text">
-                            <?php echo esc_html(get_the_title($service->ID)); ?>
+                            <a href="<?php echo esc_url(get_permalink($service->ID)); ?>">
+                                <?php echo esc_html(get_the_title($service->ID)); ?>
+                            </a>
                         </div>
                         <div class="subservice-item-text-wrapper col">
                             <div class="subservice-item-text-subtitle colored-text light-text-600">
@@ -63,9 +65,9 @@ if ($services): ?>
                             </div>
                         </div>
                         <div class="subservice-button-wrapper row">
-                            <div class="button button-primary">
+                            <a href="<?php echo esc_url(get_permalink($service->ID)); ?>" class="button button-primary">
                                 Записаться
-                            </div>
+                            </a>
                             <a href="<?php echo esc_url(get_permalink($service->ID)); ?>" class="button button-bordered button-hover-white">
                                 Подробнее
                             </a>

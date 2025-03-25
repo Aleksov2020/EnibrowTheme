@@ -1,3 +1,4 @@
+<!-- Блок содержание статьи -->
 <?php if( have_rows('content_items') ): ?>
     <div class="blogpage-content-wrapper col">
         <div class="blogpage-content-title-wrapper row">

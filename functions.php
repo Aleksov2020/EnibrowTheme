@@ -94,94 +94,6 @@ add_action('pre_get_posts', function($query) {
   }
 });
 
-// Функция для получения данных мастеров
-function get_masters_data() {
-  $masters = get_posts([
-      'post_type' => 'master',
-      'posts_per_page' => -1,
-      'meta_query' => [
-          [
-              'key' => 'master_show_global',
-              'value' => '1',
-              'compare' => '='
-          ]
-      ]
-  ]);
-
-  $masters_data = array_map(function ($master) {
-      $photo = get_field('master_photo', $master->ID);
-      $photo_url = !empty($photo) ? $photo['url'] : get_template_directory_uri() . '/assets/avatar-placeholder.png';
-
-      return [
-          'id' => $master->ID,
-          'name' => get_the_title($master->ID),
-          'rank' => get_field('master_rank', $master->ID),
-          'photo' => $photo_url,
-      ];
-  }, $masters);
-
-  return $masters_data;
-}
-
-// Функция для получения данных услуг
-function get_services_data() {
-  $categories = get_terms([
-      'taxonomy' => 'tax_uslyga',
-      'hide_empty' => false,
-  ]);
-
-  $services_data = [];
-  foreach ($categories as $category) {
-      $services = get_posts([
-          'post_type' => 'uslyga',
-          'posts_per_page' => -1,
-          'tax_query' => [
-              [
-                  'taxonomy' => 'tax_uslyga',
-                  'field' => 'term_id',
-                  'terms' => $category->term_id,
-              ]
-          ],
-      ]);
-
-      $services_list = array_map(function ($service) {
-          $portfolio_works = get_field('service_portfolio_works', $service->ID);
-
-          // Проверяем наличие массива и его содержимое
-          if (is_array($portfolio_works) && !empty($portfolio_works)) {
-              $last_work_id = end($portfolio_works);
-              $image_data = get_field('portfolio_image', $last_work_id);
-              $image = !empty($image_data) ? $image_data['url'] : get_template_directory_uri() . '/assets/avatar-placeholder.png';
-          } else {
-              $image = get_template_directory_uri() . '/assets/avatar-placeholder.png';
-          }
-
-          return [
-              'id' => $service->ID,
-              'name' => get_the_title($service->ID),
-              'image' => $image,
-          ];
-      }, $services);
-
-      $services_data[] = [
-          'name' => $category->name,
-          'services' => $services_list,
-      ];
-  }
-
-  return $services_data;
-}
-
-// Подключаем скрипты с передачей данных мастеров и услуг
-function enqueue_custom_scripts() {
-  wp_enqueue_script('custom-js', get_template_directory_uri() . '/js/order.js', ['jquery'], null, true);
-
-  // Передаем данные мастеров в JavaScript
-  wp_localize_script('custom-js', 'mastersData', get_masters_data());
-  wp_localize_script('custom-js', 'servicesData', get_services_data());
-}
-
-add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
 
 acf_add_local_field_group(array(
@@ -217,8 +129,109 @@ acf_add_options_page(array(
   'redirect' => false
 ));
 
+// Регистрация CPT "Категория услуги"
+register_post_type('uslyga_category', array(
+  'labels' => array(
+      'name' => 'Категории услуг',
+      'singular_name' => 'Категория услуги'
+  ),
+  'public' => true,
+  'show_in_rest' => true,
+  'hierarchical' => false,
+  'has_archive' => false,
+  'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+));
+
+// Регистрация CPT "Услуга"
+register_post_type('uslyga', array(
+  'labels' => array(
+      'name' => 'Услуги',
+      'singular_name' => 'Услуга'
+  ),
+  'public' => true,
+  'show_in_rest' => true,
+  'has_archive' => false,
+  'rewrite' => array('slug' => '%uslyga_category%', 'with_front' => false),
+  'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+));
+
+
+add_filter('post_type_link', function($post_link, $post) {
+
+  if ($post->post_type === 'uslyga') {
+      // Получаем ID связанной категории из произвольного поля (ACF post_object)
+      $category_id = get_field('usl_cat_field', $post->ID);
+
+      if ($category_id) {
+          $category_post = get_post($category_id);
+          $cat_slug = $category_post ? $category_post->post_name : '';
+          // Заменяем плейсхолдер категории на её slug
+          $post_link = str_replace('%uslyga_category%', $cat_slug, $post_link);
+      }
+  }
+
+  if ($post->post_type === 'uslyga_category') {
+      // Получаем ID связанной категории из произвольного поля (ACF post_object)
+      error_log('uslyga_category');
+      error_log($post_link);
+
+      $post_link = str_replace('uslyga_category', '', $post_link);
+  }
+
+  return $post_link;
+}, 10, 2);
+
+// Перезапись ссылок для CPT
+function custom_post_type_link($post_link, $post) {
+  if ($post->post_type === 'master') {
+      return home_url('/master/' . $post->post_name . '/');
+  }
+  if ($post->post_type === 'faq') {
+      return home_url('/faq/' . $post->post_name . '/');
+  }
+  return $post_link;
+}
+add_filter('post_type_link', 'custom_post_type_link', 10, 2);
+
+// Кастомные правила перезаписи
+function custom_rewrite_rules() {
+  add_rewrite_rule('^master/([^/]+)/?$', 'index.php?post_type=master&name=$matches[1]', 'top');
+  add_rewrite_rule('^faq/([^/]+)/?$', 'index.php?post_type=faq&name=$matches[1]', 'top');
+}
+add_action('init', 'custom_rewrite_rules');
+
+add_rewrite_rule(
+  '^([^/]+)/?$',
+  'index.php?pagename=$matches[1]',
+  'top'
+);
+
+add_rewrite_rule(
+  '^([^/]+)/([^/]+)/?$',
+  'index.php?pagename=$matches[1]/$matches[2]',
+  'top'
+);
+
+add_rewrite_rule(
+  '^([^/]+)/([^/]+)/([^/]+)/?$',
+  'index.php?pagename=$matches[1]/$matches[2]/$matches[3]',
+  'top'
+);
+
+add_rewrite_rule(
+  '^([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$',
+  'index.php?pagename=$matches[1]/$matches[2]/$matches[3]/$matches[4]',
+  'top'
+);
+
+add_rewrite_rule(
+  '^([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$',
+  'index.php?pagename=$matches[1]/$matches[2]/$matches[3]/$matches[4]/$matches[5]',
+  'top'
+);
+
 // Подключаем файлы
-require_once get_template_directory() . '/include/permalinks.php';
+//require_once get_template_directory() . '/include/permalinks.php';
 require_once get_template_directory() . '/include/post-types.php';
 require_once get_template_directory() . '/include/acf-blocks.php';
 require_once get_template_directory() . '/include/acf-fields.php';

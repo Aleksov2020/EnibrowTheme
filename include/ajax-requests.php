@@ -5,23 +5,26 @@ add_action('wp_ajax_nopriv_filter_portfolio', 'filter_portfolio');
 function filter_portfolio() {
     $selected_category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : 'all';
 
+    // Получаем все работы в зависимости от выбранной категории
     if ($selected_category !== 'all') {
         $service = get_post($selected_category);
         if (!$service) {
             echo '<p>Категория не найдена.</p>';
             wp_die();
         }
-        
+
         $portfolio_works = get_field('service_portfolio_works', $service->ID);
         if (!$portfolio_works) {
             echo '<p>Нет работ в этой категории.</p>';
             wp_die();
         }
-        
+
+        // Фильтруем только те работы, которые отмечены как "portfolio_main"
         $portfolio_works = array_filter($portfolio_works, function($work_id) {
             return get_field('portfolio_main', $work_id);
         });
     } else {
+        // Получаем все работы для категории "Все"
         $portfolio_works = get_posts(array(
             'post_type'      => 'portfolio_work',
             'posts_per_page' => -1,
@@ -35,21 +38,26 @@ function filter_portfolio() {
         ));
     }
 
+    // Если работ нет
     if (!$portfolio_works) {
         echo '<p>Нет изображений в галерее.</p>';
         wp_die();
     }
 
+    // Отображаем все работы
     foreach ($portfolio_works as $index => $work) {
         $work_id = is_object($work) ? $work->ID : $work;
-        $image = get_field('portfolio_image', $work_id);
+
+        // Получаем все данные мастера одним вызовом
         $master_id = get_field('portfolio_master', $work_id);
+        $master_data = get_post($master_id);
         $master_name = get_field('master_name', $master_id);
         $master_photo = get_field('master_photo', $master_id);
         $master_likes = get_field('master_likes', $master_id);
         $master_rank = get_field('master_rank', $master_id);
+        $image = get_field('portfolio_image', $work_id);
         ?>
-        <div class="gallery-item" >
+        <div class="gallery-item">
             <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, window.galleryData);">
                 <?php if ($image): ?>
                     <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
@@ -103,4 +111,5 @@ function filter_portfolio() {
         <?php
     }
     wp_die();
-} ?>
+}
+?>

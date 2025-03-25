@@ -1,27 +1,31 @@
 <?php
-$current_page_slug = get_post_field('post_name', the_ID());
+// Получаем текущий пост и его слаг
+$current_post_id = get_queried_object_id();
+$current_page_slug = get_post_field('post_name', $current_post_id);
 
-print_r(get_post( the_ID()));
+// Получаем объект текущей страницы
+$current_post = get_post($current_post_id);
 
-// Проверяем, есть ли таксономия с таким же слагом
-$category = get_term_by('slug', $current_page_slug, 'cat_uslyga');
-
-echo $category;
-
-if (!$category) {
+if (!$current_post) {
     echo '<p>Категория услуг не найдена.</p>';
     return;
 }
 
-// Получаем услуги, которые принадлежат этой категории
+// Проверяем, является ли текущий пост категорией услуг
+if ($current_post->post_type !== 'uslyga_category') {
+    echo '<p>Текущая страница не является категорией услуг.</p>';
+    return;
+}
+
+// Получаем услуги, связанные с данной категорией
 $args = array(
     'post_type'      => 'uslyga',
     'posts_per_page' => -1,
-    'tax_query'      => array(
+    'meta_query' => array(
         array(
-            'taxonomy' => 'cat_uslyga',
-            'field'    => 'slug',
-            'terms'    => $category->slug,
+            'key'   => 'usl_cat_field',
+            'value' => $current_post_id,
+            'compare' => '='
         ),
     ),
 );

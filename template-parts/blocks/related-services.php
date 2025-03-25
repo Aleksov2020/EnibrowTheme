@@ -7,14 +7,14 @@ if (!$category_id) {
     return;
 }
 
-// Получаем услуги, связанные с категорией
+// Получаем услуги, связанные с категорией через ACF-поле
 $related_services = get_posts(array(
     'post_type' => 'uslyga',
-    'tax_query' => array(
+    'meta_query' => array(
         array(
-            'taxonomy' => 'tax_uslyga',
-            'field'    => 'term_id',
-            'terms'    => $category_id,
+            'key' => 'usl_cat_field', // ACF поле связи услуги с категорией
+            'value' => $category_id,
+            'compare' => '='
         ),
     ),
     'posts_per_page' => -1,
@@ -47,8 +47,8 @@ if (!empty($related_services)): ?>
                 'post_type' => 'promotion',
                 'meta_query' => array(
                     array(
-                        'key' => 'promotion_services', // ACF поле для связи услуг с акцией
-                        'value' => '"' . $service->ID . '"', // Ищем ID услуги
+                        'key' => 'promotion_services',
+                        'value' => '"' . $service->ID . '"',
                         'compare' => 'LIKE',
                     ),
                 ),

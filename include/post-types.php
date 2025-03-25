@@ -53,6 +53,7 @@ function register_master_post_type() {
         'public'       => true,
         'show_ui'      => true,
         'show_in_menu' => true,
+        'has_archive' => false,
         'show_in_rest' => true, // Включает поддержку Gutenberg
         'supports'     => array('title', 'thumbnail', 'editor'), // Поддержка заголовка, миниатюры и описания
         'menu_icon'    => 'dashicons-admin-users',
@@ -248,74 +249,72 @@ function register_faq_post_type() {
     register_post_type('faq', $args);
 }
 
-// Регистрация кастомного типа "Услуга" (uslyga)
-function register_uslyga() {
-    register_post_type('uslyga', array(
-        'labels' => array(
-            'name' => 'Услуги',
-            'singular_name' => 'Услуга',
-            'add_new' => 'Добавить услугу',
-            'add_new_item' => 'Добавить новую услугу',
-            'edit_item' => 'Редактировать услугу',
-            'new_item' => 'Новая услуга',
-            'view_item' => 'Просмотреть услугу',
-            'search_items' => 'Искать услуги',
-            'not_found' => 'Услуг не найдено',
-            'not_found_in_trash' => 'В корзине услуг не найдено',
-            'all_items' => 'Все услуги',
-            'archives' => 'Архив услуг',
-        ),
-        'public' => true,
-        'has_archive' => false,
-        'rewrite' => array('slug' => '%tax_uslyga%'), // Динамический slug для услуги
-        'supports' => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes'),
-        'show_in_rest' => true,
-    ));
-}
+// // Регистрация кастомного типа "Услуга" (uslyga)
+// function register_uslyga() {
+//     register_post_type('uslyga', array(
+//         'labels' => array(
+//             'name' => 'Услуги',
+//             'singular_name' => 'Услуга',
+//             'add_new' => 'Добавить услугу',
+//             'add_new_item' => 'Добавить новую услугу',
+//             'edit_item' => 'Редактировать услугу',
+//             'new_item' => 'Новая услуга',
+//             'view_item' => 'Просмотреть услугу',
+//             'search_items' => 'Искать услуги',
+//             'not_found' => 'Услуг не найдено',
+//             'not_found_in_trash' => 'В корзине услуг не найдено',
+//             'all_items' => 'Все услуги',
+//             'archives' => 'Архив услуг',
+//         ),
+//         'public' => true,
+//         'has_archive' => false,
+//         'rewrite' => array('slug' => '%tax_uslyga%'), // Динамический slug для услуги
+//         'supports' => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes'),
+//         'show_in_rest' => true,
+//     ));
+// }
 
-// Регистрация кастомного типа "Категория услуг" (cat_uslyga)
-function register_cat_uslyga() {
-    register_post_type('cat_uslyga', array(
-        'labels' => array(
-            'name' => 'Категории услуг',
-            'singular_name' => 'Категория услуг',
-        ),
-        'public' => true,
-        'has_archive' => true,
-        'rewrite' => array('slug' => 'cat_uslyga'), // Уникальный slug
-        'supports' => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes'),
-        'show_in_rest' => true, // Поддержка Gutenberg
-    ));
-}
-// Регистрация таксономии "Категория услуг" (tax_uslyga)
-function register_tax_uslyga() {
-    $labels = array(
-        'name' => 'Категории услуг',
-        'singular_name' => 'Категория услуги',
-        'search_items' => 'Искать категории услуг',
-        'all_items' => 'Все категории услуг',
-        'edit_item' => 'Редактировать категорию',
-        'update_item' => 'Обновить категорию',
-        'add_new_item' => 'Добавить новую категорию',
-        'new_item_name' => 'Новое имя категории',
-        'menu_name' => 'Категории услуг',
-    );
+// // Регистрация кастомного типа "Категория услуг" (cat_uslyga)
+// function register_cat_uslyga() {
+//     register_post_type('cat_uslyga', array(
+//         'labels' => array(
+//             'name' => 'Категории услуг',
+//             'singular_name' => 'Категория услуг',
+//         ),
+//         'public' => true,
+//         'supports' => array('title', 'editor', 'thumbnail', 'custom-fields', 'revisions', 'page-attributes'),
+//         'show_in_rest' => true, // Поддержка Gutenberg
+//     ));
+// }
+// // Регистрация таксономии "Категория услуг" (tax_uslyga)
+// function register_tax_uslyga() {
+//     $labels = array(
+//         'name' => 'Категории услуг',
+//         'singular_name' => 'Категория услуги',
+//         'search_items' => 'Искать категории услуг',
+//         'all_items' => 'Все категории услуг',
+//         'edit_item' => 'Редактировать категорию',
+//         'update_item' => 'Обновить категорию',
+//         'add_new_item' => 'Добавить новую категорию',
+//         'new_item_name' => 'Новое имя категории',
+//         'menu_name' => 'Категории услуг',
+//     );
 
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'hierarchical' => true,
-        'rewrite' => array('slug' => '', 'with_front' => false), // Без префикса
-        'show_in_rest' => true,
-    );
+//     $args = array(
+//         'labels' => $labels,
+//         'public' => true,
+//         'hierarchical' => true,
+//         'rewrite' => array('slug' => '', 'with_front' => false), // Без префикса
+//         'show_in_rest' => true,
+//     );
 
-    register_taxonomy('tax_uslyga', array('uslyga'), $args);
-}
+//     register_taxonomy('tax_uslyga', array('uslyga'), $args);
+// }
 
 
-add_action('init', 'register_tax_uslyga');
-add_action('init', 'register_cat_uslyga');
-add_action('init', 'register_uslyga');
+// add_action('init', 'register_tax_uslyga');
+// add_action('init', 'register_cat_uslyga');
+// add_action('init', 'register_uslyga');
 add_action('init', 'register_faq_post_type');
 add_action('init', 'register_blog_post_type');
 add_action('init', 'register_portfolio_work_post_type');

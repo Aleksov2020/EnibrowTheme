@@ -24,9 +24,9 @@ foreach ($masters as $master) {
             $service_id = $entry['uslyga'];
             $service_price = !empty($entry['service_price']) ? $entry['service_price'] . " ₽" : "-";
 
-            // Получаем категорию услуги
-            $categories = get_the_terms($service_id, 'tax_uslyga');
-            $category_name = !empty($categories) && !is_wp_error($categories) ? $categories[0]->name : 'Без категории';
+            // Получаем категорию услуги через ACF поле
+            $category_id = get_field('usl_cat_field', $service_id);
+            $category_name = $category_id ? get_the_title($category_id) : 'Без категории';
 
             // Группируем услуги по категориям
             if (!isset($services_by_category[$category_name])) {
@@ -36,6 +36,7 @@ foreach ($masters as $master) {
             // Добавляем услугу в категорию с ценой от текущего мастера
             $services_by_category[$category_name][$service_id]['title'] = get_the_title($service_id);
             $services_by_category[$category_name][$service_id]['short_description'] = get_field('service_short_description', $service_id);
+            $services_by_category[$category_name][$service_id]['link'] = get_permalink($service_id);
             $services_by_category[$category_name][$service_id]['masters'][$master->ID] = $service_price;
         }
     }
@@ -88,7 +89,9 @@ foreach ($masters as $master) {
                 <?php foreach ($services_by_category as $category_name => $services) : ?>
                     <tr class="first-row">
                         <td>
-                            <div class="services-price-title text-20-400"><?= esc_html($category_name); ?></div>
+                            <div class="services-price-title text-20-400">            
+                                <?= esc_html($category_name); ?>
+                            </div>
                         </td>
                     </tr>
 
@@ -97,13 +100,15 @@ foreach ($masters as $master) {
                             <td>
                                 <div class="services-price-wrapper-name col">
                                     <div class="services-price-name-wrapper row">
-                                        <div class="services-price-name text-20-400"><?= esc_html($service['title']); ?></div>
+                                        <a href="<?= esc_url($service['link']); ?>" class="services-price-name text-20-400">
+                                            <?= esc_html($service['title']); ?>
+                                        </a>
                                         <?php if (get_field('is_promotion', $service_id)) : ?>
                                             <div class="services-price-sale-badge text-16-500">Акция</div>
                                         <?php endif; ?>
                                     </div>
                                     <div class="services-price-short-description light-text-300"><?= esc_html($service['short_description']); ?></div>
-                                    <div class="services-price-link colored-text light-text-300">Подробнее об услуге</div>
+                                    <a href="<?= esc_url($service['link']); ?>" class="services-price-link colored-text light-text-300">Подробнее об услуге</a>
                                 </div>
                             </td>
 

@@ -6,6 +6,8 @@ function uslyga_permalink($permalink, $post) {
         if (!empty($terms) && !is_wp_error($terms)) {
             $term_slug = $terms[0]->slug;
             $permalink = home_url('/' . $term_slug . '/' . $post->post_name . '/');
+        } else {
+            $permalink = home_url('/no-category/' . $post->post_name . '/');
         }
     } elseif ($post->post_type === 'blog') {
         // Для записей типа "blog"
@@ -64,7 +66,7 @@ function custom_rewrite_rules() {
         'top'
     );
 
-    // Правило для записей типа "blog" (например: /master/имя-записи/)
+    // Правило для записей типа "master" (например: /master/имя-записи/)
     add_rewrite_rule(
         '^master/([^/]+)/?$',
         'index.php?post_type=master&name=$matches[1]',

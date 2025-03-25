@@ -4,8 +4,6 @@ $posts = get_posts(array(
     'posts_per_page' => 4, // Количество выводимых статей
 ));
 
-error_log(1212);
-
 if ($posts) :
 ?>
     <div class="blog wrapper wrapper-laptop col">
