@@ -5,259 +5,254 @@ if (!defined('ABSPATH')) {
 }
 add_action('acf/init', function() {
     // video
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key' => 'group_video_fields',
-            'title' => 'Детали видеозаписи',
-            'fields' => array(
+    acf_add_local_field_group(array(
+        'key' => 'group_video_fields',
+        'title' => 'Детали видеозаписи',
+        'fields' => array(
+            array(
+                'key' => 'field_video_thumbnail',
+                'label' => 'Обложка видео',
+                'name' => 'video_thumbnail',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ),
+            array(
+                'key' => 'field_video_url',
+                'label' => 'Ссылка на видео',
+                'name' => 'video_url',
+                'type' => 'url',
+                'placeholder' => 'https://',
+            ),
+            array(
+                'key'   => 'field_video_show',
+                'label' => 'Отображать на главной',
+                'name'  => 'video_show',
+                'type'  => 'true_false', 
+                'ui'    => true,        
+            ),
+            array(
+                'key'          => 'field_video_page',
+                'label'        => 'Выбрать страницу',
+                'name'         => 'video_page',
+                'type'         => 'post_object',
+                'post_type'    => array('page'),
+                'return_format' => 'id',
+                'required'     => 1,
+            ),
+        ),
+        'location' => array(
+            array(
                 array(
-                    'key' => 'field_video_thumbnail',
-                    'label' => 'Обложка видео',
-                    'name' => 'video_thumbnail',
-                    'type' => 'image',
-                    'return_format' => 'array',
-                    'preview_size' => 'medium',
-                    'library' => 'all',
-                ),
-                array(
-                    'key' => 'field_video_url',
-                    'label' => 'Ссылка на видео',
-                    'name' => 'video_url',
-                    'type' => 'url',
-                    'placeholder' => 'https://',
-                ),
-                array(
-                    'key'   => 'field_video_show',
-                    'label' => 'Отображать на главной',
-                    'name'  => 'video_show',
-                    'type'  => 'true_false', 
-                    'ui'    => true,        
-                ),
-                array(
-                    'key'          => 'field_video_page',
-                    'label'        => 'Выбрать страницу',
-                    'name'         => 'video_page',
-                    'type'         => 'post_object',
-                    'post_type'    => array('page'),
-                    'return_format' => 'id',
-                    'required'     => 1,
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'video',
                 ),
             ),
-            'location' => array(
-                array(
-                    array(
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'video',
-                    ),
-                ),
-            ),
-        ));
-    }
+        ),
+    ));
 
     // reviews
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key'    => 'group_reviews',
-            'title'  => 'Отзыв',
-            'fields' => array(
+    acf_add_local_field_group(array(
+        'key'    => 'group_reviews',
+        'title'  => 'Отзыв',
+        'fields' => array(
+            array(
+                'key'   => 'field_review_name',
+                'label' => 'Имя',
+                'name'  => 'review_name',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_review_rating',
+                'label' => 'Оценка',
+                'name'  => 'review_rating',
+                'type'  => 'number',
+                'min'   => 1,
+                'max'   => 5,
+                'step'  => 1,
+            ),
+            array(
+                'key'   => 'field_review_comment',
+                'label' => 'Комментарий',
+                'name'  => 'review_comment',
+                'type'  => 'textarea',
+            ),
+            array(
+                'key'   => 'field_review_images',
+                'label' => 'Картинки',
+                'name'  => 'review_images',
+                'type'  => 'gallery',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+            ),
+            array(
+                'key'   => 'field_review_master',
+                'label' => 'Мастер',
+                'name'  => 'review_master',
+                'type'  => 'post_object',
+                'post_type' => array('master'),
+                'return_format' => 'id',
+                'multiple' => 0,
+            ),
+            array(
+                'key'   => 'field_review_global',
+                'label' => 'Выводить отзыв на всех страницах сайта',
+                'name'  => 'review_global',
+                'type'  => 'true_false',
+                'ui'    => 1,
+            ),
+            array(
+                'key'   => 'field_review_date',
+                'label' => 'Дата отзыва',
+                'name'  => 'review_date',
+                'type'  => 'date_picker',
+                'display_format' => 'd.m.Y',
+                'return_format'  => 'd.m.Y',
+            ),
+        ),
+        'location' => array(
+            array(
                 array(
-                    'key'   => 'field_review_name',
-                    'label' => 'Имя',
-                    'name'  => 'review_name',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_review_rating',
-                    'label' => 'Оценка',
-                    'name'  => 'review_rating',
-                    'type'  => 'number',
-                    'min'   => 1,
-                    'max'   => 5,
-                    'step'  => 1,
-                ),
-                array(
-                    'key'   => 'field_review_comment',
-                    'label' => 'Комментарий',
-                    'name'  => 'review_comment',
-                    'type'  => 'textarea',
-                ),
-                array(
-                    'key'   => 'field_review_images',
-                    'label' => 'Картинки',
-                    'name'  => 'review_images',
-                    'type'  => 'gallery',
-                    'return_format' => 'array',
-                    'preview_size' => 'medium',
-                ),
-                array(
-                    'key'   => 'field_review_master',
-                    'label' => 'Мастер',
-                    'name'  => 'review_master',
-                    'type'  => 'post_object',
-                    'post_type' => array('master'),
-                    'return_format' => 'id',
-                    'multiple' => 0,
-                ),
-                array(
-                    'key'   => 'field_review_global',
-                    'label' => 'Выводить отзыв на всех страницах сайта',
-                    'name'  => 'review_global',
-                    'type'  => 'true_false',
-                    'ui'    => 1,
-                ),
-                array(
-                    'key'   => 'field_review_date',
-                    'label' => 'Дата отзыва',
-                    'name'  => 'review_date',
-                    'type'  => 'date_picker',
-                    'display_format' => 'd.m.Y',
-                    'return_format'  => 'd.m.Y',
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'reviews',
                 ),
             ),
-            'location' => array(
-                array(
-                    array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'reviews',
-                    ),
-                ),
-            ),
-        ));
-    }
+        ),
+    ));
 
     // masters
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key'    => 'group_master_fields',
-            'title'  => 'Детали мастера',
-            'fields' => array(
-                array(
-                    'key'   => 'field_master_rank',
-                    'label' => 'Звание мастера',
-                    'name'  => 'master_rank',
-                    'type'  => 'text',
-                    'placeholder' => 'Например: ТОП-мастер'
-                ),
-                array(
-                    'key'   => 'field_master_experience',
-                    'label' => 'Стаж (лет)',
-                    'name'  => 'master_experience',
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'step'  => 1
-                ),
-                array(
-                    'key'   => 'field_master_name',
-                    'label' => 'Имя',
-                    'name'  => 'master_name',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_master_surname',
-                    'label' => 'Фамилия',
-                    'name'  => 'master_surname',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_master_bio',
-                    'label' => 'Немного слов о себе',
-                    'name'  => 'master_bio',
-                    'type'  => 'textarea',
-                    'rows'  => 4,
-                ),
-                array(
-                    'key'   => 'field_master_short_description',
-                    'label' => 'Краткое описание',
-                    'name'  => 'short_description',
-                    'type'  => 'textarea',
-                    'rows'  => 2,
-                    'instructions' => 'Введите краткое описание мастера для отображения в блоке'
-                ),
-                array(
-                    'key'   => 'field_master_education',
-                    'label' => 'Образование',
-                    'name'  => 'master_education',
-                    'type'  => 'repeater',
-                    'layout' => 'table',
-                    'sub_fields' => array(
-                        array(
-                            'key'   => 'field_edu_year',
-                            'label' => 'Год',
-                            'name'  => 'edu_year',
-                            'type'  => 'text',
-                        ),
-                        array(
-                            'key'   => 'field_edu_place',
-                            'label' => 'Место обучения',
-                            'name'  => 'edu_place',
-                            'type'  => 'text',
-                        )
+    acf_add_local_field_group(array(
+        'key'    => 'group_master_fields',
+        'title'  => 'Детали мастера',
+        'fields' => array(
+            array(
+                'key'   => 'field_master_rank',
+                'label' => 'Звание мастера',
+                'name'  => 'master_rank',
+                'type'  => 'text',
+                'placeholder' => 'Например: ТОП-мастер'
+            ),
+            array(
+                'key'   => 'field_master_experience',
+                'label' => 'Стаж (лет)',
+                'name'  => 'master_experience',
+                'type'  => 'number',
+                'min'   => 0,
+                'step'  => 1
+            ),
+            array(
+                'key'   => 'field_master_name',
+                'label' => 'Имя',
+                'name'  => 'master_name',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_master_surname',
+                'label' => 'Фамилия',
+                'name'  => 'master_surname',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_master_bio',
+                'label' => 'Немного слов о себе',
+                'name'  => 'master_bio',
+                'type'  => 'textarea',
+                'rows'  => 4,
+            ),
+            array(
+                'key'   => 'field_master_short_description',
+                'label' => 'Краткое описание',
+                'name'  => 'short_description',
+                'type'  => 'textarea',
+                'rows'  => 2,
+                'instructions' => 'Введите краткое описание мастера для отображения в блоке'
+            ),
+            array(
+                'key'   => 'field_master_education',
+                'label' => 'Образование',
+                'name'  => 'master_education',
+                'type'  => 'repeater',
+                'layout' => 'table',
+                'sub_fields' => array(
+                    array(
+                        'key'   => 'field_edu_year',
+                        'label' => 'Год',
+                        'name'  => 'edu_year',
+                        'type'  => 'text',
+                    ),
+                    array(
+                        'key'   => 'field_edu_place',
+                        'label' => 'Место обучения',
+                        'name'  => 'edu_place',
+                        'type'  => 'text',
                     )
-                ),
-                array(
-                    'key'   => 'field_master_extra_education',
-                    'label' => 'Дополнительное образование',
-                    'name'  => 'master_extra_education',
-                    'type'  => 'repeater',
-                    'layout' => 'table',
-                    'sub_fields' => array(
-                        array(
-                            'key'   => 'field_extra_edu_year',
-                            'label' => 'Год',
-                            'name'  => 'extra_edu_year',
-                            'type'  => 'text',
-                        ),
-                        array(
-                            'key'   => 'field_extra_edu_place',
-                            'label' => 'Место обучения',
-                            'name'  => 'extra_edu_place',
-                            'type'  => 'text',
-                        )
-                    )
-                ),
-                array(
-                    'key'   => 'field_master_photo',
-                    'label' => 'Фото мастера',
-                    'name'  => 'master_photo',
-                    'type'  => 'image',
-                    'return_format' => 'array',
-                    'preview_size' => 'medium',
-                ),
-                array(
-                    'key'   => 'field_master_likes',
-                    'label' => 'Количество лайков',
-                    'name'  => 'master_likes',
-                    'type'  => 'number',
-                    'default_value' => 0,
-                ),
-                array(
-                    'key'   => 'field_master_show_global',
-                    'label' => 'Показывать мастера по всему сайту',
-                    'name'  => 'master_show_global',
-                    'type'  => 'true_false',
-                    'ui'    => 1,
-                ),
-                array(
-                    'key'   => 'field_master_description_articles',
-                    'label' => 'Описание в статьях и вопросах',
-                    'name'  => 'master_description_articles',
-                    'type'  => 'textarea',
-                    'rows'  => 3,
                 )
             ),
-            'location' => array(
-                array(
+            array(
+                'key'   => 'field_master_extra_education',
+                'label' => 'Дополнительное образование',
+                'name'  => 'master_extra_education',
+                'type'  => 'repeater',
+                'layout' => 'table',
+                'sub_fields' => array(
                     array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'master',
+                        'key'   => 'field_extra_edu_year',
+                        'label' => 'Год',
+                        'name'  => 'extra_edu_year',
+                        'type'  => 'text',
                     ),
+                    array(
+                        'key'   => 'field_extra_edu_place',
+                        'label' => 'Место обучения',
+                        'name'  => 'extra_edu_place',
+                        'type'  => 'text',
+                    )
+                )
+            ),
+            array(
+                'key'   => 'field_master_photo',
+                'label' => 'Фото мастера',
+                'name'  => 'master_photo',
+                'type'  => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+            ),
+            array(
+                'key'   => 'field_master_likes',
+                'label' => 'Количество лайков',
+                'name'  => 'master_likes',
+                'type'  => 'number',
+                'default_value' => 0,
+            ),
+            array(
+                'key'   => 'field_master_show_global',
+                'label' => 'Показывать мастера по всему сайту',
+                'name'  => 'master_show_global',
+                'type'  => 'true_false',
+                'ui'    => 1,
+            ),
+            array(
+                'key'   => 'field_master_description_articles',
+                'label' => 'Описание в статьях и вопросах',
+                'name'  => 'master_description_articles',
+                'type'  => 'textarea',
+                'rows'  => 3,
+            )
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'master',
                 ),
             ),
-        ));
-    }
+        ),
+    ));
+    
     //услуги у мастера
     acf_add_local_field_group(array(
         'key'    => 'group_master_services',
@@ -299,8 +294,6 @@ add_action('acf/init', function() {
         ),
     ));
     
-    
-
     // recommendations
     acf_add_local_field_group(array(
         'key'    => 'group_recommendation_fields',
@@ -340,146 +333,142 @@ add_action('acf/init', function() {
     ));
 
     // Portfolio
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key'    => 'group_portfolio_work_fields',
-            'title'  => 'Детали работы портфолио',
-            'fields' => array(
+    acf_add_local_field_group(array(
+        'key'    => 'group_portfolio_work_fields',
+        'title'  => 'Детали работы портфолио',
+        'fields' => array(
+            array(
+                'key'   => 'field_portfolio_slider',
+                'label' => 'Выводить в слайдер (максимум 7)',
+                'name'  => 'portfolio_slider',
+                'type'  => 'true_false',
+                'ui'    => 1,
+            ),
+            array(
+                'key'   => 'field_portfolio_main',
+                'label' => 'Выводить на главную',
+                'name'  => 'portfolio_main',
+                'type'  => 'true_false',
+                'ui'    => 1,
+            ),
+            array(
+                'key'   => 'field_portfolio_preview',
+                'label' => 'Фотография предпросмотра у мастера',
+                'name'  => 'portfolio_preview',
+                'type'  => 'true_false',
+                'ui'    => 1,
+            ),
+            array(
+                'key'   => 'field_portfolio_master',
+                'label' => 'Мастер',
+                'name'  => 'portfolio_master',
+                'type'  => 'post_object',
+                'post_type' => array('master'),
+                'return_format' => 'id',
+                'required' => 1,
+            ),
+            array(
+                'key'   => 'field_portfolio_image',
+                'label' => 'Фотография работы',
+                'name'  => 'portfolio_image',
+                'type'  => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ),
+            array(
+                'key'   => 'field_portfolio_page',
+                'label' => 'Страница портфолио',
+                'name'  => 'portfolio_page',
+                'type'  => 'post_object',
+                'post_type' => array('page'),
+                'return_format' => 'id',
+            ),
+        ),
+        'location' => array(
+            array(
                 array(
-                    'key'   => 'field_portfolio_slider',
-                    'label' => 'Выводить в слайдер (максимум 7)',
-                    'name'  => 'portfolio_slider',
-                    'type'  => 'true_false',
-                    'ui'    => 1,
-                ),
-                array(
-                    'key'   => 'field_portfolio_main',
-                    'label' => 'Выводить на главную',
-                    'name'  => 'portfolio_main',
-                    'type'  => 'true_false',
-                    'ui'    => 1,
-                ),
-                array(
-                    'key'   => 'field_portfolio_preview',
-                    'label' => 'Фотография предпросмотра у мастера',
-                    'name'  => 'portfolio_preview',
-                    'type'  => 'true_false',
-                    'ui'    => 1,
-                ),
-                array(
-                    'key'   => 'field_portfolio_master',
-                    'label' => 'Мастер',
-                    'name'  => 'portfolio_master',
-                    'type'  => 'post_object',
-                    'post_type' => array('master'),
-                    'return_format' => 'id',
-                    'required' => 1,
-                ),
-                array(
-                    'key'   => 'field_portfolio_image',
-                    'label' => 'Фотография работы',
-                    'name'  => 'portfolio_image',
-                    'type'  => 'image',
-                    'return_format' => 'array',
-                    'preview_size' => 'medium',
-                    'library' => 'all',
-                ),
-                array(
-                    'key'   => 'field_portfolio_page',
-                    'label' => 'Страница портфолио',
-                    'name'  => 'portfolio_page',
-                    'type'  => 'post_object',
-                    'post_type' => array('page'),
-                    'return_format' => 'id',
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'portfolio_work',
                 ),
             ),
-            'location' => array(
-                array(
-                    array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'portfolio_work',
-                    ),
-                ),
-            ),
-        ));
-    }
+        ),
+    ));
     
     // услуги
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key'    => 'group_service_fields',
-            'title'  => 'Детали услуги',
-            'fields' => array(
+    acf_add_local_field_group(array(
+        'key'    => 'group_service_fields',
+        'title'  => 'Детали услуги',
+        'fields' => array(
+            array(
+                'key'   => 'field_service_short_name',
+                'label' => 'Короткое имя услуги (для фильтра)',
+                'name'  => 'service_short_name',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_service_short_description',
+                'label' => 'Краткое описание (для таблицы)',
+                'name'  => 'service_short_description',
+                'type'  => 'textarea',
+                'rows'  => 2,
+            ),
+            array(
+                'key'   => 'field_service_duration',
+                'label' => 'Длительность',
+                'name'  => 'service_duration',
+                'type'  => 'text',
+                'instructions' => 'Пример: 60 минут, 1.5 часа',
+            ),
+            array(
+                'key'   => 'field_service_persistence',
+                'label' => 'Стойкость',
+                'name'  => 'service_persistence',
+                'type'  => 'text',
+                'instructions' => 'Пример: 6 месяцев, 1 год',
+            ),
+            array(
+                'key'   => 'field_service_price',
+                'label' => 'Стоимость от',
+                'name'  => 'service_price',
+                'type'  => 'number',
+                'prepend' => '₽',
+            ),
+            array(
+                'key'   => 'field_service_portfolio_works',
+                'label' => 'Работы портфолио',
+                'name'  => 'service_portfolio_works',
+                'type'  => 'relationship',
+                'post_type' => array('portfolio_work'),
+                'return_format' => 'id',
+            ),
+            array(
+                'key'   => 'field_master_show_on_home',
+                'label' => 'Отображать на главной',
+                'name'  => 'master_show_on_home',
+                'type'  => 'true_false', 
+                'ui'    => true,        
+            ),
+            array(
+                'key'   => 'field_cat_uslyga',
+                'label' => 'Категория услуги',
+                'name'  => 'usl_cat_field',
+                'type'  => 'post_object',
+                'post_type' => array('uslyga_category'),
+                'return_format' => 'id',
+            ),
+        ),
+        'location' => array(
+            array(
                 array(
-                    'key'   => 'field_service_short_name',
-                    'label' => 'Короткое имя услуги (для фильтра)',
-                    'name'  => 'service_short_name',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_service_short_description',
-                    'label' => 'Краткое описание (для таблицы)',
-                    'name'  => 'service_short_description',
-                    'type'  => 'textarea',
-                    'rows'  => 2,
-                ),
-                array(
-                    'key'   => 'field_service_duration',
-                    'label' => 'Длительность',
-                    'name'  => 'service_duration',
-                    'type'  => 'text',
-                    'instructions' => 'Пример: 60 минут, 1.5 часа',
-                ),
-                array(
-                    'key'   => 'field_service_persistence',
-                    'label' => 'Стойкость',
-                    'name'  => 'service_persistence',
-                    'type'  => 'text',
-                    'instructions' => 'Пример: 6 месяцев, 1 год',
-                ),
-                array(
-                    'key'   => 'field_service_price',
-                    'label' => 'Стоимость от',
-                    'name'  => 'service_price',
-                    'type'  => 'number',
-                    'prepend' => '₽',
-                ),
-                array(
-                    'key'   => 'field_service_portfolio_works',
-                    'label' => 'Работы портфолио',
-                    'name'  => 'service_portfolio_works',
-                    'type'  => 'relationship',
-                    'post_type' => array('portfolio_work'),
-                    'return_format' => 'id',
-                ),
-                array(
-                    'key'   => 'field_master_show_on_home',
-                    'label' => 'Отображать на главной',
-                    'name'  => 'master_show_on_home',
-                    'type'  => 'true_false', 
-                    'ui'    => true,        
-                ),
-                array(
-                    'key'   => 'field_cat_uslyga',
-                    'label' => 'Категория услуги',
-                    'name'  => 'usl_cat_field',
-                    'type'  => 'post_object',
-                    'post_type' => array('uslyga_category'),
-                    'return_format' => 'id',
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'uslyga',
                 ),
             ),
-            'location' => array(
-                array(
-                    array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'uslyga',
-                    ),
-                ),
-            ),
-        ));
-    }
+        ),
+    ));
 
     // для блока на странице услуг
     acf_add_local_field_group(array(
@@ -519,67 +508,62 @@ add_action('acf/init', function() {
             ),
         ),
     ));
-
-
     
     // категория услуг
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group(array(
-            'key'    => 'group_service_category_fields',
-            'title'  => 'Детали категории услуг',
-            'fields' => array(
-                array(
-                    'key'   => 'field_category_full_name',
-                    'label' => 'Полное имя категории услуг',
-                    'name'  => 'category_full_name',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_category_subtitle',
-                    'label' => 'Подзаголовок категории',
-                    'name'  => 'category_subtitle',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_category_duration',
-                    'label' => 'Длительность услуги',
-                    'name'  => 'category_duration',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_category_price_from',
-                    'label' => 'Цена от',
-                    'name'  => 'category_price_from',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_category_persistence',
-                    'label' => 'Сохранение результата',
-                    'name'  => 'category_persistence',
-                    'type'  => 'text',
-                ),
-                array(
-                    'key'   => 'field_category_services',
-                    'label' => 'Список услуг',
-                    'name'  => 'category_services',
-                    'type'  => 'relationship',
-                    'post_type' => array('uslyga'),
-                    'return_format' => 'id',
-                    'filters' => array('search'),
-                )
+    acf_add_local_field_group(array(
+        'key'    => 'group_service_category_fields',
+        'title'  => 'Детали категории услуг',
+        'fields' => array(
+            array(
+                'key'   => 'field_category_full_name',
+                'label' => 'Полное имя категории услуг',
+                'name'  => 'category_full_name',
+                'type'  => 'text',
             ),
-            'location' => array(
+            array(
+                'key'   => 'field_category_subtitle',
+                'label' => 'Подзаголовок категории',
+                'name'  => 'category_subtitle',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_category_duration',
+                'label' => 'Длительность услуги',
+                'name'  => 'category_duration',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_category_price_from',
+                'label' => 'Цена от',
+                'name'  => 'category_price_from',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_category_persistence',
+                'label' => 'Сохранение результата',
+                'name'  => 'category_persistence',
+                'type'  => 'text',
+            ),
+            array(
+                'key'   => 'field_category_services',
+                'label' => 'Список услуг',
+                'name'  => 'category_services',
+                'type'  => 'relationship',
+                'post_type' => array('uslyga'),
+                'return_format' => 'id',
+                'filters' => array('search'),
+            )
+        ),
+        'location' => array(
+            array(
                 array(
-                    array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'cat_uslyga',
-                    ),
+                    'param'    => 'post_type',
+                    'operator' => '==',
+                    'value'    => 'cat_uslyga',
                 ),
             ),
-        ));
-    }
-
+        ),
+    ));
 
     // Группа полей для яндекс блока
     acf_add_local_field_group(array(
@@ -833,7 +817,6 @@ add_action('acf/init', function() {
         ),
     ));
     
-    
     // блок слайдер
     acf_add_local_field_group(array(
         'key' => 'group_slider_fields',
@@ -967,7 +950,6 @@ add_action('acf/init', function() {
         ),
     ));
 
-
     // наши услуги
     acf_add_local_field_group(array(
         'key'    => 'group_our_services_block',
@@ -1079,59 +1061,52 @@ add_action('acf/init', function() {
         ),
     ));
 
-
-
-    // Подключаем ACF локально
-    if( function_exists('acf_add_local_field_group') ):
-    
-        acf_add_local_field_group(array(
-            'key' => 'group_header_settings',
-            'title' => 'Настройки хедера',
-            'fields' => array(
+    // Настройки хедера
+    acf_add_local_field_group(array(
+        'key' => 'group_header_settings',
+        'title' => 'Настройки хедера',
+        'fields' => array(
+            array(
+                'key' => 'field_header_categories',
+                'label' => 'Категории для отображения',
+                'name' => 'header_categories',
+                'type' => 'post_object',
+                'post_type' => array('uslyga_category'), // Изменил на правильный CPT категорий
+                'multiple' => true,
+                'return_format' => 'id',
+                'instructions' => 'Выберите категории услуг для отображения в меню',
+            ),
+            array(
+                'key' => 'field_header_services',
+                'label' => 'Услуги для отображения',
+                'name' => 'header_services',
+                'type' => 'relationship',
+                'post_type' => array('uslyga'),
+                'filters' => array('search'),
+                'return_format' => 'id',
+                'instructions' => 'Выберите услуги для отображения в меню',
+            ),
+            array(
+                'key' => 'field_header_background_image',
+                'label' => 'Фоновое изображение',
+                'name' => 'header_background_image',
+                'type' => 'image',
+                'return_format' => 'url',
+                'preview_size' => 'medium',
+                'library' => 'all',
+                'instructions' => 'Выберите фон для меню',
+            ),
+        ),
+        'location' => array(
+            array(
                 array(
-                    'key' => 'field_header_categories',
-                    'label' => 'Категории для отображения',
-                    'name' => 'header_categories',
-                    'type' => 'taxonomy',
-                    'taxonomy' => 'tax_uslyga',
-                    'field_type' => 'multi_select',
-                    'add_term' => true,
-                    'allow_null' => false,
-                    'return_format' => 'id',
-                    'multiple' => true,
-                ),
-                array(
-                    'key' => 'field_header_services',
-                    'label' => 'Услуги для отображения',
-                    'name' => 'header_services',
-                    'type' => 'post_object',
-                    'post_type' => array('uslyga'),
-                    'multiple' => true,
-                    'return_format' => 'id',
-                ),
-                array(
-                    'key' => 'field_header_background_image',
-                    'label' => 'Фоновое изображение',
-                    'name' => 'header_background_image',
-                    'type' => 'image',
-                    'return_format' => 'url',
-                    'preview_size' => 'medium',
-                    'library' => 'all',
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'header-settings',
                 ),
             ),
-            'location' => array(
-                array(
-                    array(
-                        'param' => 'options_page',
-                        'operator' => '==',
-                        'value' => 'header-settings',
-                    ),
-                ),
-            ),
-        ));
-    
-    endif;
-    
+        ),
+    ));    
 });
 
 

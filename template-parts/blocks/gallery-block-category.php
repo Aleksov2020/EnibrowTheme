@@ -1,19 +1,46 @@
 <?php
-// Получаем записи портфолио, у которых отмечен checkbox "portfolio_slider"
-$portfolio_works = get_posts(array(
-    'post_type'      => 'portfolio_work',
+// Получаем текущую категорию услуг
+$category_id = get_the_ID();
+
+if (!$category_id) {
+    echo '<p>Категория услуг не найдена.</p>';
+    return;
+}
+
+// Получаем все услуги, связанные с этой категорией
+$services = get_posts(array(
+    'post_type' => 'uslyga',
     'posts_per_page' => -1,
-    'meta_query'     => array(
+    'meta_query' => array(
         array(
-            'key'     => 'portfolio_slider',
-            'value'   => '1',
+            'key' => 'usl_cat_field', // Поле ACF с категорией услуги
+            'value' => $category_id,
             'compare' => '='
-        )
-    )
+        ),
+    ),
 ));
 
-if (!$portfolio_works) {
-    echo '<p>Нет изображений в галерее.</p>';
+if (empty($services)) {
+    echo '<p>Нет услуг в этой категории.</p>';
+    return;
+}
+
+// Инициализируем массив для портфолио
+$portfolio_works = [];
+
+foreach ($services as $service) {
+    // Получаем работы портфолио, связанные с данной услугой
+    $portfolio_items = get_field('service_portfolio_works', $service->ID);
+
+    if ($portfolio_items && is_array($portfolio_items)) {
+        foreach ($portfolio_items as $work_id) {
+            $portfolio_works[] = $work_id;
+        }
+    }
+}
+
+if (empty($portfolio_works)) {
+    echo '<p>Нет работ в портфолио для этой категории.</p>';
     return;
 }
 ?>
@@ -34,18 +61,18 @@ if (!$portfolio_works) {
     </div>
 
     <div class="gallery-items-wrapper row">
-        <?php foreach ($portfolio_works as $index => $work): 
-            $image = get_field('portfolio_image', $work->ID);
-            $master_id = get_field('portfolio_master', $work->ID);
+        <?php foreach ($portfolio_works as $index => $work_id):
+            $image = get_field('portfolio_image', $work_id);
+            $master_id = get_field('portfolio_master', $work_id);
             $master_name = get_field('master_name', $master_id);
             $master_photo = get_field('master_photo', $master_id);
             $master_likes = get_field('master_likes', $master_id);
             $master_rank = get_field('master_rank', $master_id);
         ?>
         <div class="gallery-item">
-            <div class="gallery-photo">
+            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, window.galleryData);">
                 <?php if ($image): ?>
-                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($work->post_title); ?>" width="276" height="276">
+                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
                 <?php endif; ?>
             </div>
             <div class="gallery-text col">

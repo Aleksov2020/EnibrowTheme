@@ -230,50 +230,51 @@
                     <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/arrowBotIcon.svg'); ?>" alt="arrow" width="9" height="5">
                 </div>
                 <div class="services-header-wrapper full-width-container row">
-                  <div class="wrapper row service-header-wrapper-inner">
-                      <?php if ($selected_categories): ?>
-                          <?php foreach ($selected_categories as $category_id): ?>
-                              <?php $category = get_term($category_id); ?>
-                              <?php if ($category): ?>
-                                  <div class="full-width-container-col col">
-                                      <div class="full-width-container-title row">
-                                          <div class="full-width-container-title-icon icon">
-                                              <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/liIcon.svg'); ?>" alt="li" width="6" height="10">
-                                          </div>
-                                          <div class="full-width-container-title-value text-16-500">
-                                              <?php echo esc_html($category->name); ?>
-                                          </div>
-                                      </div>
-                                      <div class="full-width-container-separator"></div>
-                                      <?php if ($selected_services): ?>
-                                          <?php foreach ($selected_services as $service_id): ?>
-                                              <?php $service = get_post($service_id); ?>
-                                              <?php if ($service && has_term($category->term_id, 'tax_uslyga', $service)): ?>
-                                                  <div class="full-width-container-item text-16-300">
-                                                      <?php echo esc_html($service->post_title); ?>
-                                                  </div>
-                                              <?php endif; ?>
-                                          <?php endforeach; ?>
-                                      <?php endif; ?>
-                                  </div>
-                              <?php endif; ?>
-                          <?php endforeach; ?>
-                      <?php endif; ?>
-                      <div class="full-width-container-image" style="background-image: url('<?php echo esc_url($background_image); ?>');">
-                      </div>
-                  </div>
+                    <div class="wrapper row service-header-wrapper-inner">
+                        <?php if ($selected_categories): ?>
+                            <?php foreach ($selected_categories as $category_id): ?>
+                                <?php $category = get_post($category_id); ?>
+                                <?php if ($category): ?>
+                                    <div class="full-width-container-col col">
+                                        <div class="full-width-container-title row">
+                                            <div class="full-width-container-title-icon icon">
+                                                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/liIcon.svg'); ?>" alt="li" width="6" height="10">
+                                            </div>
+                                            <div class="full-width-container-title-value text-16-500">
+                                                <a href="<?php echo esc_url(get_permalink($category->ID)); ?>" class="category-link">
+                                                    <?php echo esc_html($category->post_title); ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="full-width-container-separator"></div>
+                                        
+                                        <?php if ($selected_services): ?>
+                                            <?php foreach ($selected_services as $service_id): ?>
+                                                <?php $service = get_post($service_id); ?>
+                                                <?php
+                                                // Проверяем связь услуги с категорией через ACF
+                                                $service_category_id = get_field('usl_cat_field', $service_id);
+                                                ?>
+                                                <?php if ($service && $service_category_id == $category_id): ?>
+                                                    <div class="full-width-container-item text-16-300">
+                                                        <a href="<?php echo esc_url(get_permalink($service->ID)); ?>" class="service-link">
+                                                            <?php echo esc_html($service->post_title); ?>
+                                                        </a>
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        <div class="full-width-container-image" style="background-image: url('<?php echo esc_url($background_image); ?>');">
+                        </div>
+                    </div>
                 </div>
-
-
-
-
-              <div class="services-header-wrapper full-width-container row">
-                <div class="wrapper row service-header-wrapper-inner">
-                  <!-- Здесь блоки «Брови», «Пудровое напыление» и т. д. -->
-                  <!-- ... -->
-                </div>
-              </div>
             </div>
+
+
             <div class="nav__item text-17-400 colored-text">
               <a href="/prices/" class="label-nav__item row">Цены</a>
             </div>

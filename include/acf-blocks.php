@@ -476,20 +476,6 @@ function register_custom_acf_blocks() {
     ));
 
     acf_register_block_type(array(
-        'name'              => 'service_price_table',
-        'title'             => __('Service Price Table'),
-        'description'       => __('Таблица цен на услуги в категории'),
-        'render_template'   => 'template-parts/blocks/price-category.php',
-        'category'          => 'formatting',
-        'icon'              => 'money',
-        'keywords'          => array('price', 'service', 'table'),
-        'supports'          => array(
-            'align' => false,
-            'multiple' => true,
-        ),
-    ));
-
-    acf_register_block_type(array(
         'name'              => 'faq_block',
         'title'             => __('5 Вопросов FAQ', 'textdomain'),
         'description'       => __('Блок с часто задаваемыми вопросами', 'textdomain'),
@@ -519,6 +505,54 @@ function register_custom_acf_blocks() {
         ),
     ));
 
+    acf_register_block_type(array(
+        'name'            => 'category_prices',
+        'title'           => __('Цены на услуги категории'),
+        'description'     => __('Выводит таблицу с ценами мастеров на услуги категории.'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/prices-category.php',
+        'category'        => 'enibrow',
+        'icon'            => 'money-alt',
+        'keywords'        => array('цены', 'стоимость', 'прайс'),
+        'supports'        => array(
+            'align' => false,
+        )
+    ));
+
+    acf_register_block_type(array(
+        'name'            => 'category_portfolio_gallery',
+        'title'           => __('Галерея работ категории'),
+        'description'     => __('Галерея фотографий работ, связанных с услугами категории.'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-category.php',
+        'category'        => 'enibrow',
+        'icon'            => 'format-gallery',
+        'keywords'        => array('галерея', 'работы', 'портфолио'),
+        'post_types'      => array('uslyga_category'), // Выводить только на страницах категорий услуг
+    ));
+    
+    acf_register_block_type(array(
+        'name'              => 'category-service-prices',
+        'title'             => __('Цены на услуги для услуг'),
+        'description'       => __('Выводит таблицу с ценами услуг по категориям на странице категории.'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/prices-uslyga.php',
+        'category'          => 'enibrow', // Используем категорию блоков Enibrow
+        'icon'              => 'money-alt',
+        'keywords'          => array('цены', 'категория', 'стоимость', 'прайс'),
+        'supports'          => array(
+            'align' => false,      // Отключаем выравнивание
+            'jsx' => true         // Включаем поддержку JSX
+        ),
+        'enqueue_style' => get_template_directory_uri() . '/assets/css/category-service-prices.css', // Подключаем CSS для блока
+    ));
+
+    acf_register_block_type(array(
+        'name'            => 'service-gallery',
+        'title'           => __('Галерея услуги для страницы услуг'),
+        'description'     => __('Отображает фотографии, связанные с конкретной услугой.'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-uslyga.php',
+        'category'        => 'enibrow',
+        'icon'            => 'images-alt2',
+        'keywords'        => array('галерея', 'фото', 'услуга'),
+    ));
 }
 
 // Добавляем страницу настроек в админку
