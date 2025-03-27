@@ -553,6 +553,17 @@ function register_custom_acf_blocks() {
         'icon'            => 'images-alt2',
         'keywords'        => array('галерея', 'фото', 'услуга'),
     ));
+
+    acf_register_block_type(array(
+        'name'              => 'price_table',
+        'title'             => __('Таблица цен (вывод всего)'),
+        'description'       => __('Блок с таблицей цен на услуги'),
+        'render_template'   => get_template_directory() . '/template-parts/blocks/prices-all.php',
+        'category'          => 'enibrow',
+        'icon'              => 'money-alt',
+        'keywords'          => array('цены', 'стоимость', 'прайс'),
+        'supports'          => array('align' => false),
+    ));
 }
 
 // Добавляем страницу настроек в админку

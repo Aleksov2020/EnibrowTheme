@@ -19,11 +19,11 @@ $query = new WP_Query($args);
         <div class="page-title-wrapper col">
             <div class="breadcrumbs row">
                 <div class="breabcrumbs-page-name light-text-300">
-                    Главная
+                    <a href="<?php echo home_url(); ?>">Главная</a>
                 </div>
                 <div class="breabcrumbs-separator"></div>
                 <div class="breabcrumbs-page-name light-text-300 active">
-                    Отзывы
+                    <a href="<?php echo get_permalink(get_the_ID()); ?>"> Отзывы </a>
                 </div>
             </div>
 

@@ -27,7 +27,7 @@ $master_extra_education = get_field('master_extra_education') ?: [];
                         </div>
                         <div class="breadcrumbs-separator"></div>
                         <div class="breadcrumbs-page-name light-text-300 active">
-                            <?php the_title(); ?>
+                            <a href="<?php echo get_permalink(get_the_ID()); ?>"><?php the_title(); ?></a>
                         </div>
                     </div>
 

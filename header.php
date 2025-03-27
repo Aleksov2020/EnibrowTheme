@@ -11,6 +11,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php wp_title(''); ?></title>
   <?php wp_head(); ?>
+  <!-- Подключение библиотеки jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <!-- Подключение jQuery плагина Masked Input -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" integrity="sha512-d4KkQohk+HswGs6A1d6Gak6Bb9rMWtxjOa0IiY49Q3TeFd5xAzjWXDCBW9RS7m86FQ4RzM2BdHmdJnnKRYknxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -279,7 +283,7 @@
               <a href="/prices/" class="label-nav__item row">Цены</a>
             </div>
             <div class="nav__item text-17-400 colored-text">
-              <div class="label-nav__item row">Портфолио</div>
+              <a href="/portfolio/" class="label-nav__item row">Портфолио</a>
             </div>
             <div class="nav__item text-17-400 colored-text">
               <a href="/about/" class="label-nav__item row">
@@ -291,33 +295,33 @@
                   height="5">
               </a>
               <div class="services-header-wrapper container-about col">
-                <div class="service-header-wrapper-item row colored-text">
+                <a href="/about/" class="service-header-wrapper-item row colored-text">
                   О нас
-                </div>
-                <div class="service-header-wrapper-item row colored-text">
+                </a>
+                <a href="/master/" class="service-header-wrapper-item row colored-text">
                   Мастера
-                </div>
-                <div class="service-header-wrapper-item row colored-text">
+                </a>
+                <a href="/promotions/" class="service-header-wrapper-item row colored-text">
                   Акции
                   <img
                     src="<?php echo esc_url(get_template_directory_uri() . '/assets/saleRedIcon.svg'); ?>"
                     alt="saleRed"
                     width="17"
                     height="16">
-                </div>
-                <div class="service-header-wrapper-item row colored-text">
+                </a>
+                <a href="/reviews-page/" class="service-header-wrapper-item row colored-text">
                   Отзывы
-                </div>
-                <div class="service-header-wrapper-item row colored-text">
+                </a>
+                <a href="/videos/" class="service-header-wrapper-item row colored-text">
                   Видео
-                </div>
+                </a>
               </div>
             </div>
             <div class="nav__item text-17-400 colored-text">
-              <div class="label-nav__item row">Статьи</div>
+              <a href="/blog-page/" class="label-nav__item row">Статьи</a>
             </div>
             <div class="nav__item text-17-400 colored-text">
-              <div class="label-nav__item row">Вопросы</div>
+              <a href="/questions/"  class="label-nav__item row">Вопросы</a>
             </div>
 
             <!-- Соц. ссылки для мобильной версии -->

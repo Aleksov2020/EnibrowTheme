@@ -20,7 +20,7 @@ get_header();
                 </div>
                 <div class="breabcrumbs-separator"></div>
                 <div class="breabcrumbs-page-name light-text-300 active">
-                    Мастера
+                    <a href="<?php echo get_permalink(get_the_ID()); ?>"> Мастера </a>
                 </div>
             </div>
 

@@ -59,39 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const phoneInput = document.querySelector("#phone-input");
-
-    function formatPhone(value) {
-        let cleaned = value.replace(/\D/g, "").slice(0, 10); // Оставляем только цифры (макс. 10)
-        
-        let template = "(___) ___-__-__";
-        let result = template.split("");
-
-        let digitIndex = 0;
-        for (let i = 0; i < result.length; i++) {
-            if (result[i] === "_" && digitIndex < cleaned.length) {
-                result[i] = cleaned[digitIndex];
-                digitIndex++;
-            }
-        }
-
-        return result.join("");
-    }
-
-    phoneInput.addEventListener("input", function () {
-        this.value = formatPhone(this.value);
-    });
-
-    phoneInput.addEventListener("keydown", function (event) {
-        if (event.key === "Backspace") {
-            let cleaned = this.value.replace(/\D/g, "");
-            cleaned = cleaned.slice(0, -1); // Удаляем последнюю цифру
-            this.value = formatPhone(cleaned);
-            event.preventDefault(); // Предотвращаем стандартное удаление символов
-        }
-    });
-});
 
 
 // ===================== SLIDER REVIEWS
@@ -551,5 +518,14 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.classList.remove('show');
         body.style.overflow = 'auto'; // Восстанавливаем прокрутку
     });
+
+    console.log(111);
+
+    $(function(){
+        console.log(111);
+        //2. Получить элемент, к которому необходимо добавить маску
+        $("#phone-input").mask("(999) 999-99-99");
+    });
 });
+
 

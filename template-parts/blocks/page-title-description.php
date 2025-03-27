@@ -15,7 +15,7 @@ if (have_rows('breadcrumbs')): ?>
                 <?php if (!$is_last): ?>
                     <a href="<?php echo esc_url($page_url); ?>"><?php echo esc_html($page_name); ?></a>
                 <?php else: ?>
-                    <?php echo esc_html($page_name); ?>
+                    <a href="<?php echo esc_url($page_url); ?>"><?php echo esc_html($page_name); ?></a>
                 <?php endif; ?>
             </div>
             <?php if (!$is_last): ?>

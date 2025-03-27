@@ -79,7 +79,7 @@
                             <div class="work-time-items-wrapper row">
                                 <?php if (have_rows('slider_work_days')): ?>
                                     <?php while (have_rows('slider_work_days')): the_row(); ?>
-                                        <div class="work-time-item light-text-300 <?= get_sub_field('day_active') ? '' : 'inactive'; ?>">
+                                        <div class="work-time-item light-text-300 <?= get_sub_field('inactive') ? 'inactive' : ''; ?>">
                                             <?= esc_html(get_sub_field('day_name')); ?>
                                         </div>
                                     <?php endwhile; ?>

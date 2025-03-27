@@ -13,12 +13,9 @@ $services = get_posts([
 
 $services_by_category = [];
 foreach ($services as $service) {
-    $category = get_the_terms($service->ID, 'tax_uslyga');
-    if (!empty($category) && !is_wp_error($category)) {
-        $category_name = $category[0]->name;
-    } else {
-        $category_name = 'Без категории';
-    }
+    // Получаем категорию услуги
+    $category_id = get_field('usl_cat_field', $service->ID); // Правильное поле для категории
+    $category_name = $category_id ? get_the_title($category_id) : 'Без категории';
 
     // Получаем последние фото из работ портфолио, связанных с услугой
     $portfolio_works = get_field('service_portfolio_works', $service->ID);
@@ -43,6 +40,8 @@ foreach ($services as $service) {
 ?>
 
 
+
+
 <div class="modal-order-background row">
     <div class="modal-order col">
         <div class="modal-order-title-wrapper row">
@@ -65,7 +64,6 @@ foreach ($services as $service) {
                     <ul class="options-list">
                         <?php foreach ($masters as $master): ?>
                             <?php
-                                // Получаем фото мастера
                                 $master_photo = get_field('master_photo', $master->ID);
                                 $photo_url = !empty($master_photo) ? esc_url($master_photo['url']) : get_template_directory_uri() . '/assets/avatar-placeholder.png';
                             ?>
@@ -330,10 +328,23 @@ echo '</script>';
     </div>
 </div>
 
-
-
-
 <script>
+function handleLike(element) {
+    console.log(element)
+
+    const likeIcon = element.querySelector('.like-icon');
+    const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
+
+    // Переключение класса на лайк
+    if (likeIcon.classList.contains('active')) {
+        likeIcon.classList.remove('active');
+        likeCounter.textContent = Number(likeCounter.textContent) - 1;
+    } else {
+        likeIcon.classList.add('active');
+        likeCounter.textContent = Number(likeCounter.textContent) + 1;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const addServiceButton = document.querySelector('.button-add-service');
     const serviceSelect1 = document.getElementById('service-1');

@@ -52,20 +52,6 @@ foreach ($masters as $master) {
 ?>
 
 <div class="services-price wrapper-price-content col">
-    <div class="title-wrapper row">
-        <div class="title-left-arrow row">
-            <div class="spacer-title"></div>
-            <div class="circle-title"></div>
-        </div>
-        <div class="title">
-            <h2>Стоимость услуг</h2>
-        </div>
-        <div class="title-right-arrow row">
-            <div class="circle-title"></div>
-            <div class="spacer-title"></div>
-        </div>
-    </div>
-
     <div class="price-wrapper-animation-outer">
         <div class="price-animation-wrapper row">
             <div class="price-animation-item">
@@ -132,11 +118,7 @@ foreach ($masters as $master) {
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
-
-                    <?php 
-                    // Устанавливаем флаг после первого прохода
-                    $is_first_row = false;
-                    ?>
+                    <?php $is_first_row = false; ?>
                 <?php endforeach; ?>
                 
                 <tr class="first-row">
