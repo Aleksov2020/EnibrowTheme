@@ -66,44 +66,44 @@ if ($masters_query->have_posts()) :
 
                 <div class="master-card row">
                     <!-- Фото мастера -->
-                    <div class="master-photo" style="background-image: url(<?php echo esc_url($master_photo['url']); ?>);"></div>
+                    <a href="<?=get_permalink($master_id) ?>" class="master-photo" style="background-image: url(<?php echo esc_url($master_photo['url']); ?>);"></a>
 
                     <!-- Информация о мастере -->
                     <div class="master-info col">
                         <div class="master-info-title-wrapper row">
                             <div class="master-title row">
-                                <div class="master-name colored-text">
+                                <a href="<?=get_permalink($master_id) ?>" class="master-name colored-text">
                                     <?php echo esc_html($master_name); ?> <?php echo esc_html($master_surname); ?>&nbsp;
-                                </div>
+                                </a>
                                 <?php if ($master_rank) : ?>
-                                    <div class="master-label">
+                                    <a href="<?=get_permalink($master_id) ?>" class="master-label">
                                         <?php echo esc_html($master_rank); ?>
-                                    </div>
+                                    </a>
                                 <?php endif; ?>
                             </div>
                             <div class="master-rate-wrapper col">
-                                <div class="master-rate-inner-wrapper row">
+                                <a href="<?=get_permalink($master_id) ?>" class="master-rate-inner-wrapper row">
                                     <div class="master-rate-icon">
                                         <img src="<?php echo get_template_directory_uri(); ?>/assets/starYellow.svg" width="19" height="19" alt="star">
                                     </div>
                                     <div class="master-rate-value">
                                         <?php echo esc_html($master_rate); ?>
                                     </div>
-                                </div>
-                                <div class="master-rate-reviews colored-text text-12-500">
+                                </a>
+                                <a href="<?=get_permalink($master_id) ?>" class="master-rate-reviews colored-text text-12-500">
                                     <?php echo esc_html($master_reviews); ?> отзывов
-                                </div>
+                                </a>
                             </div>
                         </div>
 
                         <!-- Бейджи -->
                         <div class="master-badges-wrapper row">
-                            <div class="master-badge light-text row colored-text">
+                            <a href="<?=get_permalink($master_id) ?>" class="master-badge light-text row colored-text">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/badge-master.svg"> Квалификация подтверждена
-                            </div>
-                            <div class="master-badge light-text row colored-text">
+                            </a>
+                            <a href="<?=get_permalink($master_id) ?>" class="master-badge light-text row colored-text">
                                 Стаж <?php echo esc_html($master_experience); ?> лет
-                            </div>
+                            </a>
                         </div>
 
                         <!-- Описание и галерея -->
@@ -133,33 +133,58 @@ if ($masters_query->have_posts()) :
                                     <div class="master-services-title light-text-600 colored-text">
                                         Цены на процедуры:
                                     </div>
-                                    <div class="master-service-wrapper light-text-300 row">
-                                        <div class="master-service-name">
-                                            Брови
+
+                                    <?php
+                                    $master_services = get_field('master_services', $master_id);
+                                    $category_prices = [];
+
+                                    if (!empty($master_services)) {
+                                        foreach ($master_services as $service_item) {
+                                            $service_id = $service_item['uslyga'];
+                                            $price = $service_item['service_price'];
+
+                                            if (!$service_id || !$price) {
+                                                continue;
+                                            }
+
+                                            $category_id = get_field('usl_cat_field', $service_id);
+                                            if (!$category_id) {
+                                                continue;
+                                            }
+
+                                            $category_name = get_field('cat_short_name', $category_id);
+
+
+                                            if (!isset($category_prices[$category_name])) {
+                                                $category_prices[$category_name] = $price;
+                                            } else {
+                                                $category_prices[$category_name] = min($category_prices[$category_name], $price);
+                                            }
+                                        }
+                                    }
+
+                                    if (!empty($category_prices)) :
+                                        foreach ($category_prices as $cat_name => $min_price) :
+                                    ?>
+                                        <div class="master-service-wrapper light-text-300 row">
+                                            <div class="master-service-name">
+                                                <?php echo esc_html($cat_name); ?>
+                                            </div>
+                                            <div class="master-service-separator"></div>
+                                            <div class="master-service-price">
+                                                от <?php echo number_format($min_price, 0, '', ' '); ?> ₽
+                                            </div>
                                         </div>
-                                        <div class="master-service-separator"></div>
-                                        <div class="master-service-price">
-                                            от 10.000 ₽
+                                    <?php
+                                        endforeach;
+                                    else :
+                                    ?>
+                                        <div class="master-service-wrapper light-text-300 row">
+                                            <div class="master-service-name">
+                                                Услуги не найдены
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="master-service-wrapper light-text-300 row">
-                                        <div class="master-service-name">
-                                            Губы
-                                        </div>
-                                        <div class="master-service-separator"></div>
-                                        <div class="master-service-price">
-                                            от 12.000 ₽
-                                        </div>
-                                    </div>
-                                    <div class="master-service-wrapper light-text-300 row">
-                                        <div class="master-service-name">
-                                            Межресничка
-                                        </div>
-                                        <div class="master-service-separator"></div>
-                                        <div class="master-service-price">
-                                            от 14.000 ₽
-                                        </div>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
 
                                 <!-- Кнопки -->
@@ -167,15 +192,31 @@ if ($masters_query->have_posts()) :
                                     <div class="button button-primary">
                                         Записаться
                                     </div>
-                                    <div class="button-more colored-text">
+                                    <a href="<?= get_permalink($master_id) ?>" class="button-more colored-text">
                                         Подробнее
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             <?php endwhile; ?>
+        </div>
+    </div>
+    <div class="buttons-masters-wrapper row">
+        <div class="masters-button-slider prev-button">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 1L1 7L7 13" stroke="#825E69" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </div>
+        <a href="/master" class="button button-primary all-masters">
+            Все мастера
+        </a>
+        <div class="masters-button-slider next-button">
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 13L7 7L1 0.999999" stroke="#825E69" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
         </div>
     </div>
 <?php

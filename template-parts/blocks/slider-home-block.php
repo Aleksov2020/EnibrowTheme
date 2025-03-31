@@ -32,7 +32,7 @@
                     <div class="slider-right-wrapper-left col">
                         <h3>Консультация / Запись</h3>
                         <div class="form-slider col">
-                            <input class="input-default" type="text" placeholder="Ваше имя">
+                            <input class="input-default" type="text" placeholder="Ваше имя" id="user-name" >
                             <div class="input-default-wrapper">
                                 <label class="label-phone row">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
@@ -52,7 +52,7 @@
                                 <input class="input-default phone-input" id="phone-input" type="text" placeholder="(000) 000 00 00 00">
                             </div>
 
-                            <div class="button">Отправить</div>
+                            <div class="button" id="send">Отправить</div>
                         </div>
                         <div class="checkbox-wrapper row">
                             <div class="checkbox checked"></div>
@@ -91,3 +91,38 @@
             </div>
         </div>
     </div>
+    <script>
+document.querySelector('#send').addEventListener('click', async () => {
+  const name = document.querySelector('#user-name').value.trim();
+  const phone = document.querySelector('#phone-input').value.trim();
+
+  if (!name || !phone) {
+    alert('Пожалуйста, заполните имя и телефон');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('action', 'send_order'); // Обязательно
+  formData.append('user_name', name);
+  formData.append('user_phone', phone);
+
+  try {
+    const response = await fetch('/enibrow/wp-admin/admin-post.php', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка при отправке формы');
+    }
+
+    const redirectUrl = new URL(window.location.href);
+    redirectUrl.searchParams.set('order', 'success');
+    window.location.href = redirectUrl.toString();
+  } catch (error) {
+    console.error('Ошибка:', error);
+    alert('Произошла ошибка. Попробуйте позже.');
+  }
+});
+
+</script>

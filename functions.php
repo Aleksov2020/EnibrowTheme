@@ -230,9 +230,19 @@ add_rewrite_rule(
   'top'
 );
 
+// страница настроек сайта
+acf_add_options_page(array(
+  'page_title' => 'Настройки сайта',
+  'menu_title' => 'Настройки сайта',
+  'menu_slug'  => 'site-settings',
+  'capability' => 'edit_posts',
+  'redirect'   => false
+));
+
 // Подключаем файлы
 //require_once get_template_directory() . '/include/permalinks.php';
 require_once get_template_directory() . '/include/post-types.php';
 require_once get_template_directory() . '/include/acf-blocks.php';
 require_once get_template_directory() . '/include/acf-fields.php';
 require_once get_template_directory() . '/include/ajax-requests.php';
+require_once get_template_directory() . '/include/orders.php';

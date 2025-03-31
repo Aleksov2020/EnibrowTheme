@@ -1175,6 +1175,16 @@ nav {
     justify-content: center;
 }
 
+.modal-like-icon {
+    justify-content: center;
+    cursor: pointer;
+}
+
+.modal-like-icon.active path {
+    fill: #F44336;
+    stroke: #F44336;
+}
+
 .gallery-master-cards-likes-photo {
     cursor: pointer;
 }
@@ -1305,6 +1315,13 @@ nav {
     height: 100%;
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    background-color: #FFF;
+}
+
+.gallery-image .modal-gallery-image-data {
+    height: 100%;
 }
 
 .modal-gallery-master-name {
@@ -1321,7 +1338,7 @@ nav {
 }
 
 .modal-gallery-master-likes {
-
+    gap: 4px;
 }
 
 .modal-gallery-master-like-counter {
@@ -1336,7 +1353,7 @@ nav {
 
 .modal-gallery-master-right {
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 
 }
 
@@ -1348,7 +1365,7 @@ nav {
     letter-spacing: 0%;
     text-align: center;
     vertical-align: middle;
-
+    
 }
 
 .modal-gallery-master-button {
@@ -1496,10 +1513,19 @@ th {
     text-align: left;
     padding-left: 7px;
     padding-right: 7px;
+    text-align: center;
+}
+
+th a:hover {
+    text-decoration: underline;
 }
 
 .services-price-header-name {
     padding-left: 30px;
+}
+
+.services-price-service-name {
+    text-align: start;
 }
 
 .top-master-label {
@@ -1516,6 +1542,8 @@ th {
     letter-spacing: 0%;
     text-align: center;
     color: #000;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
 }
 
 
@@ -1589,6 +1617,8 @@ td.price {
     min-width: 150px;
     padding-top: 12px;
     line-height: 30px;
+    text-align: center;
+    text-align: -webkit-center;
 }
 
 
@@ -1605,22 +1635,25 @@ td.price {
     width: fit-content;
     line-height: 30px;
 
-    cursor: pointer;
     user-select: none;
     transition: .3s;
 }
 
-.price-button-service svg {
+.price-button-service.price-active {
+    cursor: pointer;
+}
+
+.price-button-service.price-active svg {
     visibility: hidden;
     opacity: 0;
 }
 
-.price-button-service:hover {
+.price-button-service.price-active:hover {
     background: #825E69;
     color: #FFF;
 }
 
-.price-button-service:hover svg {
+.price-button-service.price-active:hover svg {
     visibility: visible;
     opacity: 1;
 }
@@ -1638,7 +1671,7 @@ td.price {
 }
 
 .row-gap td {
-    padding-top: 10px;
+    padding-top: 25px;
 }
 
 /* Сделать таблицу прокручиваемой на мобильных устройствах */
@@ -1858,7 +1891,7 @@ td.price {
     max-width: 166px;
     background-position: center;
     background-position-y: 70%;
-    background-size: 170%;
+    background-size: cover;
 }
 
 .master-info-title-wrapper {
@@ -4258,6 +4291,10 @@ padding-top: 22px;
 
 .master-title-wrapper {
     gap: 30px;
+}
+
+.master-title:hover {
+    text-decoration: underline;
 }
 
 .master-page-slider {

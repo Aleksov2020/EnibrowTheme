@@ -95,46 +95,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+
+
+//===========================ROLL BLOCK=======================================
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".roll-block").forEach((rollBlock, index) => {
+
+        // Ждём загрузки всех шрифтов
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(initRollBlocks);
+        } else {
+            // Если поддержка `document.fonts` отсутствует
+            window.addEventListener("load", initRollBlocks);
+        }
+        
+
         if (rollBlock.classList.contains("skip")) {
             return
         }
 
-        const toggleButton = document.querySelectorAll(".button-roll-block")[index];
+        function initRollBlocks() {
+            const toggleButton = document.querySelectorAll(".button-roll-block")[index];
 
-        const maxHeight = "194px"; // Высота в свернутом состоянии
-        const fullHeight = rollBlock.scrollHeight + "px"; // Полная высота контента
-
-        let isExpanded = true;
-
-        if (isExpanded) {
-            rollBlock.classList.add("expanded")
-            rollBlock.style.height = maxHeight;
-            toggleButton.textContent = "Развернуть текст";
-        } else {
-            rollBlock.style.height = fullHeight;
-            toggleButton.textContent = "Свернуть текст";
-        }
-        isExpanded = !isExpanded;
-
-        // Устанавливаем начальное состояние (свернуто)
-        rollBlock.style.height = maxHeight;
-        rollBlock.style.overflow = "hidden";
-        rollBlock.style.transition = "height 0.3s ease-in-out";
-
-        toggleButton.addEventListener("click", () => {
+            const maxHeight = "194px"; // Высота в свернутом состоянии
+            const fullHeight = rollBlock.scrollHeight + "px"; // Полная высота контента
+    
+            let isExpanded = true;
+    
             if (isExpanded) {
                 rollBlock.classList.add("expanded")
                 rollBlock.style.height = maxHeight;
                 toggleButton.textContent = "Развернуть текст";
             } else {
-                rollBlock.classList.remove("expanded")
                 rollBlock.style.height = fullHeight;
                 toggleButton.textContent = "Свернуть текст";
             }
             isExpanded = !isExpanded;
-        });
+    
+            // Устанавливаем начальное состояние (свернуто)
+            rollBlock.style.height = maxHeight;
+            rollBlock.style.overflow = "hidden";
+            rollBlock.style.transition = "height 0.3s ease-in-out";
+    
+            toggleButton.addEventListener("click", () => {
+                if (isExpanded) {
+                    rollBlock.classList.add("expanded")
+                    rollBlock.style.height = maxHeight;
+                    toggleButton.textContent = "Развернуть текст";
+                } else {
+                    rollBlock.classList.remove("expanded")
+                    rollBlock.style.height = fullHeight;
+                    toggleButton.textContent = "Свернуть текст";
+                }
+                isExpanded = !isExpanded;
+            });
+        }
     });
 });
 
@@ -527,5 +544,3 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#phone-input").mask("(999) 999-99-99");
     });
 });
-
-

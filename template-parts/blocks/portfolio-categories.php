@@ -65,9 +65,10 @@ document.addEventListener("DOMContentLoaded", function() {
             method: "POST",
             body: formData
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            galleryWrapper.innerHTML = data;
+            galleryWrapper.innerHTML = data.html;
+            window.galleryData = data.galleryData;
         });
     }
 
@@ -82,5 +83,18 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     fetchPortfolioWorks("all");
+});
+
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const galleryDataExample = <?php echo json_encode($gallery_data); ?>;
+
+    document.querySelectorAll(".gallery-photo").forEach((el, index) => {
+        el.addEventListener("click", () => {
+            openGallery(index, galleryDataExample);
+        });
+    });
 });
 </script>

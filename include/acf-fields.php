@@ -403,7 +403,7 @@ add_action('acf/init', function() {
         'fields' => array(
             array(
                 'key'   => 'field_service_short_name',
-                'label' => 'Короткое имя услуги (для фильтра)',
+                'label' => 'Короткое имя услуги (для фильтра и меню)',
                 'name'  => 'service_short_name',
                 'type'  => 'text',
             ),
@@ -521,6 +521,13 @@ add_action('acf/init', function() {
                 'type'  => 'text',
             ),
             array(
+                'key'   => 'field_cat_short_name',
+                'label' => 'Короткое имя категории',
+                'name'  => 'cat_short_name',
+                'type'  => 'text',
+                'instructions' => 'Например: Брови, Губы, Межресничка',
+            ),
+            array(
                 'key'   => 'field_category_subtitle',
                 'label' => 'Подзаголовок категории',
                 'name'  => 'category_subtitle',
@@ -545,21 +552,22 @@ add_action('acf/init', function() {
                 'type'  => 'text',
             ),
             array(
-                'key'   => 'field_category_services',
-                'label' => 'Список услуг',
-                'name'  => 'category_services',
-                'type'  => 'relationship',
-                'post_type' => array('uslyga'),
-                'return_format' => 'id',
-                'filters' => array('search'),
-            )
+                'key' => 'field_uslyga_category_image',
+                'label' => 'Фоновое изображение',
+                'name' => 'uslyga_category_image',
+                'type' => 'image',
+                'description' => 'Изображение для отображения на главной',
+                'return_format' => 'url',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ),
         ),
         'location' => array(
             array(
                 array(
                     'param'    => 'post_type',
                     'operator' => '==',
-                    'value'    => 'cat_uslyga',
+                    'value'    => 'uslyga_category',
                 ),
             ),
         ),
@@ -696,8 +704,10 @@ add_action('acf/init', function() {
                                 'key'   => 'field_text_block',
                                 'label' => 'Текст',
                                 'name'  => 'text',
-                                'type'  => 'textarea',
-                                'rows'  => 3,
+                                'type' => 'wysiwyg',
+                                'tabs' => 'visual',
+                                'toolbar' => 'basic',
+                                'media_upload' => 0,
                             ),
                         ),
                     ),
@@ -717,8 +727,10 @@ add_action('acf/init', function() {
                                 'key'   => 'field_list_item_text',
                                 'label' => 'Описание элемента',
                                 'name'  => 'list_text',
-                                'type'  => 'textarea',
-                                'rows'  => 2,
+                                'type' => 'wysiwyg',
+                                'tabs' => 'visual',
+                                'toolbar' => 'basic',
+                                'media_upload' => 0,
                             ),
                         ),
                     ),
@@ -732,8 +744,10 @@ add_action('acf/init', function() {
                                 'key'   => 'field_danger_text',
                                 'label' => 'Текст предупреждения',
                                 'name'  => 'danger_text',
-                                'type'  => 'textarea',
-                                'rows'  => 3,
+                                'type' => 'wysiwyg',
+                                'tabs' => 'visual',
+                                'toolbar' => 'basic',
+                                'media_upload' => 0,
                             ),
                         ),
                     ),
@@ -1107,6 +1121,68 @@ add_action('acf/init', function() {
             ),
         ),
     ));    
+
+    // Настройки сайта
+    acf_add_local_field_group(array(
+        'key' => 'group_site_settings',
+        'title' => 'Основные настройки сайта',
+        'fields' => array(
+            array(
+                'key' => 'field_site_phone',
+                'label' => 'Телефон',
+                'name' => 'site_phone',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_site_work_time',
+                'label' => 'Время работы',
+                'name' => 'site_work_time',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_site_address',
+                'label' => 'Адрес',
+                'name' => 'site_address',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_site_social_youtube',
+                'label' => 'YouTube',
+                'name' => 'site_social_youtube',
+                'type' => 'url',
+            ),
+            array(
+                'key' => 'field_site_social_vk',
+                'label' => 'VK',
+                'name' => 'site_social_vk',
+                'type' => 'url',
+            ),
+            array(
+                'key' => 'field_site_social_whatsapp',
+                'label' => 'WhatsApp',
+                'name' => 'site_social_whatsapp',
+                'type' => 'url',
+            ),
+            array(
+                'key' => 'field_site_social_telegram',
+                'label' => 'Telegram',
+                'name' => 'site_social_telegram',
+                'type' => 'url',
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'site-settings',
+                ),
+            ),
+        ),
+    ));
+    
+
+
 });
 
 

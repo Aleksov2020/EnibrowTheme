@@ -234,7 +234,8 @@ foreach ($services as $service) {
 <div class="modal-gallery-background">
     <div class="modal-gallery col">
         <div class="modal-gallery-item">
-            <div class="gallery-image" style="background-image: url(<?php echo get_template_directory_uri() . '/assets/gallery-photo.png'; ?>);">
+            <div class="gallery-image">
+                <img class="modal-gallery-image-data" src="<?php echo get_template_directory_uri(); ?>/assets/gallery-photo.png" alt="">
                 <div class="modal-gallery-button modal-gallery-left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 8 14" fill="none">
                         <path d="M7 1L1 7L7 13" stroke="#825E69" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -242,42 +243,37 @@ foreach ($services as $service) {
                 </div>
                 <div class="modal-gallery-button modal-gallery-right">
                     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 8 14" fill="none">
-                        <path d="M1 13L7 7L1 0.999999" stroke="#825E69" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M1 13L7 7L1 1" stroke="#825E69" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
             </div>
         </div>
         <div class="modal-gallery-master row">
             <div class="modal-gallery-master-left row">
-                <div class="modal-gallery-master-left-inner row">
-                    <div class="modal-gallery-master-avatar" style="background-image: url(<?php echo get_template_directory_uri() . '/assets/girl-service.png'; ?>);"></div>
+                <a href="#" class="modal-gallery-master-left-inner row" id="master-link">
+                    <div class="modal-gallery-master-avatar"></div>
                     <div class="modal-gallery-master-name-wrapper">
-                        <div class="modal-gallery-master-name-rank">
-                            ТОП Мастер
-                        </div>
-                        <div class="modal-gallery-master-name">
-                            Ксения
-                        </div>
+                        <div class="modal-gallery-master-name-rank">ТОП Мастер</div>
+                        <div class="modal-gallery-master-name">Имя</div>
                     </div>
-                </div>
+                </a>
                 <div class="modal-gallery-master-likes col">
-                    <div class="modal-gallery-master-like"></div>
-                    <div class="modal-gallery-master-like-counter">
-                        3500
+                    <div class="row clickable modal-like-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17" fill="none">
+                            <path d="M9.14945 3.42589L10 4.80155L10.8506 3.42589C11.5789 2.24796 12.858 1.5 14.3182 1.5C16.5889 1.5 18.5 3.42492 18.5 5.83333C18.5 6.87433 18.0316 8.0043 17.2012 9.16973C16.3776 10.3257 15.2585 11.4311 14.1059 12.4018C12.9578 13.3685 11.805 14.178 10.9365 14.7468C10.5626 14.9916 10.2432 15.1908 10.0019 15.3375C9.76029 15.1896 9.44036 14.9888 9.06581 14.742C8.19701 14.1696 7.04368 13.3558 5.89518 12.386C4.742 11.4122 3.62241 10.305 2.79834 9.15033C1.96702 7.98551 1.5 6.86161 1.5 5.83333C1.5 3.42492 3.41107 1.5 5.68182 1.5C7.14196 1.5 8.42115 2.24796 9.14945 3.42589Z" stroke="#C0C0C0" stroke-width="2"/>
+                        </svg>
                     </div>
-                </div>                        
+                    <div class="modal-master-cards-likes-counter">0</div>
+                </div>
             </div>
             <div class="modal-gallery-master-right row">
-                <a class="modal-gallery-master-more" href="#">
-                    Подробнее о мастере
-                </a>
-                <div class="modal-gallery-master-button button-order">
-                    Записаться
-                </div>
+                <a class="modal-gallery-master-more" href="#" id="master-more">Подробнее о мастере</a>
+                <div class="modal-gallery-master-button button-order">Записаться</div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -310,7 +306,10 @@ foreach ($portfolio_works as $index => $work) {
         'masterRank' => esc_html($master_rank),
         'masterLikes' => esc_html($master_likes),
         'masterAvatar' => esc_url($master_photo['url']),
+        'masterLink' => esc_url(get_permalink($master_id)),
     ];
+
+    
 }
 
 echo '<script>';
@@ -329,21 +328,77 @@ echo '</script>';
 </div>
 
 <script>
-function handleLike(element) {
-    console.log(element)
 
-    const likeIcon = element.querySelector('.like-icon');
-    const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
 
-    // Переключение класса на лайк
-    if (likeIcon.classList.contains('active')) {
-        likeIcon.classList.remove('active');
-        likeCounter.textContent = Number(likeCounter.textContent) - 1;
-    } else {
-        likeIcon.classList.add('active');
-        likeCounter.textContent = Number(likeCounter.textContent) + 1;
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.querySelector('.modal-gallery-background');
+    const galleryImage = modal.querySelector('.modal-gallery-image-data');
+    const masterAvatar = modal.querySelector('.modal-gallery-master-avatar');
+    const masterName = modal.querySelector('.modal-gallery-master-name');
+    const masterRank = modal.querySelector('.modal-gallery-master-name-rank');
+    const masterLikes = modal.querySelector('.modal-master-cards-likes-counter');
+    const leftButton = modal.querySelector('.modal-gallery-left');
+    const rightButton = modal.querySelector('.modal-gallery-right');
+    const closeButton = modal.querySelector('.modal-gallery-master-more');
+    const masterLink = modal.querySelector('#master-link');
+    const buttonOrder = modal.querySelector('.button-order');
+
+    let currentIndex = 0;
+    let currentGalleryData = [];
+
+    window.openGallery = function (index, galleryData) {
+        currentIndex = index;
+        currentGalleryData = galleryData;
+        updateModal();
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    };
+
+    function updateModal() {
+        const data = currentGalleryData[currentIndex];
+        galleryImage.src = data.imageUrl;
+        masterAvatar.style.backgroundImage = `url(${data.masterAvatar})`;
+        masterName.textContent = data.masterName || 'Мастер';
+        masterRank.textContent = data.masterRank || 'Мастер';
+        masterLikes.textContent = data.masterLikes || '0';
+        masterLink.href = data.masterLink;
+        closeButton.href = data.masterLink;
     }
-}
+
+    function closeModal() {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + currentGalleryData.length) % currentGalleryData.length;
+        updateModal();
+    }
+
+    function showNext() {
+        currentIndex = (currentIndex + 1) % currentGalleryData.length;
+        updateModal();
+    }
+
+    function handleLike() {
+        const likeIcon = modal.querySelector('.modal-like-icon');
+        const counter = modal.querySelector('.modal-master-cards-likes-counter');
+        const liked = likeIcon.classList.toggle('active');
+        counter.textContent = parseInt(counter.textContent) + (liked ? 1 : -1);
+    }
+
+    leftButton.addEventListener('click', showPrev);
+    rightButton.addEventListener('click', showNext);
+    closeButton.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    buttonOrder.addEventListener('click', () => {
+        alert('Записаться на процедуру');
+    });
+    modal.querySelector('.modal-like-icon').addEventListener('click', handleLike);
+});
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const addServiceButton = document.querySelector('.button-add-service');
@@ -502,75 +557,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.querySelector('.modal-gallery-background');
-    const galleryImage = modal.querySelector('.gallery-image');
-    const masterAvatar = modal.querySelector('.modal-gallery-master-avatar');
-    const masterName = modal.querySelector('.modal-gallery-master-name');
-    const masterRank = modal.querySelector('.modal-gallery-master-name-rank');
-    const masterLikes = modal.querySelector('.modal-gallery-master-like-counter');
-    const closeButton = modal.querySelector('.modal-gallery-master-more');
-    const buttonOrder = modal.querySelector('.button-order');
-    const leftButton = modal.querySelector('.modal-gallery-left');
-    const rightButton = modal.querySelector('.modal-gallery-right');
-
-    let currentIndex = 0;
-    let galleryData = [];
-
-    // Глобальная функция открытия галереи
-    window.openGallery = function (index, data) {
-
-        currentIndex = index;
-        galleryData = data;
-        openModal();
-    };
-
-    // Открытие модального окна
-    function openModal() {
-        const data = galleryData[currentIndex];
-
-
-        galleryImage.style.backgroundImage = `url(${data.imageUrl})`;
-        masterAvatar.style.backgroundImage = `url(${data.masterAvatar})`;
-        masterName.textContent = data.masterName == "" ? "Мастер" : data.masterName;
-        masterRank.textContent = data.masterRank == "" ? "Мастер" : data.masterRank;
-        masterLikes.textContent = data.masterLikes;
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-
-    // Закрытие модального окна
-    function closeModal() {
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    }
-
-    // Переключение влево
-    function showPrev() {
-        currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
-        openModal();
-    }
-
-    // Переключение вправо
-    function showNext() {
-        currentIndex = (currentIndex + 1) % galleryData.length;
-        openModal();
-    }
-
-    // События
-    leftButton.addEventListener('click', showPrev);
-    rightButton.addEventListener('click', showNext);
-    closeButton.addEventListener('click', closeModal);
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-    buttonOrder.addEventListener('click', function () {
-        alert('Записаться на процедуру!');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
     const modalVideo = document.querySelector('.modal-video-background');
     const closeBtn = document.querySelector('.modal-video-close');
     const iframe = document.getElementById('video-iframe');
@@ -600,7 +586,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function handleLike(element) {
+    const likeIcon = element.querySelector('.like-icon');
+    const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
 
+    // Переключение класса на лайк
+    if (likeIcon.classList.contains('active')) {
+        likeIcon.classList.remove('active');
+        likeCounter.textContent = Number(likeCounter.textContent) - 1;
+    } else {
+        likeIcon.classList.add('active');
+        likeCounter.textContent = Number(likeCounter.textContent) + 1;
+    }
+}
 </script>
 
 <?php wp_footer(); ?>

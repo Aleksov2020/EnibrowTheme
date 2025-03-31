@@ -34,7 +34,9 @@ if (!empty($categories)): ?>
             }
             ?>
 
-            <div class="service first-service col">
+            <?php $bg_image = get_field('uslyga_category_image', $category->ID); ?>
+            <div class="service first-service col" style="background-image: url('<?php echo esc_url($bg_image ?: get_template_directory_uri() . '/assets/first.jpg'); ?>');">
+
                 <div class="service-filter col">
                     <div class="service-title text-30-400 colored-text">
                         <a href="<?php echo esc_url(get_permalink($category->ID)); ?>">

@@ -23,17 +23,16 @@
   <header class="col wrapper">
     <div class="header row">
 
-      <!-- ЛОГОТИП -->
-      <div class="logo">
-        <!-- Ссылка на главную -->
-        <a href="<?php echo esc_url(home_url('/')); ?>">
-          <img
-            src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.svg'); ?>"
-            alt="<?php bloginfo('name'); ?>"
-            width="259"
-            height="110">
-        </a>
-      </div>
+    <!-- ЛОГОТИП -->
+    <div class="logo">
+      <a href="<?php echo esc_url(home_url('/')); ?>">
+        <img
+          src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.svg'); ?>"
+          alt="<?php bloginfo('name'); ?>"
+          width="259"
+          height="110">
+      </a>
+    </div>
 
       <!-- Блок для мобильных -->
       <div class="mobile-header-wrapper">
@@ -78,14 +77,10 @@
           <!-- Адрес (мобильный) -->
           <div class="address light-text row">
             <div class="icon">
-              <img
-                src="<?php echo esc_url(get_template_directory_uri() . '/assets/mapPoint.svg'); ?>"
-                alt="mapPoint"
-                width="10"
-                height="12">
+              <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/mapPoint.svg'); ?>" alt="mapPoint" width="10" height="12">
             </div>
             <div class="label-address colored-text">
-              г. Москва, Посланников переулок., 1 -  метро Бауманская
+              <?php the_field('site_address', 'option'); ?>
             </div>
           </div>
         </div>
@@ -96,22 +91,16 @@
             <div class="phone-wrapper col">
               <div class="phone row">
                 <div class="icon">
-                  <img
-                    src="<?php echo esc_url(get_template_directory_uri() . '/assets/phone.svg'); ?>"
-                    alt="phone"/>
+                  <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/phone.svg'); ?>" alt="phone"/>
                 </div>
-                <div class="phone-label">+7 (906) 933-99-99</div>
+                <div class="phone-label"><?php the_field('site_phone', 'option'); ?></div>
               </div>
               <div class="work-time light-text colored-text">
-                Пн-Пт с 08:00 до 21:00
+                <?php the_field('site_work_time', 'option'); ?>
               </div>
             </div>
             <div class="button row button-primary button-animation-left-to-right">
-              <img
-                src="<?php echo esc_url(get_template_directory_uri() . '/assets/whitePlus.svg'); ?>"
-                alt="plus"
-                width="14"
-                height="14"/>
+              <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/whitePlus.svg'); ?>" alt="plus" width="14" height="14"/>
               <div class="button-label">Запись онлайн</div>
             </div>
           </div>
@@ -123,47 +112,23 @@
       <div class="menu row">
         <div class="header__left-part col">
         <div class="header__contacts row">
-        <!-- Соц. сети -->
-        <div class="social-links row">
-          <!-- YouTube -->
-          <a class="social-link yt" 
-            href="<?php echo esc_url( get_theme_mod('mytheme_social_youtube') ); ?>" 
-            target="_blank" 
-            rel="noopener noreferrer">
-            <!-- Можно вставить иконку или оставить стилями -->
-          </a>
-          <!-- VK -->
-          <a class="social-link vk"
-            href="<?php echo esc_url( get_theme_mod('mytheme_social_vk') ); ?>"
-            target="_blank"
-            rel="noopener noreferrer">
-          </a>
-          <!-- WhatsApp -->
-          <a class="social-link wa"
-            href="<?php echo esc_url( get_theme_mod('mytheme_social_whatsapp') ); ?>"
-            target="_blank"
-            rel="noopener noreferrer">
-          </a>
-          <!-- Telegram -->
-          <a class="social-link tg"
-            href="<?php echo esc_url( get_theme_mod('mytheme_social_telegram') ); ?>"
-            target="_blank"
-            rel="noopener noreferrer">
-          </a>
-        </div>
+          <!-- Соц. сети -->
+          <div class="social-links row">
+            <a class="social-link yt" href="<?php the_field('site_social_youtube', 'option'); ?>" target="_blank" rel="noopener noreferrer"></a>
+            <a class="social-link vk" href="<?php the_field('site_social_vk', 'option'); ?>" target="_blank" rel="noopener noreferrer"></a>
+            <a class="social-link wa" href="<?php the_field('site_social_whatsapp', 'option'); ?>" target="_blank" rel="noopener noreferrer"></a>
+            <a class="social-link tg" href="<?php the_field('site_social_telegram', 'option'); ?>" target="_blank" rel="noopener noreferrer"></a>
+          </div>
 
-        <div class="address light-text row">
-          <div class="icon">
-            <img
-              src="<?php echo esc_url(get_template_directory_uri() . '/assets/mapPoint.svg'); ?>"
-              alt="mapPoint"
-              width="10"
-              height="12">
+          <!-- Адрес -->
+          <div class="address light-text row">
+            <div class="icon">
+              <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/mapPoint.svg'); ?>" alt="mapPoint" width="10" height="12">
+            </div>
+            <div class="label-address colored-text">
+              <?php the_field('site_address', 'option'); ?>
+            </div>
           </div>
-          <div class="label-address colored-text">
-            <?php echo esc_html( get_theme_mod('mytheme_address') ); ?>
-          </div>
-        </div>
       </div>
 
           <!-- Навигация (редактируемая из админки, если зарегистрировали меню) -->
@@ -239,6 +204,7 @@
                             <?php foreach ($selected_categories as $category_id): ?>
                                 <?php $category = get_post($category_id); ?>
                                 <?php if ($category): ?>
+                                    <?php $category_name = get_field('category_full_name', $category->ID) ?: $category->post_title; ?>
                                     <div class="full-width-container-col col">
                                         <div class="full-width-container-title row">
                                             <div class="full-width-container-title-icon icon">
@@ -246,23 +212,23 @@
                                             </div>
                                             <div class="full-width-container-title-value text-16-500">
                                                 <a href="<?php echo esc_url(get_permalink($category->ID)); ?>" class="category-link">
-                                                    <?php echo esc_html($category->post_title); ?>
+                                                    <?php echo esc_html($category_name); ?>
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="full-width-container-separator"></div>
-                                        
+
                                         <?php if ($selected_services): ?>
                                             <?php foreach ($selected_services as $service_id): ?>
-                                                <?php $service = get_post($service_id); ?>
                                                 <?php
-                                                // Проверяем связь услуги с категорией через ACF
+                                                $service = get_post($service_id);
                                                 $service_category_id = get_field('usl_cat_field', $service_id);
                                                 ?>
                                                 <?php if ($service && $service_category_id == $category_id): ?>
+                                                    <?php $short_name = get_field('service_short_name', $service_id) ?: $service->post_title; ?>
                                                     <div class="full-width-container-item text-16-300">
                                                         <a href="<?php echo esc_url(get_permalink($service->ID)); ?>" class="service-link">
-                                                            <?php echo esc_html($service->post_title); ?>
+                                                            <?php echo esc_html($short_name); ?>
                                                         </a>
                                                     </div>
                                                 <?php endif; ?>
@@ -272,11 +238,12 @@
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                        <div class="full-width-container-image" style="background-image: url('<?php echo esc_url($background_image); ?>');">
-                        </div>
+
+                        <div class="full-width-container-image" style="background-image: url('<?php echo esc_url($background_image); ?>');"></div>
                     </div>
                 </div>
             </div>
+
 
 
             <div class="nav__item text-17-400 colored-text">
