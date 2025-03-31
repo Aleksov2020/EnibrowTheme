@@ -44,6 +44,11 @@ foreach ($services as $service) {
 
 <div class="modal-order-background row">
     <div class="modal-order col">
+        <div class="close-order-modal-icon" id="close-order-modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+                <path d="M2.16943 27.2583L27.0083 2.41943M2.16943 2.41943L27.0083 27.2583" stroke="#825E69" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
         <div class="modal-order-title-wrapper row">
             <div class="modal-order-title">
                 Быстрая запись
@@ -191,7 +196,7 @@ foreach ($services as $service) {
             </div>
             <div class="custom-select-wrapper col">
                 <label for="input-default" class="select-label">Укажите ваше имя</label>
-                <input class="input-default" type="text" name="client_name" placeholder="Ваше имя">
+                <input class="input-default" type="text" name="client_name" id="name_modal_order" placeholder="Ваше имя">
             </div>
             <div class="custom-select-wrapper col">
                 <label for="input-default" class="select-label">Укажите ваш телефон</label>
@@ -211,7 +216,7 @@ foreach ($services as $service) {
                         </svg>
                         +7
                     </label>
-                    <input class="input-default phone-input" id="phone-input" type="text" name="client_phone" placeholder="(000) 000 00 00 00">
+                    <input class="input-default phone-input" id="phone_modal_order" type="text" name="client_phone" placeholder="(000) 000 00 00 00">
                 </div>
             </div>
             <div class="custom-select-wrapper col">
@@ -233,6 +238,11 @@ foreach ($services as $service) {
 
 <div class="modal-gallery-background">
     <div class="modal-gallery col">
+        <div class="close-gallery-modal-icon" id="close-gallery-modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+                <path d="M2.16943 27.2583L27.0083 2.41943M2.16943 2.41943L27.0083 27.2583" stroke="#825E69" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
         <div class="modal-gallery-item">
             <div class="gallery-image">
                 <img class="modal-gallery-image-data" src="<?php echo get_template_directory_uri(); ?>/assets/gallery-photo.png" alt="">
@@ -301,35 +311,24 @@ foreach ($portfolio_works as $index => $work) {
     $master_rank = get_field('master_rank', $master_id);
 
     $gallery_data[] = [
-        'imageUrl' => esc_url($image['url']),
-        'masterName' => esc_html($master_name),
-        'masterRank' => esc_html($master_rank),
-        'masterLikes' => esc_html($master_likes),
+        'imageUrl'     => esc_url($image['url']),
+        'masterName'   => esc_html($master_name),
+        'masterRank'   => esc_html($master_rank),
+        'masterLikes'  => esc_html($master_likes),
         'masterAvatar' => esc_url($master_photo['url']),
-        'masterLink' => esc_url(get_permalink($master_id)),
+        'masterLink'   => esc_url(get_permalink($master_id)),
     ];
-
-    
 }
 
+// Выводим JS с уникальным ID галереи (например, "sliderGallery")
 echo '<script>';
-echo 'window.galleryData = ' . json_encode($gallery_data) . ';';
+echo 'window.galleryDataMap = window.galleryDataMap || {};';
+echo 'window.galleryDataMap["sliderGallery"] = ' . json_encode($gallery_data) . ';';
 echo '</script>';
 ?>
 
 
-<div class="modal-video-background">
-    <div class="modal-video col">
-        <div class="modal-video-close">&times;</div>
-        <div class="modal-video-content">
-            <iframe id="video-iframe" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
-
 <script>
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.querySelector('.modal-gallery-background');
     const galleryImage = modal.querySelector('.modal-gallery-image-data');
@@ -346,16 +345,18 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0;
     let currentGalleryData = [];
 
-    window.openGallery = function (index, galleryData) {
+    window.openGallery = function (index, galleryId) {
+        currentGalleryData = window.galleryDataMap[galleryId] || [];
         currentIndex = index;
-        currentGalleryData = galleryData;
         updateModal();
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
+        console.log(window.galleryDataMap);
     };
 
     function updateModal() {
         const data = currentGalleryData[currentIndex];
+        if (!data) return;
         galleryImage.src = data.imageUrl;
         masterAvatar.style.backgroundImage = `url(${data.masterAvatar})`;
         masterName.textContent = data.masterName || 'Мастер';
@@ -365,39 +366,29 @@ document.addEventListener('DOMContentLoaded', function () {
         closeButton.href = data.masterLink;
     }
 
-    function closeModal() {
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    }
-
-    function showPrev() {
+    leftButton.addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + currentGalleryData.length) % currentGalleryData.length;
         updateModal();
-    }
+    });
 
-    function showNext() {
+    rightButton.addEventListener('click', () => {
         currentIndex = (currentIndex + 1) % currentGalleryData.length;
         updateModal();
-    }
+    });
 
-    function handleLike() {
-        const likeIcon = modal.querySelector('.modal-like-icon');
-        const counter = modal.querySelector('.modal-master-cards-likes-counter');
-        const liked = likeIcon.classList.toggle('active');
-        counter.textContent = parseInt(counter.textContent) + (liked ? 1 : -1);
-    }
+    closeButton.addEventListener('click', () => {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    });
 
-    leftButton.addEventListener('click', showPrev);
-    rightButton.addEventListener('click', showNext);
-    closeButton.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
     });
-    buttonOrder.addEventListener('click', () => {
-        alert('Записаться на процедуру');
-    });
-    modal.querySelector('.modal-like-icon').addEventListener('click', handleLike);
 });
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -457,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Логика отображения кнопки "Добавить услугу"
         if (selectedServices.length < 3) {
-            addServiceButton.style.display = 'block';
+            addServiceButton.style.display = 'flex';
         } else {
             addServiceButton.style.display = 'none';
         }
@@ -491,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Скрываем селект
         serviceSelect.classList.add('hidden');
-        addServiceButton.style.display = 'block';
+        addServiceButton.style.display = 'flex';
 
         console.log('Удалена услуга');
     }
@@ -553,7 +544,62 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    console.log('JS скрипт загружен');
+    $('#close-order-modal').click(() => {
+        $('.modal-order-background').removeClass('show');
+        document.querySelector('body').style.overflow = 'auto';
+    })
+
+    document.getElementById('submit-order').addEventListener('click', function () {
+        const nameInput = document.querySelector('#name_modal_order');
+        const phoneInput = document.querySelector('#phone_modal_order');
+        const name = nameInput.value.trim();
+        const phone = phoneInput.value.trim();
+
+        nameInput.classList.remove('error');
+        phoneInput.classList.remove('error');
+
+        // Проверка имени
+        const nameValid = /^[А-Яа-яA-Za-z\s-]{2,}$/.test(name);
+        if (!nameValid) {
+            nameInput.classList.add('error');
+        }
+
+        // Проверка телефона
+        const digitsOnly = phone.replace(/\D/g, '');
+        if (digitsOnly.length < 7) {
+            phoneInput.classList.add('error');
+        }
+
+        if (!nameValid || digitsOnly.length < 7) return;
+
+        const masterId = selectedMaster ? selectedMaster.id : null;
+        const serviceIds = selectedServices.map(s => s.id);
+        const tattooStatus = selectedTattoo;
+
+        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                action: 'send_modal_order',
+                name: name,
+                phone: phone,
+                master_id: masterId,
+                tattoo: tattooStatus,
+                services: JSON.stringify(serviceIds)
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Заявка успешно отправлена');
+            } else {
+                alert('Ошибка: ' + data.data);
+            }
+        })
+        .catch(() => {
+            alert('Ошибка при отправке формы');
+        });
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {

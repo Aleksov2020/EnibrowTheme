@@ -35,7 +35,7 @@ if ($portfolio_query->have_posts()) :
             <?php
             $portfolio_image = get_field('portfolio_image', get_the_ID());
             $master_id = get_field('portfolio_master', get_the_ID());
-            $likes = get_field('master_likes', $master_id) ?: 0;
+            $portfolio_likes = get_field('portfolio_likes', $work_id);
             $show_in_slider = get_field('portfolio_slider', get_the_ID());
             $show_on_main = get_field('portfolio_main', get_the_ID());
             $is_preview = get_field('portfolio_preview', get_the_ID());
@@ -80,7 +80,7 @@ if ($portfolio_query->have_posts()) :
                                 </svg>
                             </div>
                             <div class="gallery-master-cards-likes-counter">
-                                <?php echo esc_html($likes); ?>
+                                <?php echo esc_html($portfolio_likes); ?>
                             </div>
                         </div>
                     </div>

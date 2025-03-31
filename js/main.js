@@ -536,11 +536,12 @@ document.addEventListener('DOMContentLoaded', function () {
         body.style.overflow = 'auto'; // Восстанавливаем прокрутку
     });
 
-    console.log(111);
 
     $(function(){
-        console.log(111);
-        //2. Получить элемент, к которому необходимо добавить маску
         $("#phone-input").mask("(999) 999-99-99");
+    });
+
+    $(function(){
+        $("#phone_modal_order").mask("(999) 999-99-99");
     });
 });

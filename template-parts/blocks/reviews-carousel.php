@@ -14,7 +14,12 @@ $args = array(
     ),
 );
 
+// Подготовка скрипта с данными для JS
+$reviews_gallery_data = [];
+
 $query = new WP_Query($args);
+
+ob_start();
 ?>
 
 <div class="reviews wrapper wrapper-laptop col">
@@ -41,14 +46,30 @@ $query = new WP_Query($args);
     <div class="reviews-wrapper wrapper row">
         <div class="slider-reviews-wrapper row">
             <div class="slider-track-reviews row">
-                <?php if ($query->have_posts()) : ?>
-                    <?php while ($query->have_posts()) : $query->the_post(); ?>
-                        <?php
-                        $review_name = get_field('review_name', get_the_ID());
-                        $review_date = get_field('review_date', get_the_ID());
-                        $review_rating = get_field('review_rating', get_the_ID());
-                        $review_comment = get_field('review_comment', get_the_ID());
-                        $review_images = get_field('review_images', get_the_ID());
+            <?php if ($query->have_posts()) : ?>
+                    <?php while ($query->have_posts()) : $query->the_post();
+                        $review_id = get_the_ID();
+                        $review_name = get_field('review_name', $review_id);
+                        $review_date = get_field('review_date', $review_id);
+                        $review_rating = get_field('review_rating', $review_id);
+                        $review_comment = get_field('review_comment', $review_id);
+                        $review_images = get_field('review_images', $review_id);
+                        $gallery_id = 'reviewGallery_' . $review_id;
+
+                        $reviews_gallery_data[$gallery_id] = [];
+
+                        if ($review_images) {
+                            foreach ($review_images as $img) {
+                                $reviews_gallery_data[$gallery_id][] = [
+                                    'imageUrl'     => esc_url($img['url']),
+                                    'masterName'   => esc_html($review_name),
+                                    'masterRank'   => 'Клиент',
+                                    'masterLikes'  => '',
+                                    'masterAvatar' => '', // Можно поставить иконку клиента, если есть
+                                    'masterLink'   => '#',
+                                ];
+                            }
+                        }
                         ?>
                         <div class="review-card col">
                             <div class="review-card-text-wrapper col">
@@ -84,8 +105,8 @@ $query = new WP_Query($args);
                             <div class="review-card-footer-wrapper col">
                                 <?php if ($review_images) : ?>
                                     <div class="review-card-gallery-wrapper row">
-                                        <?php foreach ($review_images as $image) : ?>
-                                            <div class="review-card-gallery-item">
+                                        <?php foreach ($review_images as $index => $image) : ?>
+                                            <div class="review-card-gallery-item" onclick="openGallery(<?= $index ?>, '<?= $gallery_id ?>')">
                                                 <img src="<?php echo esc_url($image['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
                                             </div>
                                         <?php endforeach; ?>
@@ -126,3 +147,14 @@ $query = new WP_Query($args);
         </div>
     </div>
 </div>
+<?php
+$block_html = ob_get_clean();
+echo $block_html;
+
+// Вставляем данные для галерей JS
+echo '<script>window.galleryDataMap = window.galleryDataMap || {};';
+foreach ($reviews_gallery_data as $galleryId => $images) {
+    echo 'window.galleryDataMap["' . $galleryId . '"] = ' . json_encode($images) . ';';
+}
+echo '</script>';
+?>

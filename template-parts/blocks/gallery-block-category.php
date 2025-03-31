@@ -66,7 +66,7 @@ if (empty($portfolio_works)) {
             $master_id = get_field('portfolio_master', $work_id);
             $master_name = get_field('master_name', $master_id);
             $master_photo = get_field('master_photo', $master_id);
-            $master_likes = get_field('master_likes', $master_id);
+            $portfolio_likes = get_field('portfolio_likes', $work_id);
             $master_rank = get_field('master_rank', $master_id);
         ?>
         <div class="gallery-item">
@@ -106,7 +106,7 @@ if (empty($portfolio_works)) {
                             </svg>
                         </div>
                         <div class="gallery-master-cards-likes-counter">
-                            <?php echo esc_html($master_likes); ?>
+                            <?php echo esc_html($portfolio_likes); ?>
                         </div>
                     </div>
                 </div>

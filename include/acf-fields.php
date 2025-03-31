@@ -221,13 +221,6 @@ add_action('acf/init', function() {
                 'preview_size' => 'medium',
             ),
             array(
-                'key'   => 'field_master_likes',
-                'label' => 'Количество лайков',
-                'name'  => 'master_likes',
-                'type'  => 'number',
-                'default_value' => 0,
-            ),
-            array(
                 'key'   => 'field_master_show_global',
                 'label' => 'Показывать мастера по всему сайту',
                 'name'  => 'master_show_global',
@@ -383,6 +376,13 @@ add_action('acf/init', function() {
                 'type'  => 'post_object',
                 'post_type' => array('page'),
                 'return_format' => 'id',
+            ),
+            array(
+                'key'   => 'field_master_likes',
+                'label' => 'Количество лайков',
+                'name'  => 'portfolio_likes',
+                'type'  => 'number',
+                'default_value' => 0,
             ),
         ),
         'location' => array(

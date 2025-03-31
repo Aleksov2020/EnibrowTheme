@@ -217,6 +217,20 @@ a {
     border: 1px solid #825E6980;
 }
 
+@keyframes shake {
+0%   { transform: translateX(0); }
+20%  { transform: translateX(-5px); }
+40%  { transform: translateX(5px); }
+60%  { transform: translateX(-5px); }
+80%  { transform: translateX(5px); }
+100% { transform: translateX(0); }
+}
+
+.input-default.error {
+border-color: #ED4C5C !important;
+animation: shake 0.4s ease;
+}
+
 .input-default-wrapper {
     position: relative;
     width: 100%;
@@ -1239,6 +1253,7 @@ nav {
     width: 990px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .modal-gallery-item {
@@ -1926,10 +1941,13 @@ td.price {
 }
 
 .master-rate-reviews {
-    line-height: 30px;
-
     cursor: pointer;
     user-select: none;
+}
+
+.master-rate-icon {
+    display: flex;
+    align-items: center;
 }
 
 .master-rate-reviews:hover {
@@ -4618,6 +4636,21 @@ padding-top: 22px;
     justify-content: end;
     visibility: hidden;
     opacity: 0;
+    transition: .4s width ease;
+}
+
+.close-order-modal-icon {
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-gallery-modal-icon {
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    cursor: pointer;
+    z-index: 10;
 }
 
 .modal-order-background.show {

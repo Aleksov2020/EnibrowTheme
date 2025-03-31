@@ -91,18 +91,34 @@
             </div>
         </div>
     </div>
-    <script>
-document.querySelector('#send').addEventListener('click', async () => {
-  const name = document.querySelector('#user-name').value.trim();
-  const phone = document.querySelector('#phone-input').value.trim();
 
-  if (!name || !phone) {
-    alert('Пожалуйста, заполните имя и телефон');
-    return;
+<script>
+document.querySelector('#send').addEventListener('click', async () => {
+  const nameInput = document.querySelector('#user-name');
+  const phoneInput = document.querySelector('#phone-input');
+  const name = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+
+  nameInput.classList.remove('error');
+  phoneInput.classList.remove('error');
+
+  // Проверка имени
+  const nameValid = /^[А-Яа-яA-Za-z\s-]{2,}$/.test(name);
+  if (!nameValid) {
+    nameInput.classList.add('error');
   }
 
+  // Проверка телефона
+  const digitsOnly = phone.replace(/\D/g, '');
+  if (digitsOnly.length < 7) {
+    phoneInput.classList.add('error');
+  }
+
+  if (!nameValid || digitsOnly.length < 7) return;
+
+  // Отправка
   const formData = new FormData();
-  formData.append('action', 'send_order'); // Обязательно
+  formData.append('action', 'send_order');
   formData.append('user_name', name);
   formData.append('user_phone', phone);
 
@@ -112,17 +128,12 @@ document.querySelector('#send').addEventListener('click', async () => {
       body: formData,
     });
 
-    if (!response.ok) {
-      throw new Error('Ошибка при отправке формы');
-    }
+    if (!response.ok) throw new Error('Ошибка при отправке формы');
 
     const redirectUrl = new URL(window.location.href);
-    redirectUrl.searchParams.set('order', 'success');
     window.location.href = redirectUrl.toString();
   } catch (error) {
-    console.error('Ошибка:', error);
-    alert('Произошла ошибка. Попробуйте позже.');
+    console.error(error);
   }
 });
-
 </script>

@@ -55,7 +55,7 @@ function filter_portfolio() {
         $master_id = get_field('portfolio_master', $work_id);
         $master_name = get_field('master_name', $master_id);
         $master_photo = get_field('master_photo', $master_id);
-        $master_likes = get_field('master_likes', $master_id);
+        $portfolio_likes = get_field('portfolio_likes', $work_id);
         $master_rank = get_field('master_rank', $master_id);
         $image = get_field('portfolio_image', $work_id);
 
@@ -64,14 +64,14 @@ function filter_portfolio() {
             'imageUrl'     => esc_url($image['url']),
             'masterName'   => esc_html($master_name),
             'masterRank'   => esc_html($master_rank),
-            'masterLikes'  => esc_html($master_likes),
+            'masterLikes'  => esc_html($portfolio_likes),
             'masterAvatar' => esc_url($master_photo['url']),
             'masterLink'   => esc_url(get_permalink($master_id)),
         ];
         ?>
 
         <div class="gallery-item">
-            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, window.galleryData);">
+            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, 'sliderGallery');">
                 <?php if ($image): ?>
                     <img src="<?= esc_url($image['url']); ?>" alt="<?= esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
                 <?php endif; ?>
@@ -104,7 +104,7 @@ function filter_portfolio() {
                             </svg>
                         </div>
                         <div class="gallery-master-cards-likes-counter">
-                            <?= esc_html($master_likes); ?>
+                            <?= esc_html($portfolio_likes); ?>
                         </div>
                     </div>
                 </div>
