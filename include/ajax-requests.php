@@ -85,16 +85,16 @@ function filter_portfolio() {
                             <?php endif; ?>
                         </div>
                         <div class="gallery-master-info-wrapper col">
-                            <div class="gallery-master-badge-wrapper row clickable">
+                            <a href="<?= get_permalink($master_id)?>" class="gallery-master-badge-wrapper row clickable">
                                 <?php if ($master_rank): ?>
                                     <div class="gallery-master-badge light-text-500 clickable">
                                         <?= esc_html($master_rank); ?>&nbsp;
                                     </div>
                                 <?php endif; ?>
-                            </div>
-                            <div class="gallery-master-name text-16-500 colored-text clickable">
+                            </a>
+                            <a href="<?= get_permalink($master_id)?>" class="gallery-master-name text-16-500 colored-text clickable">
                                 <?= esc_html($master_name); ?>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <div class="gallery-master-cards-likes-wrapper col" onclick="handleLike(this);">
@@ -112,9 +112,9 @@ function filter_portfolio() {
                     <div class="button button-primary text-16-500">
                         Записаться
                     </div>
-                    <div class="button-label">
+                    <a href="<?= get_permalink($master_id)?>" class="button-label">
                         Подробнее о мастере
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

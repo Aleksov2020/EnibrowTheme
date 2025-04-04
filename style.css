@@ -1920,6 +1920,7 @@ td.price {
     font-size: 26px;
     font-weight: 400;
     line-height: 30px;
+    text-transform: uppercase;
 }
 
 .master-rate-wrapper {

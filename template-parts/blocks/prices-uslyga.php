@@ -82,9 +82,32 @@ if (empty($masters)) {
                                 <div class="services-price-name text-20-400">
                                     <?= esc_html(get_the_title($service_id)); ?>
                                 </div>
-                                <?php if (get_field('is_promotion', $service_id)) : ?>
-                                    <div class="services-price-sale-badge text-16-500">Акция</div>
-                                <?php endif; ?>
+                                <?php
+                                // Проверка на связанную акцию через relationship поле
+                                $promotion_args = array(
+                                    'post_type'      => 'promotion',
+                                    'posts_per_page' => 1,
+                                    'meta_query'     => array(
+                                        array(
+                                            'key'     => 'promotion_services',
+                                            'value'   => '"' . $service_id . '"',
+                                            'compare' => 'LIKE',
+                                        ),
+                                    ),
+                                );
+                                $promo_query = new WP_Query($promotion_args);
+
+                                if ($promo_query->have_posts()) :
+                                    $promo_query->the_post();
+                                    $promo_link = get_permalink();
+                                    ?>
+                                    <a href="<?= esc_url($promo_link); ?>" class="services-price-sale-badge text-16-500">
+                                        Акция
+                                    </a>
+                                    <?php
+                                    wp_reset_postdata();
+                                endif;
+                                ?>
                             </div>
                             <div class="services-price-short-description light-text-300">
                                 <?= esc_html(get_field('service_short_description', $service_id)); ?>

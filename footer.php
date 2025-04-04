@@ -387,6 +387,11 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.overflow = '';
         }
     });
+
+    $('#close-gallery-modal-icon').click(() => {
+        $('.modal-gallery-background').removeClass('show');
+        document.querySelector('body').style.overflow = 'auto';
+    })
 });
 
 

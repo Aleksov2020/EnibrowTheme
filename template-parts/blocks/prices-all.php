@@ -1,4 +1,21 @@
 <?php
+
+// Получаем все акции и строим карту: ID услуги => ID акции
+$promotions = get_posts([
+    'post_type' => 'promotion',
+    'posts_per_page' => -1
+]);
+
+$service_promotions = [];
+foreach ($promotions as $promo) {
+    $related_services = get_field('promotion_services', $promo->ID);
+    if (!empty($related_services)) {
+        foreach ($related_services as $service_id) {
+            $service_promotions[$service_id] = $promo->ID;
+        }
+    }
+}
+
 // Получаем всех мастеров с чекбоксом "master_show_global"
 $masters = get_posts([
     'post_type'      => 'master',
@@ -105,8 +122,10 @@ foreach ($masters as $master) {
                                         <a href="<?= esc_url($service['link']); ?>" class="services-price-name text-20-400">
                                             <?= esc_html($service['title']); ?>
                                         </a>
-                                        <?php if (get_field('is_promotion', $service_id)) : ?>
-                                            <div class="services-price-sale-badge text-16-500">Акция</div>
+                                        <?php if (isset($service_promotions[$service_id])) : ?>
+                                            <a href="<?= esc_url(get_permalink($service_promotions[$service_id])); ?>" class="services-price-sale-badge text-16-500">
+                                                Акция
+                                            </a>
                                         <?php endif; ?>
                                     </div>
                                     <div class="services-price-short-description light-text-300"><?= esc_html($service['short_description']); ?></div>

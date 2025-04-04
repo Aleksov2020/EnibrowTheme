@@ -1,4 +1,3 @@
-
 //=============================CHECKOX
 
 document.querySelectorAll(".checkbox").forEach(checkbox => {
@@ -102,7 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".roll-block").forEach((rollBlock, index) => {
-
+        if (rollBlock.classList.contains("skip")) {
+            return
+        }
+		
         // Ждём загрузки всех шрифтов
         if (document.fonts && document.fonts.ready) {
             document.fonts.ready.then(initRollBlocks);
@@ -112,9 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
 
-        if (rollBlock.classList.contains("skip")) {
-            return
-        }
 
         function initRollBlocks() {
             const toggleButton = document.querySelectorAll(".button-roll-block")[index];
