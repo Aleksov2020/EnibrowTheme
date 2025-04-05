@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <div class="main-wrapper page-index-wrapper col">
-    <?php
+<?php
         $page_id = get_the_ID();
 
         // Получаем ACF поля услуги
@@ -9,7 +9,36 @@
         $duration = get_field('service_duration', $page_id);
         $price = get_field('service_price', $page_id);
         $durability = get_field('service_durability', $page_id);
-        $slider_images = get_field('service_slider_images', $page_id);
+        $slider_images = [];
+
+        $related_services = get_posts([
+            'post_type'      => 'uslyga',
+            'posts_per_page' => -1,
+            'meta_query'     => [
+                [
+                    'key'     => 'usl_cat_field',
+                    'value'   => $page_id,
+                    'compare' => '=',
+                ]
+            ],
+        ]);
+
+        foreach ($related_services as $service) {
+            $portfolio_ids = get_field('service_portfolio_works', $service->ID);
+
+            if (!$portfolio_ids) continue;
+
+            foreach ($portfolio_ids as $portfolio_id) {
+                if (get_field('portfolio_slider', $portfolio_id)) {
+                    $img = get_field('portfolio_image', $portfolio_id);
+                    if ($img) {
+                        $slider_images[] = $img;
+                    }
+                }
+
+                if (count($slider_images) >= 7) break 2; // прерываем оба цикла
+            }
+        }
     ?>
 
     <div class="colored-wrapper slider-page-service-wrapper col">

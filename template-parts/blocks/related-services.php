@@ -12,7 +12,7 @@ $related_services = get_posts(array(
     'post_type' => 'uslyga',
     'meta_query' => array(
         array(
-            'key' => 'usl_cat_field', // ACF поле связи услуги с категорией
+            'key' => 'usl_cat_field',
             'value' => $category_id,
             'compare' => '='
         ),
@@ -26,29 +26,31 @@ if (!empty($related_services)): ?>
             <?php
             $price = get_field('service_price', $service->ID);
             $duration = get_field('service_duration', $service->ID);
-            $image = get_field('service_image', $service->ID);
-            $has_action = get_field('service_has_action', $service->ID);
-            // Получаем работы из портфолио, связанные с услугой
-            $portfolio_works = get_field('service_portfolio_works', $service->ID);
+            $image_data = get_field('service_image', $service->ID);
+            $image_url = '';
 
-            // Если есть связанные работы, берем последнюю
-            $image = '';
-            if (!empty($portfolio_works)) {
-                $last_portfolio_id = end($portfolio_works); // Берем последний добавленный
-                $image_data = get_field('portfolio_image', $last_portfolio_id);
-                if ($image_data && isset($image_data['url'])) {
-                    $image = $image_data['url'];
+            // Fallback на портфолио
+            if (!$image_data) {
+                $portfolio_works = get_field('service_portfolio_works', $service->ID);
+                if (!empty($portfolio_works)) {
+                    $last_portfolio_id = end($portfolio_works);
+                    $portfolio_image = get_field('portfolio_image', $last_portfolio_id);
+                    if ($portfolio_image && isset($portfolio_image['url'])) {
+                        $image_url = esc_url($portfolio_image['url']);
+                    }
                 }
+            } else {
+                $image_url = esc_url($image_data['url']);
             }
 
-            // Получаем связанные акции
+            // Проверка на наличие акции
             $has_action = false;
             $promotions = get_posts(array(
                 'post_type' => 'promotion',
                 'meta_query' => array(
                     array(
-                        'key' => 'promotion_services',
-                        'value' => '"' . $service->ID . '"',
+                        'key'     => 'promotion_services',
+                        'value'   => '"' . $service->ID . '"',
                         'compare' => 'LIKE',
                     ),
                 ),
@@ -58,13 +60,10 @@ if (!empty($related_services)): ?>
                 $has_action = true;
             }
             ?>
-
             <div class="subservice-item col">
-                <div class="subservice-item-photo col" style="background-image: url('<?php echo esc_url($image); ?>');">
+                <div class="subservice-item-photo col" style="background-image: url('<?php echo $image_url; ?>');">
                     <?php if ($has_action): ?>
-                        <div class="subservice-item-badge badge-primary">
-                            Акция
-                        </div>
+                        <div class="subservice-item-badge badge-primary">Акция</div>
                     <?php endif; ?>
                 </div>
                 <div class="subservice-item-wrapper col">
@@ -72,35 +71,31 @@ if (!empty($related_services)): ?>
                         <?php echo esc_html($service->post_title); ?>
                     </div>
                     <div class="subservice-item-text-wrapper col">
-                        <div class="subservice-item-text-subtitle colored-text light-text-600">
-                            О процедуре:
-                        </div>
-                        <div class="subservice-item-text-item row">
-                            <div class="subservice-item-text-item-icon icon">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/coinSmall.svg" alt="coin">
-                            </div>
-                            <div class="subservice-item-text-item-label light-text-300">
-                                Стоимость
-                            </div> 
-                            <div class="subservice-item-text-item-separator"></div>
-                            <div class="subservice-item-text-item-value light-text-300">
-                                от <?php echo esc_html($price); ?> ₽
-                            </div> 
-                        </div>
-                        <div class="subservice-item-text-item row">
-                            <div class="subservice-item-text-item-label-wrapper row">
+                        <div class="subservice-item-text-subtitle colored-text light-text-600">О процедуре:</div>
+
+                        <?php if ($price): ?>
+                            <div class="subservice-item-text-item row">
                                 <div class="subservice-item-text-item-icon icon">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/clockSmall.svg" alt="clock">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/coinSmall.svg" alt="coin">
                                 </div>
-                                <div class="subservice-item-text-item-label light-text-300">
-                                    Длительность
-                                </div> 
+                                <div class="subservice-item-text-item-label light-text-300">Стоимость</div>
+                                <div class="subservice-item-text-item-separator"></div>
+                                <div class="subservice-item-text-item-value light-text-300">от <?php echo esc_html($price); ?> ₽</div>
                             </div>
-                            <div class="subservice-item-text-item-separator"></div> 
-                            <div class="subservice-item-text-item-value light-text-300">
-                                <?php echo esc_html($duration); ?>
-                            </div> 
-                        </div>
+                        <?php endif; ?>
+
+                        <?php if ($duration): ?>
+                            <div class="subservice-item-text-item row">
+                                <div class="subservice-item-text-item-label-wrapper row">
+                                    <div class="subservice-item-text-item-icon icon">
+                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/clockSmall.svg" alt="clock">
+                                    </div>
+                                    <div class="subservice-item-text-item-label light-text-300">Длительность</div>
+                                </div>
+                                <div class="subservice-item-text-item-separator"></div>
+                                <div class="subservice-item-text-item-value light-text-300"><?php echo esc_html($duration); ?></div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="subservice-button-wrapper row">
                         <div class="button button-primary order-button">Записаться</div>
@@ -108,7 +103,6 @@ if (!empty($related_services)): ?>
                     </div>
                 </div>
             </div>
-
         <?php endforeach; ?>
     </div>
 <?php else: ?>

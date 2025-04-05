@@ -447,6 +447,27 @@ add_action('acf/init', function() {
                 'instructions' => 'Пример: 6 месяцев, 1 год',
             ),
             array(
+                'key' => 'field_service_duration_minutes',
+                'label' => 'Длительность услуги (минут)',
+                'name' => 'service_duration_minutes',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_service_price_rub',
+                'label' => 'Стоимость услуги (руб.)',
+                'name' => 'service_price_rub',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_service_preview_image',
+                'label' => 'Изображение услуги',
+                'name' => 'service_preview_image',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ),
+            array(
                 'key'   => 'field_service_price',
                 'label' => 'Стоимость от',
                 'name'  => 'service_price',

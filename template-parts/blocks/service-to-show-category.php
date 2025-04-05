@@ -36,8 +36,16 @@ if ($services_query->have_posts()):
 ?>
     <div class="subservice wrapper row">
         <?php while ($services_query->have_posts()): $services_query->the_post(); ?>
+            <?php
+                $duration_minutes = get_field('service_duration_minutes', get_the_ID());
+                $price_rub = get_field('service_price_rub',  get_the_ID());
+            ?>
             <div class="subservice-item col">
-                <div class="subservice-item-photo col">
+                <?php $image = get_field('service_preview_image', get_the_ID());
+                $default_image = get_template_directory_uri() . '/assets/girl-service.png';
+                $background_url = $image ? $image['url'] : $default_image;
+                ?>
+                <div class="subservice-item-photo col" style="background-image: url('<?php echo esc_url($background_url); ?>')">
                     <?php if (get_field('service_promo')): ?>
                         <div class="subservice-item-badge badge-primary">Акция</div>
                     <?php endif; ?>
@@ -46,31 +54,27 @@ if ($services_query->have_posts()):
                     <div class="subservice-item-title colored-text">
                         <?php the_title(); ?>
                     </div>
-                    <div class="subservice-item-text-wrapper col">
-                        <div class="subservice-item-text-subtitle colored-text light-text-600">
-                            О процедуре:
+                    <div class="subservice-item-text-item row">
+                        <div class="subservice-item-text-item-icon icon">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/coinSmall.svg" alt="coin">
                         </div>
-                        <div class="subservice-item-text-item row">
+                        <div class="subservice-item-text-item-label light-text-300">Стоимость</div>
+                        <div class="subservice-item-text-item-separator"></div>
+                        <div class="subservice-item-text-item-value light-text-300">
+                            <?php echo $price_rub ? esc_html($price_rub) : "—"; ?>
+                        </div>
+                    </div>
+
+                    <div class="subservice-item-text-item row">
+                        <div class="subservice-item-text-item-label-wrapper row">
                             <div class="subservice-item-text-item-icon icon">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/coinSmall.svg" alt="coin">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/clockSmall.svg" alt="clock">
                             </div>
-                            <div class="subservice-item-text-item-label light-text-300">Стоимость</div> 
-                            <div class="subservice-item-text-item-separator"></div> 
-                            <div class="subservice-item-text-item-value light-text-300">
-                                от <?php the_field('service_price'); ?> ₽
-                            </div> 
+                            <div class="subservice-item-text-item-label light-text-300">Длительность</div>
                         </div>
-                        <div class="subservice-item-text-item row">
-                            <div class="subservice-item-text-item-label-wrapper row">
-                                <div class="subservice-item-text-item-icon icon">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/clockSmall.svg" alt="clock">
-                                </div>
-                                <div class="subservice-item-text-item-label light-text-300">Длительность</div> 
-                            </div>
-                            <div class="subservice-item-text-item-separator"></div> 
-                            <div class="subservice-item-text-item-value light-text-300">
-                                <?php the_field('service_duration'); ?>
-                            </div> 
+                        <div class="subservice-item-text-item-separator"></div>
+                        <div class="subservice-item-text-item-value light-text-300">
+                            <?php echo $duration_minutes ? esc_html($duration_minutes) : "—"; ?>
                         </div>
                     </div>
                     <div class="subservice-button-wrapper row">
