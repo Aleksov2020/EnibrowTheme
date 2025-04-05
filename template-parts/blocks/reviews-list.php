@@ -79,9 +79,13 @@ $query = new WP_Query($args);
                     </div>
                     <?php if ($review_images) : ?>
                         <div class="review-page-item-body-gallery-wrapper row">
-                            <?php foreach ($review_images as $image) : ?>
+                            <?php foreach ($review_images as $portfolio_id) : ?>
+                                <?php
+                                $img = get_field('portfolio_image', $portfolio_id);
+                                if (!$img) continue;
+                                ?>
                                 <div class="review-card-gallery-item">
-                                    <img src="<?php echo esc_url($image['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
+                                    <img src="<?php echo esc_url($img['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
                                 </div>
                             <?php endforeach; ?>
                         </div>
