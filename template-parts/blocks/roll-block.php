@@ -11,7 +11,7 @@ if ($roll_content):
                 </div>
             <?php elseif ($block['acf_fc_layout'] == 'text_block'): ?>
                 <div class="roll-block-text text-16-300">
-                    <?php echo esc_html($block['text']); ?>
+                    <?php echo wp_kses_post($block['text']); ?>
                 </div>
             <?php elseif ($block['acf_fc_layout'] == 'list_item'): ?>
                 <div class="roll-block-items-wrapper col">
@@ -23,7 +23,7 @@ if ($roll_content):
                             <?php echo esc_html($block['list_title']); ?>
                         </div>
                         <div class="roll-block-item-text text-16-300">
-                            <?php echo esc_html($block['list_text']); ?>
+                            <?php echo wp_kses_post($block['list_text']); ?>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@ if ($roll_content):
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/dangerous-icon.png" alt="icon-dangerous" width="60px" height="66px">
                         </div>
                         <div class="roll-block-dangerous-text text-16-300">
-                            <?php echo esc_html($block['danger_text']); ?>
+                            <?php echo wp_kses_post($block['danger_text']); ?>
                         </div>
                     </div>
                 </div>
