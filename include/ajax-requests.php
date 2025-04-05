@@ -1,34 +1,64 @@
-<?php
+<?
 add_action('wp_ajax_filter_portfolio', 'filter_portfolio');
 add_action('wp_ajax_nopriv_filter_portfolio', 'filter_portfolio');
 
 function filter_portfolio() {
     $selected_category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : 'all';
+    $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+    $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 10;
+
+    $gallery_data = [];
+    $html = '';
+    $total = 0;
 
     if ($selected_category !== 'all') {
+        // Получаем работы услуги
         $service = get_post($selected_category);
         if (!$service) {
             wp_send_json([
                 'html' => '<p>Категория не найдена.</p>',
                 'galleryData' => [],
+                'has_more' => false,
             ]);
         }
 
-        $portfolio_works = get_field('service_portfolio_works', $service->ID);
-        if (!$portfolio_works) {
+        $portfolio_works_all = get_field('service_portfolio_works', $service->ID);
+        if (!$portfolio_works_all || !is_array($portfolio_works_all)) {
             wp_send_json([
                 'html' => '<p>Нет работ в этой категории.</p>',
                 'galleryData' => [],
+                'has_more' => false,
             ]);
         }
 
-        $portfolio_works = array_filter($portfolio_works, function ($work_id) {
+        $filtered_works = array_filter($portfolio_works_all, function ($work_id) {
             return get_field('portfolio_main', $work_id);
         });
+
+        $total = count($filtered_works);
+        $portfolio_works = array_slice($filtered_works, $offset, $limit);
+
     } else {
-        $portfolio_works = get_posts(array(
+        // Все работы с флагом portfolio_main
+        $query_args = array(
+            'post_type'      => 'portfolio_work',
+            'posts_per_page' => $limit,
+            'offset'         => $offset,
+            'meta_query'     => array(
+                array(
+                    'key'     => 'portfolio_main',
+                    'value'   => '1',
+                    'compare' => '='
+                )
+            )
+        );
+        $portfolio_works = get_posts($query_args);
+
+        // Для подсчёта total
+        $all_ids = get_posts(array(
             'post_type'      => 'portfolio_work',
             'posts_per_page' => -1,
+            'fields'         => 'ids',
             'meta_query'     => array(
                 array(
                     'key'     => 'portfolio_main',
@@ -37,16 +67,10 @@ function filter_portfolio() {
                 )
             )
         ));
+        $total = count($all_ids);
     }
 
-    if (!$portfolio_works) {
-        wp_send_json([
-            'html' => '<p>Нет изображений в галерее.</p>',
-            'galleryData' => [],
-        ]);
-    }
-
-    $gallery_data = [];
+    // Генерация HTML и JS-данных
     ob_start();
 
     foreach ($portfolio_works as $index => $work) {
@@ -59,7 +83,6 @@ function filter_portfolio() {
         $master_rank = get_field('master_rank', $master_id);
         $image = get_field('portfolio_image', $work_id);
 
-        // Сохраняем в массив для js
         $gallery_data[] = [
             'imageUrl'     => esc_url($image['url']),
             'masterName'   => esc_html($master_name),
@@ -71,7 +94,7 @@ function filter_portfolio() {
         ?>
 
         <div class="gallery-item">
-            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, 'sliderGallery');">
+            <div class="gallery-photo" onclick="openGallery(<?= $offset + $index; ?>, 'sliderGallery');">
                 <?php if ($image): ?>
                     <img src="<?= esc_url($image['url']); ?>" alt="<?= esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
                 <?php endif; ?>
@@ -125,7 +148,8 @@ function filter_portfolio() {
     $html = ob_get_clean();
 
     wp_send_json([
-        'html' => $html,
+        'html'        => $html,
         'galleryData' => $gallery_data,
+        'has_more'    => ($offset + $limit) < $total,
     ]);
 }

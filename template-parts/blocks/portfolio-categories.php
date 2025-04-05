@@ -49,17 +49,30 @@ foreach ($services as $service) {
     <div class="gallery-items-wrapper row" id="gallery-items">
         <!-- AJAX контент -->
     </div>
+
+    <div class="gallery-load-more-wrapper row">
+        <div id="load-more-button" class="button button-primary" style="display: none;">
+            Загрузить еще
+        </div>
+    </div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const categoryButtons = document.querySelectorAll(".gallery-category");
     const galleryWrapper = document.getElementById("gallery-items");
+    const loadMoreBtn = document.getElementById("load-more-button");
 
-    function fetchPortfolioWorks(category) {
+    let currentOffset = 0;
+    const itemsPerPage = 10;
+    let currentCategory = "all";
+
+    function fetchPortfolioWorks(category, append = false) {
         const formData = new FormData();
         formData.append("action", "filter_portfolio");
         formData.append("category", category);
+        formData.append("offset", currentOffset);
+        formData.append("limit", itemsPerPage);
 
         fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
             method: "POST",
@@ -67,8 +80,17 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            galleryWrapper.innerHTML = data.html;
-            window.galleryData = data.galleryData;
+            if (!append) galleryWrapper.innerHTML = '';
+            galleryWrapper.insertAdjacentHTML('beforeend', data.html);
+            window.galleryDataMap["sliderGallery"] = append
+                ? (window.galleryDataMap["sliderGallery"] || []).concat(data.galleryData)
+                : data.galleryData;
+
+            if (data.has_more) {
+                loadMoreBtn.style.display = "flex";
+            } else {
+                loadMoreBtn.style.display = "none";
+            }
         });
     }
 
@@ -77,9 +99,15 @@ document.addEventListener("DOMContentLoaded", function() {
             categoryButtons.forEach(btn => btn.classList.remove("active"));
             this.classList.add("active");
 
-            const selectedCategory = this.getAttribute("data-category");
-            fetchPortfolioWorks(selectedCategory);
+            currentCategory = this.getAttribute("data-category");
+            currentOffset = 0;
+            fetchPortfolioWorks(currentCategory);
         });
+    });
+
+    loadMoreBtn.addEventListener("click", () => {
+        currentOffset += itemsPerPage;
+        fetchPortfolioWorks(currentCategory, true);
     });
 
     fetchPortfolioWorks("all");

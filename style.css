@@ -216,6 +216,9 @@ a {
     border-radius: 3px;
     border: 1px solid #825E6980;
 }
+ 
+
+
 
 @keyframes shake {
 0%   { transform: translateX(0); }
@@ -227,13 +230,18 @@ a {
 }
 
 .input-default.error {
-border-color: #ED4C5C !important;
-animation: shake 0.4s ease;
+    border-color: #ED4C5C !important;
+    animation: shake 0.4s ease;
 }
 
 .input-default-wrapper {
     position: relative;
     width: 100%;
+}
+
+.checkbox-wrapper.error .checkbox {
+    border-color: #ED4C5C !important;
+    animation: shake 0.4s ease;
 }
 
 .input-default-wrapper .phone-input {

@@ -143,49 +143,57 @@
     <?php the_content(); ?>
 </div>
 <script>
-
 document.querySelector('#send').addEventListener('click', async () => {
-  const nameInput = document.querySelector('#user-name');
-  const phoneInput = document.querySelector('#phone-input');
-  const name = nameInput.value.trim();
-  const phone = phoneInput.value.trim();
+    const checkbox = document.querySelector('.checkbox');
+    const checkboxWrapper = document.querySelector('.checkbox-wrapper');
 
-  nameInput.classList.remove('error');
-  phoneInput.classList.remove('error');
+    checkboxWrapper.classList.remove('error');
 
-  // Проверка имени
-  const nameValid = /^[А-Яа-яA-Za-z\s-]{2,}$/.test(name);
-  if (!nameValid) {
+    if (!checkbox.classList.contains('checked')) {
+        checkboxWrapper.classList.add('error');
+    }
+
+    const nameInput = document.querySelector('#user-name');
+    const phoneInput = document.querySelector('#phone-input');
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+
+    nameInput.classList.remove('error');
+    phoneInput.classList.remove('error');
+
+    // Проверка имени
+    const nameValid = /^[А-Яа-яA-Za-z\s-]{2,}$/.test(name);
+    if (!nameValid) {
     nameInput.classList.add('error');
-  }
+    }
 
-  // Проверка телефона
-  const digitsOnly = phone.replace(/\D/g, '');
-  if (digitsOnly.length < 7) {
+    // Проверка телефона
+    const digitsOnly = phone.replace(/\D/g, '');
+    if (digitsOnly.length < 7) {
     phoneInput.classList.add('error');
-  }
+    }
 
-  if (!nameValid || digitsOnly.length < 7) return;
+    if (!nameValid || digitsOnly.length < 7 || !checkbox.classList.contains('checked')) return;
 
-  // Отправка
-  const formData = new FormData();
-  formData.append('action', 'send_order');
-  formData.append('user_name', name);
-  formData.append('user_phone', phone);
+    // Отправка
+    const formData = new FormData();
+    formData.append('action', 'send_order');
+    formData.append('user_name', name);
+    formData.append('user_phone', phone);
 
-  try {
+    try {
     const response = await fetch('/enibrow/wp-admin/admin-post.php', {
-      method: 'POST',
-      body: formData,
+        method: 'POST',
+        body: formData,
     });
 
     if (!response.ok) throw new Error('Ошибка при отправке формы');
 
     const redirectUrl = new URL(window.location.href);
     window.location.href = redirectUrl.toString();
-  } catch (error) {
+    } catch (error) {
     console.error(error);
-  }
+    }
 });
 </script>
 
