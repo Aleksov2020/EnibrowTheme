@@ -41,8 +41,8 @@ if ($masters_query->have_posts()) :
                 $master_photo = get_field('master_photo', $master_id);
                 $master_likes = get_field('master_likes', $master_id);
 
-                $master_reviews = rand(50, 150);
-                $master_rate = number_format(rand(45, 50) / 10, 1);
+                $master_reviews = (int) get_field('master_review_count', $master_id);
+                $master_rate = (float) get_field('master_rating', $master_id);
 
                 $portfolio_args = array(
                     'post_type'      => 'portfolio_work',

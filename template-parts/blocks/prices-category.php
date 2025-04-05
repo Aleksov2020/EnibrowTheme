@@ -134,5 +134,7 @@ if (empty($services)) {
         </table>
     </div>
 
-    <div class="button button-primary all-masters">Посмотреть все цены</div>
+    <a href="/prices" class="button button-primary all-masters">
+        Посмотреть все цены
+    </a>
 </div>

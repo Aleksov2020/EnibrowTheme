@@ -111,7 +111,7 @@ $masters = get_posts(array(
         </table>
     </div>
 
-    <div class="button button-primary all-masters">
+    <a href="/prices" class="button button-primary all-masters">
         Посмотреть все цены
-    </div>
+    </a>
 </div>

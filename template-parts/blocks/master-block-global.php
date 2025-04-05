@@ -35,9 +35,8 @@ if ($masters_query->have_posts()) :
                 $master_bio = get_field('field_master_short_description', $master_id);
                 $master_photo = get_field('master_photo', $master_id);
                 $master_likes = get_field('master_likes', $master_id);
-
-                $master_reviews = rand(50, 150); // Примерное количество отзывов
-                $master_rate = number_format(rand(45, 50) / 10, 1); // Генерируем рейтинг от 4.5 до 5.0
+                $master_reviews = (int) get_field('master_review_count', $master_id);
+                $master_rate = (float) get_field('master_rating', $master_id);
 
                 // Получаем портфолио мастера
                 $portfolio_args = array(

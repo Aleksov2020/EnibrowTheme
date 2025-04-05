@@ -171,6 +171,22 @@ add_action('acf/init', function() {
                 'instructions' => 'Введите краткое описание мастера для отображения в блоке'
             ),
             array(
+                'key' => 'field_master_review_count',
+                'label' => 'Количество отзывов',
+                'name' => 'master_review_count',
+                'type' => 'number',
+                'min' => 0,
+                'step' => 1,
+                'default_value' => 0,
+            ),
+            array(
+                'key' => 'field_master_rating',
+                'label' => 'Средняя оценка',
+                'name' => 'master_rating',
+                'type' => 'text',
+                'default_value' => "4.4",
+            ),
+            array(
                 'key'   => 'field_master_education',
                 'label' => 'Образование',
                 'name'  => 'master_education',
