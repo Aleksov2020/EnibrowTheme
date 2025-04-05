@@ -795,10 +795,7 @@ add_action('acf/init', function() {
                 'key'   => 'field_promotion_discount',
                 'label' => 'Скидка (рубли)',
                 'name'  => 'promotion_discount',
-                'type'  => 'number',
-                'min'   => 0,
-                'max'   => 100000,
-                'step'  => 1,
+                'type'  => 'text',
             ),
             array(
                 'key'   => 'field_promotion_image',

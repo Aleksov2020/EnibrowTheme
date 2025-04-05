@@ -43,7 +43,7 @@ if (!empty($promotions)): ?>
             
                         <div class="discont-slider row">
                             <div class="discont-filter row">
-                                <div class="discont-slide col">
+                                <div class="discont-slide col" style="background-image: url('<?php echo esc_url($image_url); ?>'); background-size: cover; background-position: center;">
                                     <a href="<?php echo esc_url($link); ?>" class="button button-primary-hover">
                                         Подробнее об акции
                                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
@@ -51,6 +51,7 @@ if (!empty($promotions)): ?>
                                         </svg>
                                     </a>
                                 </div>
+
                             </div>
                         </div>
                     </div>

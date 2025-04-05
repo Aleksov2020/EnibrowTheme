@@ -11,7 +11,7 @@
                         </div>
                         <div class="breabcrumbs-separator"></div>
                         <div class="breabcrumbs-page-name light-text-300">
-                            <a href="<?php echo get_post_type_archive_link('promotion'); ?>">Акции</a>
+                            <a href="<?php echo home_url() . '\promotions' ?>">Акции</a>
                         </div>
                         <div class="breabcrumbs-separator"></div>
                         <div class="breabcrumbs-page-name light-text-300 active">
@@ -38,7 +38,7 @@
                     <?php if ($discount = get_field('promotion_discount')): ?>
                         <div class="sale-page-sale-wrapper row">
                             <div class="title">
-                                Скидка <?php echo esc_html($discount); ?>%
+                                Скидка <?php echo esc_html($discount); ?> рублей
                             </div>
                         </div>
                     <?php endif; ?>

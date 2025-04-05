@@ -16,6 +16,7 @@ if ($promotions_query->have_posts()) :
         $promotion_description = get_field('promotion_description', get_the_ID());
         $promotion_discount = get_field('promotion_discount', get_the_ID());
         $promotion_image = get_field('promotion_image', get_the_ID());
+        $link = get_permalink(get_the_ID());
         ?>
         
         <div class="discont discont-sale-archive-item row">
@@ -33,13 +34,14 @@ if ($promotions_query->have_posts()) :
 
             <div class="discont-slider row">
                 <div class="discont-filter row">
-                    <div class="discont-slide col">
-                        <div class="button button-primary-hover">
+                    <div class="discont-slide col" style="background-image: url('<?php echo esc_url($promotion_image['url']); ?>');">
+                        <a href="<?= esc_url($link) ?>" class="button button-primary-hover">
                             Подробнее об акции
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/iconQuestionPrimary.svg" alt="question" width="15" height="15">
-                        </div>
+                        </a>
                     </div>
                 </div>
+
             </div>
         </div>
 
