@@ -56,20 +56,44 @@ ob_start();
                         $review_images = get_field('review_images', $review_id);
                         $gallery_id = 'reviewGallery_' . $review_id;
 
-                        $reviews_gallery_data[$gallery_id] = [];
+                        $review_master_id = get_field('review_master', $review_id);
+   
+                        $master_name = get_field('master_name', $review_master_id);
+                        $master_surname = get_field('master_surname', $review_master_id);
+                        $master_rank = get_field('master_rank', $review_master_id);
+                        $master_photo = get_field('master_photo', $review_master_id);
+                        $master_link = get_permalink($review_master_id);
 
-                        if ($review_images) {
-                            foreach ($review_images as $img) {
+                        $master_avatar = $master_photo ? esc_url($master_photo['url']) : '';
+
+                        $portfolio_ids = get_field('review_images', $review_id); // теперь это массив ID portfolio_work
+                        $gallery_id = 'reviewGallery_' . $review_id;
+                        $reviews_gallery_data[$gallery_id] = [];
+                        
+                        if ($portfolio_ids) {
+                            foreach ($portfolio_ids as $index => $portfolio_id) {
+                                $image = get_field('portfolio_image', $portfolio_id);
+                                $likes = get_field('portfolio_likes', $portfolio_id);
+                        
+                                $master_id = get_field('portfolio_master', $portfolio_id);
+                                $master_name = $master_id ? get_field('master_name', $master_id) : '';
+                                $master_surname = $master_id ? get_field('master_surname', $master_id) : '';
+                                $master_rank = $master_id ? get_field('master_rank', $master_id) : 'Мастер';
+                                $master_photo = $master_id ? get_field('master_photo', $master_id) : null;
+                                $master_link = $master_id ? get_permalink($master_id) : '#';
+                                $master_avatar = $master_photo ? esc_url($master_photo['url']) : '';
+                        
                                 $reviews_gallery_data[$gallery_id][] = [
-                                    'imageUrl'     => esc_url($img['url']),
-                                    'masterName'   => esc_html($review_name),
-                                    'masterRank'   => 'Клиент',
-                                    'masterLikes'  => '',
-                                    'masterAvatar' => '', // Можно поставить иконку клиента, если есть
-                                    'masterLink'   => '#',
+                                    'imageUrl'     => esc_url($image['url']),
+                                    'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
+                                    'masterRank'   => esc_html($master_rank),
+                                    'masterLikes'  => esc_html($likes),
+                                    'masterAvatar' => $master_avatar,
+                                    'masterLink'   => esc_url($master_link),
                                 ];
                             }
                         }
+                        
                         ?>
                         <div class="review-card col">
                             <div class="review-card-text-wrapper col">
@@ -105,11 +129,14 @@ ob_start();
                             <div class="review-card-footer-wrapper col">
                                 <?php if ($review_images) : ?>
                                     <div class="review-card-gallery-wrapper row">
-                                        <?php foreach ($review_images as $index => $image) : ?>
+                                    <?php foreach ($portfolio_ids as $index => $portfolio_id) : ?>
+                                        <?php $img = get_field('portfolio_image', $portfolio_id); ?>
+                                        <?php if ($img) : ?>
                                             <div class="review-card-gallery-item" onclick="openGallery(<?= $index ?>, '<?= $gallery_id ?>')">
-                                                <img src="<?php echo esc_url($image['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
+                                                <img src="<?= esc_url($img['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
                                             </div>
-                                        <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                     </div>
                                 <?php endif; ?>
                                 <div class="review-card-badge-wrapper row">

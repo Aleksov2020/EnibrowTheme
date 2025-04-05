@@ -3962,6 +3962,10 @@ padding-top: 22px;
     display: none;
 }
 
+.modal-master-cards-likes-counter {
+    display: flex;
+    justify-content: center;
+}
 
 
 

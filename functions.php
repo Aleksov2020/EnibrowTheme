@@ -80,19 +80,19 @@ add_filter('manage_edit-portfolio_work_sortable_columns', function($columns) {
 });
 
 
-add_action('template_redirect', function() {
-  error_log('Template: ' . basename(get_page_template()));
-});
+// add_action('template_redirect', function() {
+//   error_log('Template: ' . basename(get_page_template()));
+// });
 
-global $post;
-error_log('Current page ID: ' . get_the_ID());
-error_log('Current page title: ' . get_the_title());
+// global $post;
+// error_log('Current page ID: ' . get_the_ID());
+// error_log('Current page title: ' . get_the_title());
 
-add_action('pre_get_posts', function($query) {
-  if ($query->is_main_query()) {
-      error_log('Main Query Vars: ' . print_r($query->query_vars, true));
-  }
-});
+// add_action('pre_get_posts', function($query) {
+//   if ($query->is_main_query()) {
+//       error_log('Main Query Vars: ' . print_r($query->query_vars, true));
+//   }
+// });
 
 
 
@@ -172,8 +172,8 @@ add_filter('post_type_link', function($post_link, $post) {
 
   if ($post->post_type === 'uslyga_category') {
       // Получаем ID связанной категории из произвольного поля (ACF post_object)
-      error_log('uslyga_category');
-      error_log($post_link);
+      // error_log('uslyga_category');
+      // error_log($post_link);
 
       $post_link = str_replace('uslyga_category', '', $post_link);
   }
