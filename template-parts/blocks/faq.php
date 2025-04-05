@@ -24,7 +24,7 @@ if ($selected_faqs) :
             $title = get_the_title($faq_id);
             $link = get_permalink($faq_id);
             ?>
-            <div class="faq-item row">
+            <a class="faq-item row" href="<?php echo esc_url($link); ?>" >
                 <div class="faq-item-title-wrapper row">
                     <div class="faq-item-number colored-text">
                         <?php echo str_pad($index + 1, 2, '0', STR_PAD_LEFT); ?>
@@ -38,12 +38,10 @@ if ($selected_faqs) :
                         Ответ мастера
                     </div>
                     <div class="faq-item-link-icon icon">
-                        <a href="<?php echo esc_url($link); ?>">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/arrowRightColor.svg" alt="arrow" width="6" height="12">
-                        </a>
                     </div>
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
     </div>
 

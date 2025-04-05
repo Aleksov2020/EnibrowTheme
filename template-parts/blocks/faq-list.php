@@ -14,7 +14,8 @@ $query = new WP_Query($args);
 <div class="faq-page-wrapper wrapper row">
     <?php if ($query->have_posts()): ?>
         <?php while ($query->have_posts()): $query->the_post(); ?>
-            <div class="faq-page-item-wrapper col">
+            <?php $permalink = get_permalink(); ?>
+            <a href="<?= esc_url($permalink); ?>" class="faq-page-item-wrapper col">
                 <div class="faq-page-item-title">
                     <?php the_title(); ?>
                 </div>
@@ -36,7 +37,7 @@ $query = new WP_Query($args);
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         <?php endwhile; ?>
         <?php wp_reset_postdata(); ?>
     <?php else: ?>
