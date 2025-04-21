@@ -1341,6 +1341,7 @@ nav {
     display: flex;
     justify-content: center;
     background-color: #FFF;
+    user-select: none;
 }
 
 .gallery-image .modal-gallery-image-data {
@@ -1778,6 +1779,7 @@ td.price {
 
 .discont-subtitle {
     line-height: 30px;
+    max-width: 500px;
 }
 
 .discont-value {

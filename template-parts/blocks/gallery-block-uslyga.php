@@ -14,6 +14,8 @@ if (empty($portfolio_works)) {
     echo '<p>Нет работ в портфолио для этой услуги.</p>';
     return;
 }
+
+$gallery_data = [];
 ?>
 
 <div class="gallery wrapper wrapper-laptop col">
@@ -39,9 +41,18 @@ if (empty($portfolio_works)) {
             $master_photo = get_field('master_photo', $master_id);
             $portfolio_likes = get_field('portfolio_likes', $work_id);
             $master_rank = get_field('master_rank', $master_id);
+
+            $gallery_data[] = [
+                'imageUrl'     => esc_url($image['url']),
+                'masterName'   => esc_html($master_name),
+                'masterRank'   => esc_html($master_rank),
+                'masterLikes'  => esc_html($portfolio_likes),
+                'masterAvatar' => esc_url($master_photo['url']),
+                'masterLink'   => esc_url(get_permalink($master_id)),
+            ];
         ?>
         <div class="gallery-item">
-            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, window.galleryData);">
+            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, 'serviceGallery');">
                 <?php if ($image): ?>
                     <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
                 <?php endif; ?>
@@ -94,3 +105,8 @@ if (empty($portfolio_works)) {
         <?php endforeach; ?>
     </div>
 </div>
+
+<script>
+window.galleryDataMap = window.galleryDataMap || {};
+window.galleryDataMap["serviceGallery"] = <?php echo json_encode($gallery_data); ?>;
+</script>

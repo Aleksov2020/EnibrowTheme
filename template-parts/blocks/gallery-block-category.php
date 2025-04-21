@@ -1,48 +1,29 @@
 <?php
-// Получаем текущую категорию услуг
 $category_id = get_the_ID();
+if (!$category_id) return;
 
-if (!$category_id) {
-    echo '<p>Категория услуг не найдена.</p>';
-    return;
-}
-
-// Получаем все услуги, связанные с этой категорией
-$services = get_posts(array(
+$services = get_posts([
     'post_type' => 'uslyga',
     'posts_per_page' => -1,
-    'meta_query' => array(
-        array(
-            'key' => 'usl_cat_field', // Поле ACF с категорией услуги
-            'value' => $category_id,
-            'compare' => '='
-        ),
-    ),
-));
+    'meta_query' => [[
+        'key' => 'usl_cat_field',
+        'value' => $category_id,
+        'compare' => '='
+    ]]
+]);
 
-if (empty($services)) {
-    echo '<p>Нет услуг в этой категории.</p>';
-    return;
-}
-
-// Инициализируем массив для портфолио
 $portfolio_works = [];
-
 foreach ($services as $service) {
-    // Получаем работы портфолио, связанные с данной услугой
-    $portfolio_items = get_field('service_portfolio_works', $service->ID);
-
-    if ($portfolio_items && is_array($portfolio_items)) {
-        foreach ($portfolio_items as $work_id) {
-            $portfolio_works[] = $work_id;
-        }
+    $items = get_field('service_portfolio_works', $service->ID);
+    if ($items && is_array($items)) {
+        foreach ($items as $item) $portfolio_works[] = $item;
     }
 }
 
-if (empty($portfolio_works)) {
-    echo '<p>Нет работ в портфолио для этой категории.</p>';
-    return;
-}
+if (empty($portfolio_works)) return;
+
+// Уникальный ID для текущей галереи
+$gallery_id = 'cat-' . $category_id;
 ?>
 
 <div class="gallery wrapper wrapper-laptop col">
@@ -60,7 +41,7 @@ if (empty($portfolio_works)) {
         </div>
     </div>
 
-    <div class="gallery-items-wrapper row">
+    <div class="gallery-items-wrapper row" id="gallery-items" data-items-total="<?= count($portfolio_works); ?>" data-visible-count="10">
         <?php foreach ($portfolio_works as $index => $work_id):
             $image = get_field('portfolio_image', $work_id);
             $master_id = get_field('portfolio_master', $work_id);
@@ -69,12 +50,12 @@ if (empty($portfolio_works)) {
             $portfolio_likes = get_field('portfolio_likes', $work_id);
             $master_rank = get_field('master_rank', $master_id);
         ?>
-        <div class="gallery-item">
-            <div class="gallery-photo" onclick="openGallery(<?= $index; ?>, window.galleryData);">
-                <?php if ($image): ?>
-                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr(get_the_title($work_id)); ?>" width="276" height="276">
-                <?php endif; ?>
-            </div>
+        <div class="gallery-item" data-index="<?= $index; ?>" style="<?= $index >= 10 ? 'display:none;' : ''; ?>">
+                <div class="gallery-photo" onclick="openGallery(<?= $index ?>, '<?= $gallery_id ?>')">
+                    <?php if ($image): ?>
+                        <img src="<?= esc_url($image['url']) ?>" alt="" width="276" height="276">
+                    <?php endif; ?>
+                </div>
             <div class="gallery-text col">
                 <div class="gallery-master-card row">
                     <div class="gallery-master-card-left-wrapper row">
@@ -124,10 +105,56 @@ if (empty($portfolio_works)) {
     </div>
 
     <div class="gallery-items-button-wrapper row">
-        <div class="button button-primary">
-            Еще фотографии
-        </div>
+        <div class="button button-primary" id="load-more-button">Еще фотографии</div>
     </div>
 </div>
 
+<?php
+// Подготовим массив данных для модалки
+$gallery_data = [];
+foreach ($portfolio_works as $work_id) {
+    $image = get_field('portfolio_image', $work_id);
+    $master_id = get_field('portfolio_master', $work_id);
+    $gallery_data[] = [
+        'imageUrl'     => esc_url($image['url']),
+        'masterName'   => esc_html(get_field('master_name', $master_id)),
+        'masterRank'   => esc_html(get_field('master_rank', $master_id)),
+        'masterLikes'  => esc_html(get_field('portfolio_likes', $work_id)),
+        'masterAvatar' => esc_url(get_field('master_photo', $master_id)['url']),
+        'masterLink'   => esc_url(get_permalink($master_id)),
+    ];
+}
 
+// JS массив для конкретной галереи
+echo "<script>
+window.galleryDataMap = window.galleryDataMap || {};
+window.galleryDataMap['{$gallery_id}'] = " . json_encode($gallery_data) . ";
+</script>";
+?>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const wrapper = document.getElementById("gallery-items");
+    const button = document.getElementById("load-more-button");
+
+    const total = parseInt(wrapper.getAttribute("data-items-total"), 10);
+    let visibleCount = parseInt(wrapper.getAttribute("data-visible-count"), 10);
+    const step = 10;
+
+    button.addEventListener("click", () => {
+        const items = wrapper.querySelectorAll(".gallery-item");
+        for (let i = visibleCount; i < visibleCount + step *  i < total; i++) {
+            items[i].style.display = 'flex';
+        }
+
+        visibleCount += step;
+
+        if (visibleCount >= total) {
+            button.style.display = "none";
+        }
+
+        wrapper.setAttribute("data-visible-count", visibleCount);
+    });
+});
+</script>

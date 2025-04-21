@@ -48,7 +48,7 @@
                     <div class="breadcrumbs-page-name light-text-300">
                         <a href="<?php echo home_url(); ?>">Главная</a>
                     </div>
-                    <div class="breadcrumbs-separator"></div>
+                    <div class="breabcrumbs-separator"></div>
                     <div class="breadcrumbs-page-name light-text-300 active">
                         <a href="<?php echo get_permalink( $page_id); ?>"><?php the_title(); ?></a>
                         

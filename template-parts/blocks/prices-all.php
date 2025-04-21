@@ -68,7 +68,7 @@ foreach ($masters as $master) {
 }
 ?>
 
-<div class="services-price wrapper-price-content col">
+<div class="services-price wrapper-price-content col" style="margin-top: 0;">
     <div class="price-wrapper-animation-outer">
         <div class="price-animation-wrapper row">
             <div class="price-animation-item">
@@ -155,8 +155,4 @@ foreach ($masters as $master) {
             </tbody>
         </table>
     </div>
-
-    <a class="button button-primary all-masters" href='/prices'>
-        Посмотреть все цены
-    </a>
 </div>

@@ -68,7 +68,7 @@ function register_custom_acf_blocks() {
         'title'           => __('Цветная обертка'),
         'description'     => __('Контейнер для вложенных блоков'),
         'render_template' => get_template_directory() . '/template-parts/blocks/colored-wrapper.php',
-        'category'        => 'enibrow',
+        'category'        => 'enibrow-wrappers',
         'icon'            => 'align-center',
         'keywords'        => array('контейнер', 'обертка', 'wrapper'),
         'supports'        => array(
@@ -123,22 +123,11 @@ function register_custom_acf_blocks() {
     ));
 
     acf_register_block_type(array(
-        'name' => 'gallery_block',
-        'title' => __('Галерея работ', 'textdomain'),
-        'description' => __('Галерея фотографий из портфолио мастеров', 'textdomain'),
-        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block.php',
-        'category' => 'enibrow',
-        'icon' => 'images-alt2',
-        'keywords' => array('галерея', 'фото', 'портфолио'),
-        'mode' => 'edit',
-    ));
-
-    acf_register_block_type(array(
         'name'            => 'prices',
-        'title'           => __('Таблица цен'),
+        'title'           => __('Таблица цен (Главная)'),
         'description'     => __('Выводит таблицу с ценами мастеров на услуги.'),
         'render_template' => get_template_directory() . '/template-parts/blocks/prices.php',
-        'category'        => 'enibrow',
+        'category'        => 'enibrow-prices',
         'icon'            => 'money-alt',
         'keywords'        => array('цены', 'стоимость', 'прайс'),
     ));
@@ -218,18 +207,7 @@ function register_custom_acf_blocks() {
     ));
     
 
-    acf_register_block_type(array(
-        'name'            => 'portfolio_categories_block',
-        'title'           => __('Галерея работ с фильтром', 'textdomain'),
-        'description'     => __('Выводит категории портфолио для фильтрации'),
-        'render_template' => get_template_directory() . '/template-parts/blocks/portfolio-categories.php',
-        'category'        => 'enibrow',
-        'icon'            => 'images-alt2',
-        'keywords'        => array('portfolio', 'filter', 'gallery'),
-        'supports'        => array(
-            'align' => true,
-        ),
-    ));
+
     
     acf_register_block_type(array(
         'name'              => 'our_services',
@@ -251,7 +229,7 @@ function register_custom_acf_blocks() {
         'name'            => 'faq_wrapper',
         'title'           => 'Обертка с формой',
         'description'     => 'Блок-обертка с возможностью размещения контента и формой сбоку.',
-        'category'        => 'enibrow',
+        'category'        => 'enibrow-wrappers',
         'icon'            => 'layout',
         'keywords'        => array('wrapper', 'form', 'faq'),
         'supports'        => array('align' => false, 'jsx' => true),
@@ -262,7 +240,7 @@ function register_custom_acf_blocks() {
         'name'            => 'header_wrapper',
         'title'           => 'Обертка для заголовка',
         'description'     => 'Блок-обертка с возможностью размещения контента для заголовков на страницах',
-        'category'        => 'enibrow',
+        'category'        => 'enibrow-wrappers',
         'icon'            => 'layout',
         'keywords'        => array('wrapper', 'form', 'faq'),
         'supports'        => array('align' => false, 'jsx' => true),
@@ -271,8 +249,8 @@ function register_custom_acf_blocks() {
 
     acf_register_block_type(array(
         'name'              => 'faq_filter',
-        'title'             => __('FAQ Фильтр'),
-        'description'       => __('Фильтр тем для FAQ (ручное добавление)'),
+        'title'             => __('Фильтр для страниц'),
+        'description'       => __('Фильтр тем для (ручное добавление)'),
         'render_template'   => get_template_directory() . '/template-parts/blocks/filter-block.php',
         'category'          => 'enibrow',
         'icon'              => 'filter',
@@ -367,22 +345,6 @@ function register_custom_acf_blocks() {
         'category'        => 'enibrow',
         'icon'            => 'megaphone',
         'keywords'        => array('акции', 'промо', 'скидки'),
-        'supports'        => array(
-            'align'    => true,
-            'anchor'   => true,
-            'mode'     => false,
-            'jsx'      => true,
-        ),
-    ));
-
-    acf_register_block_type(array(
-        'name'            => 'portfolio_gallery',
-        'title'           => __('Галерея портфолио'),
-        'description'     => __('Блок для вывода всех записей портфолио, относящихся к текущей странице.'),
-        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-list.php',
-        'category'        => 'enibrow',
-        'icon'            => 'format-gallery',
-        'keywords'        => array('портфолио', 'галерея', 'работы мастеров'),
         'supports'        => array(
             'align'    => true,
             'anchor'   => true,
@@ -510,7 +472,7 @@ function register_custom_acf_blocks() {
         'title'           => __('Цены на услуги категории'),
         'description'     => __('Выводит таблицу с ценами мастеров на услуги категории.'),
         'render_template' => get_template_directory() . '/template-parts/blocks/prices-category.php',
-        'category'        => 'enibrow',
+        'category'        => 'enibrow-prices',
         'icon'            => 'money-alt',
         'keywords'        => array('цены', 'стоимость', 'прайс'),
         'supports'        => array(
@@ -518,52 +480,102 @@ function register_custom_acf_blocks() {
         )
     ));
 
-    acf_register_block_type(array(
-        'name'            => 'category_portfolio_gallery',
-        'title'           => __('Галерея работ категории'),
-        'description'     => __('Галерея фотографий работ, связанных с услугами категории.'),
-        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-category.php',
-        'category'        => 'enibrow',
-        'icon'            => 'format-gallery',
-        'keywords'        => array('галерея', 'работы', 'портфолио'),
-        'post_types'      => array('uslyga_category'), // Выводить только на страницах категорий услуг
-    ));
+
     
     acf_register_block_type(array(
         'name'              => 'category-service-prices',
         'title'             => __('Цены на услуги для услуг'),
         'description'       => __('Выводит таблицу с ценами услуг по категориям на странице категории.'),
         'render_template'   => get_template_directory() . '/template-parts/blocks/prices-uslyga.php',
-        'category'          => 'enibrow', // Используем категорию блоков Enibrow
+        'category'          => 'enibrow-prices', // Используем категорию блоков Enibrow
         'icon'              => 'money-alt',
         'keywords'          => array('цены', 'категория', 'стоимость', 'прайс'),
         'supports'          => array(
             'align' => false,      // Отключаем выравнивание
             'jsx' => true         // Включаем поддержку JSX
-        ),
-        'enqueue_style' => get_template_directory_uri() . '/assets/css/category-service-prices.css', // Подключаем CSS для блока
+        )
     ));
 
-    acf_register_block_type(array(
-        'name'            => 'service-gallery',
-        'title'           => __('Галерея услуги для страницы услуг'),
-        'description'     => __('Отображает фотографии, связанные с конкретной услугой.'),
-        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-uslyga.php',
-        'category'        => 'enibrow',
-        'icon'            => 'images-alt2',
-        'keywords'        => array('галерея', 'фото', 'услуга'),
-    ));
+
 
     acf_register_block_type(array(
         'name'              => 'price_table',
         'title'             => __('Таблица цен (вывод всего)'),
         'description'       => __('Блок с таблицей цен на услуги'),
         'render_template'   => get_template_directory() . '/template-parts/blocks/prices-all.php',
-        'category'          => 'enibrow',
+        'category'          => 'enibrow-prices',
         'icon'              => 'money-alt',
         'keywords'          => array('цены', 'стоимость', 'прайс'),
         'supports'          => array('align' => false),
     ));
+
+
+
+    //Галереи
+
+
+    acf_register_block_type(array(
+        'name' => 'gallery_block',
+        'title' => __('Галерея работ (Все работы)', 'textdomain'),
+        'description' => __('Вывод всез работ', 'textdomain'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block.php',
+        'category' => 'enibrow-gallery',
+        'icon' => 'images-alt2',
+        'keywords' => array('галерея', 'фото', 'портфолио'),
+        'mode' => 'edit',
+    ));
+
+    acf_register_block_type(array(
+        'name'            => 'portfolio_categories_block',
+        'title'           => __('Галерея работ (Для главной)', 'textdomain'),
+        'description'     => __('Выводит категории портфолио с фильтрацей'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/portfolio-categories.php',
+        'category'        => 'enibrow-gallery',
+        'icon'            => 'images-alt2',
+        'keywords'        => array('portfolio', 'filter', 'gallery'),
+        'supports'        => array(
+            'align' => true,
+        ),
+    ));
+
+    acf_register_block_type(array(
+        'name'            => 'category_portfolio_gallery',
+        'title'           => __('Галерея работ (Категории)'),
+        'description'     => __('Галерея фотографий работ, связанных с услугами категории.'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-category.php',
+        'category'        => 'enibrow-gallery',
+        'icon'            => 'format-gallery',
+        'keywords'        => array('галерея', 'работы', 'портфолио')
+    ));
+
+
+    acf_register_block_type(array(
+        'name'            => 'service-gallery',
+        'title'           => __('Галерея услуги (Услуга)'),
+        'description'     => __('Отображает фотографии, связанные с конкретной услугой.'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-uslyga.php',
+        'category'        => 'enibrow-gallery',
+        'icon'            => 'images-alt2',
+        'keywords'        => array('галерея', 'фото', 'услуга'),
+    ));
+
+
+    acf_register_block_type(array(
+        'name'            => 'portfolio_gallery',
+        'title'           => __('Галерея портфолио (Для страниц-фильтров)'),
+        'description'     => __('Блок для вывода всех записей портфолио, относящихся к текущей странице.'),
+        'render_template' => get_template_directory() . '/template-parts/blocks/gallery-list.php',
+        'category'        => 'enibrow-gallery',
+        'icon'            => 'format-gallery',
+        'keywords'        => array('портфолио', 'галерея', 'работы мастеров'),
+        'supports'        => array(
+            'align'    => true,
+            'anchor'   => true,
+            'mode'     => false,
+            'jsx'      => true,
+        ),
+    ));
+
 }
 
 // Добавляем страницу настроек в админку
@@ -594,3 +606,46 @@ function register_custom_block_category($categories, $post) {
     );
 }
 add_filter('block_categories_all', 'register_custom_block_category', 10, 2);
+
+function register_custom_block_gallery($categories, $post) {
+    return array_merge(
+        array(
+            array(
+                'slug'  => 'enibrow-gallery',
+                'title' => __('Галерея Enibrow ', 'textdomain'),
+                'icon'  => 'layout'
+            ),
+        ),
+        $categories
+    );
+}
+add_filter('block_categories_all', 'register_custom_block_gallery', 10, 2);
+
+function register_custom_block_wrappers($categories, $post) {
+    return array_merge(
+        array(
+            array(
+                'slug'  => 'enibrow-wrappers',
+                'title' => __('Обертки Enibrow ', 'textdomain'),
+                'icon'  => 'layout'
+            ),
+        ),
+        $categories
+    );
+}
+add_filter('block_categories_all', 'register_custom_block_wrappers', 10, 2);
+
+
+function register_custom_block_prices($categories, $post) {
+    return array_merge(
+        array(
+            array(
+                'slug'  => 'enibrow-prices',
+                'title' => __('Цены Enibrow', 'textdomain'),
+                'icon'  => 'layout'
+            ),
+        ),
+        $categories
+    );
+}
+add_filter('block_categories_all', 'register_custom_block_prices', 10, 2);

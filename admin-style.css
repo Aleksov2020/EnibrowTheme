@@ -7,6 +7,11 @@ html :where(.wp-block) {
     max-width: 1200px !important;
 }
 
+.main-text-wrapper, .blog-page-title-wrapper {
+    padding: 20px !important;
+    border: 1px solid gray;
+}
+
 body {
     font-family: "Montserrat", serif;
     font-weight: 400;
@@ -1034,14 +1039,21 @@ nav {
 
 .gallery-item {
     position: relative;
+    width: 30% !important;
+}
+
+.faq-page-form-wrapper {
+    display: none !important;
 }
 
 .gallery-photo {
-    width: 20%;
+    width: 100%;
     height: 276px;
 }
 
 .gallery-photo img {
+    width: 100%;
+    height: 100%;
     border-radius: 5px;
     object-fit: cover;
 }

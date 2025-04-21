@@ -170,21 +170,6 @@ if ($masters_query->have_posts()) :
             <?php endwhile; ?>
         </div>
     </div>
-    <div class="buttons-masters-wrapper row">
-        <div class="masters-button-slider prev-button">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 1L1 7L7 13" stroke="#825E69" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-        </div>
-        <a href="/master" class="button button-primary all-masters">
-            Все мастера
-        </a>
-        <div class="masters-button-slider next-button">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 13L7 7L1 0.999999" stroke="#825E69" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-        </div>
-    </div>
 <?php
 else :
     echo '<p>Мастера не найдены.</p>';

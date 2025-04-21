@@ -338,42 +338,42 @@ document.addEventListener('DOMContentLoaded', function () {
     const masterLikes = modal.querySelector('.modal-master-cards-likes-counter');
     const leftButton = modal.querySelector('.modal-gallery-left');
     const rightButton = modal.querySelector('.modal-gallery-right');
-    const closeButton = modal.querySelector('.modal-gallery-master-more');
+    const closeButton = modal.querySelector('#close-gallery-modal');
     const masterLink = modal.querySelector('#master-link');
-    const buttonOrder = modal.querySelector('.button-order');
+    const moreLink = modal.querySelector('#master-more');
 
     let currentIndex = 0;
-    let currentGalleryData = [];
+    let currentGallery = [];
 
     window.openGallery = function (index, galleryId) {
-        currentGalleryData = window.galleryDataMap[galleryId] || [];
+        currentGallery = window.galleryDataMap[galleryId] || [];
         currentIndex = index;
         updateModal();
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
-        console.log(window.galleryDataMap);
     };
 
     function updateModal() {
-        const data = currentGalleryData[currentIndex];
+        const data = currentGallery[currentIndex];
         if (!data) return;
+
         galleryImage.src = data.imageUrl;
         masterAvatar.style.backgroundImage = `url(${data.masterAvatar})`;
         masterName.textContent = data.masterName || 'Мастер';
-        masterRank.textContent = data.masterRank || 'Мастер';
+        masterRank.textContent = data.masterRank || '';
         masterLikes.textContent = data.masterLikes || '0';
         masterLink.href = data.masterLink;
-        closeButton.href = data.masterLink;
+        moreLink.href = data.masterLink;
     }
 
     leftButton.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + currentGalleryData.length) % currentGalleryData.length;
+        currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
         document.getElementById("like-button").classList.remove("active");
         updateModal();
     });
 
     rightButton.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % currentGalleryData.length;
+        currentIndex = (currentIndex + 1) % currentGallery.length;
         document.getElementById("like-button").classList.remove("active");
         updateModal();
     });
@@ -389,12 +389,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.overflow = '';
         }
     });
-
-    document.getElementById("close-gallery-modal").addEventListener("click", () => {
-        modal.classList.remove('show');
-        document.querySelector('body').style.overflow = 'auto';
-        document.getElementById("like-button").classList.remove("active");
-    })
 });
 
 document.addEventListener("DOMContentLoaded", function () {
