@@ -4728,6 +4728,8 @@ padding-top: 22px;
 .modal-order-background.show .modal-order {
     width: 100%;
     transition: 1s;
+    overflow-x: auto;
+    position: relative;
 }
 
 .modal-order-title-wrapper {
@@ -6198,6 +6200,7 @@ padding-top: 22px;
         position: relative;
         padding: 0;
         box-shadow: none;
+        min-height: unset;
     }
 
     .full-width-container-title-icon {
@@ -6951,6 +6954,7 @@ padding-top: 22px;
         display: flex;
         position: fixed;
         bottom: 0;
+        z-index: 100;
     }
     
     .wrapper-mobile-contacts {
@@ -6959,6 +6963,7 @@ padding-top: 22px;
     
     .button-mobile-circle {
         display: flex;
+    
     }
     
 }

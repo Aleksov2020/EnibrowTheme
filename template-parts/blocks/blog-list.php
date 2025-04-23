@@ -18,7 +18,7 @@ if ($posts) :
                 $thumbnail = get_field('blog_image', $post->ID);
             ?>
                 <div class="blog-item col">
-                    <div class="blog-item-photo col" style="background-image: url('<?php echo esc_url($thumbnail['url']); ?>');">
+                    <a href="<?php echo esc_url($permalink); ?>" class="blog-item-photo col" style="background-image: url('<?php echo esc_url($thumbnail['url']); ?>');">
                         <div class="blog-item-counters-wrapper text-16-300 row">
                             <div class="blog-item-counter-wrapper row">
                                 <div class="blog-item-counter-icon">
@@ -37,7 +37,7 @@ if ($posts) :
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <div class="blog-item-text-wrapper col">
                         <div class="blog-item-title colored-text">
                             <?php echo esc_html($title); ?>

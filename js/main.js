@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextButton = document.querySelector(".discont-slider-button.next-button");
     let currentIndex = 0;
 
+    if (!prevButton || !nextButton) return;
+
     function updateSlidePosition() {
         track.style.transform = `translateX(-${currentIndex * 50}%)`;
     }
@@ -165,6 +167,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextButton = document.querySelector(".next-button");
     
     let currentIndex = 0;
+    if (slides.length == 0) return;
+
     const slideWidth = slides[0].offsetWidth; // Ширина одного слайда
     const visibleSlides = 2; // Количество видимых слайдов
 
@@ -281,6 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const track = document.querySelector(".about-slider-track");
     const slides = document.querySelectorAll(".about-slide-right");
+    if (slides.length == 0) return;
     const prevButton = document.querySelector(".about-slide-right-button.prev-button");
     const nextButton = document.querySelector(".about-slide-right-button.next-button");
     let currentIndex = 0;
@@ -400,71 +405,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* header open menu */
+document.addEventListener('DOMContentLoaded', function () {
+    const headerItems = document.querySelectorAll(".nav__item");
 
-const headerItems = document.querySelectorAll(".nav__item");
+    headerItems.forEach((item) => {
+        const dropdown = item.querySelector(".services-header-wrapper"); // Находим вложенное меню
+        const arrow = item.querySelector("img"); // Находим стрелку
 
-headerItems.forEach((item) => {
-    const dropdown = item.querySelector(".services-header-wrapper"); // Находим вложенное меню
-    const arrow = item.querySelector("img"); // Находим стрелку
-
-    if (dropdown && window.innerWidth > 760) { // Проверяем, есть ли вложенное меню
-        let isOpen = false;
-       
-        item.addEventListener("mouseover", (event) => {
-            // Закрываем все открытые меню
-            document.querySelectorAll(".services-header-wrapper").forEach((el) => {
-                el.classList.remove("active");
-            });
-
-            // Открываем текущее меню
-            dropdown.classList.add("active");
-
-            // Переключаем поворот стрелки
-            arrow.classList.toggle("rotate", true);
-
-            // Ставим флаг, что меню открыто
-            isOpen = true;
-
-            // Добавляем обработчик для закрытия меню при уходе мыши
-            dropdown.addEventListener("mouseleave", () => {
-                dropdown.classList.remove("active");
-                // Переключаем поворот стрелки
-                arrow.classList.toggle("rotate", false);
-                isOpen = false;
-            }, { once: true });
-
-        });
+        if (dropdown && window.innerWidth > 760) { // Проверяем, есть ли вложенное меню
+            let isOpen = false;
         
-        // Обработчик для клика по всему документу, чтобы закрыть меню, если клик был не на открытом меню
-        document.addEventListener('click', (event) => {
-            // Если клик не был на открытом меню и его стрелке, закрываем меню
-            if (isOpen && !dropdown.contains(event.target) && !arrow.contains(event.target)) {
-                dropdown.classList.remove("active");
-                arrow.classList.toggle("rotate", false);
-                isOpen = false;
-            }
-        });
-        
-    } else {
-        item.addEventListener("click", (event) => {
-            const isOpen = dropdown.classList.contains("active");
+            item.addEventListener("mouseover", (event) => {
+                // Закрываем все открытые меню
+                document.querySelectorAll(".services-header-wrapper").forEach((el) => {
+                    el.classList.remove("active");
+                });
 
-            // Переключаем класс "active" для текущего элемента
-            if (!isOpen) {
+                // Открываем текущее меню
                 dropdown.classList.add("active");
-            } else {
-                if (event.target.classList.contains("label-nav__item")) {
+
+                // Переключаем поворот стрелки
+                arrow.classList.toggle("rotate", true);
+
+                // Ставим флаг, что меню открыто
+                isOpen = true;
+
+                // Добавляем обработчик для закрытия меню при уходе мыши
+                dropdown.addEventListener("mouseleave", () => {
                     dropdown.classList.remove("active");
+                    // Переключаем поворот стрелки
+                    arrow.classList.toggle("rotate", false);
+                    isOpen = false;
+                }, { once: true });
+
+            });
+            
+            // Обработчик для клика по всему документу, чтобы закрыть меню, если клик был не на открытом меню
+            document.addEventListener('click', (event) => {
+                // Если клик не был на открытом меню и его стрелке, закрываем меню
+                if (isOpen && !dropdown.contains(event.target) && !arrow.contains(event.target)) {
+                    dropdown.classList.remove("active");
+                    arrow.classList.toggle("rotate", false);
+                    isOpen = false;
                 }
-                
-            }
+            });
+            
+        } else {
+            item.addEventListener("click", (event) => {
+                const isOpen = dropdown.classList.contains("active");
 
-            // Переключаем поворот стрелки
-            arrow.classList.toggle("rotate", !isOpen);
-        });
-    }
+                // Переключаем класс "active" для текущего элемента
+                if (!isOpen) {
+                    dropdown.classList.add("active");
+                } else {
+                    if (event.target.classList.contains("label-nav__item")) {
+                        dropdown.classList.remove("active");
+                    }
+                    
+                }
+
+                // Переключаем поворот стрелки
+                arrow.classList.toggle("rotate", !isOpen);
+            });
+        }
+    });
 });
-
 
 document.addEventListener('DOMContentLoaded', function () {
     // Находим все элементы с классом .full-width-container-title
