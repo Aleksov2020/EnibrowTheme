@@ -1396,7 +1396,7 @@ nav {
     background-color:  #825E69;
     display: flex;
     align-items: center;
-    padding: 10px 40px;
+    padding: 13px 40px;
     color: #FFF;
     font-family: Montserrat;
     font-weight: 400;
@@ -1404,6 +1404,7 @@ nav {
     line-height: 100%;
     letter-spacing: 0%;
     cursor: pointer;
+    border-radius: 3px;
 }
 
 .modal-gallery-button {
@@ -1412,6 +1413,46 @@ nav {
     padding: 21px 25px;
     background-color: #FFF;
     cursor: pointer;
+    z-index: 4;
+}
+
+
+@media (max-width: 760px) { 
+    .modal-gallery-right {
+        right: 25px;
+        top: 90%;
+    }
+
+    .modal-gallery-left {
+        left: 25px;
+        top: 90%;
+    }
+
+    .modal-gallery-master {
+        flex-direction: column;
+    }
+
+    .modal-gallery-master-more {
+        display: none;
+    }
+
+    .modal-gallery-master-left {
+        width: 100%;
+        max-width: unset;
+    }
+
+    .modal-gallery-master-right > .modal-gallery-master-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-gallery-master-right {
+        width: 100%;
+    }
+
+    .modal-gallery-master {
+        gap: 10px;
+    }
 }
 
 .modal-video-background {
@@ -5166,13 +5207,6 @@ padding-top: 22px;
         margin-top: 0;
     }
 
-
-
-
-    .gallery-item:nth-last-of-type(-n+2) {
-        display: none;
-    }
-
     .master-card:nth-last-of-type(-n+2) {
         display: none;
     }
@@ -5180,14 +5214,6 @@ padding-top: 22px;
     .blog-item:nth-last-of-type(-n+1) {
         display: none;
     }
-
-
-
-
-
-
-
-
 
     .master-card {
         width: 706px;
@@ -5711,10 +5737,6 @@ padding-top: 22px;
 
     .gallery-item {
         display: flex;
-    }
-
-    .gallery-item:nth-last-of-type(-n+1) {
-        display: none;
     }
 
     .video-item {
@@ -6378,10 +6400,6 @@ padding-top: 22px;
         object-fit: cover;
     }
 
-    .gallery-item:nth-last-of-type(-n+5) {
-        display: none;
-    }
-
     .discont {
         flex-direction: column;
         height: auto;
@@ -6941,3 +6959,32 @@ padding-top: 22px;
     }
     
 }
+
+.modal-gallery-image-data {
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+  }
+  
+  .modal-gallery-image-data.fade-out-left {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  
+  .modal-gallery-image-data.fade-out-right {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  
+  .modal-gallery-image-data.fade-in-left {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  
+  .modal-gallery-image-data.fade-in-right {
+    transform: translateX(100%);
+    opacity: 0;
+  }

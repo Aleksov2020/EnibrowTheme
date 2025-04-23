@@ -26,7 +26,7 @@ if (empty($masters)) {
 }
 ?>
 
-<div class="services-price wrapper col">
+<div class="services-price wrapper-price-content col">
     <div class="title-wrapper row">
         <div class="title-left-arrow row">
             <div class="spacer-title"></div>
@@ -63,13 +63,12 @@ if (empty($masters)) {
                     </th>
                     <?php foreach ($masters as $master) : ?>
                         <th class="<?= get_field('master_rank', $master->ID) ? 'top-master-label' : ''; ?>">
-                            <?php if ($master_rank = get_field('master_rank', $master->ID)) : ?>
-                                <div class="label-fot-top-master"><?= esc_html($master_rank); ?></div>
+                            <?php if ($rank = get_field('master_rank', $master->ID)) : ?>
+                                <div class="label-fot-top-master"><?= esc_html($rank); ?></div>
                             <?php endif; ?>
-                            <a href="<?= get_permalink($master->ID)?>">
+                            <a href="<?= get_permalink($master->ID) ?>">
                                 <?= esc_html(get_field('master_name', $master->ID)); ?>
                             </a>
-                           
                         </th>
                     <?php endforeach; ?>
                 </tr>
@@ -80,67 +79,70 @@ if (empty($masters)) {
                         <div class="services-price-wrapper-name col">
                             <div class="services-price-name-wrapper row">
                                 <div class="services-price-name text-20-400">
-                                    <?= esc_html(get_the_title($service_id)); ?>
+                                    <?= esc_html(get_field('service_short_name', $service_id);); ?>
                                 </div>
                                 <?php
-                                // Проверка на связанную акцию через relationship поле
-                                $promotion_args = array(
-                                    'post_type'      => 'promotion',
+                                $promotion_args = [
+                                    'post_type' => 'promotion',
                                     'posts_per_page' => 1,
-                                    'meta_query'     => array(
-                                        array(
-                                            'key'     => 'promotion_services',
-                                            'value'   => '"' . $service_id . '"',
-                                            'compare' => 'LIKE',
-                                        ),
-                                    ),
-                                );
+                                    'meta_query' => [[
+                                        'key'     => 'promotion_services',
+                                        'value'   => '"' . $service_id . '"',
+                                        'compare' => 'LIKE',
+                                    ]]
+                                ];
                                 $promo_query = new WP_Query($promotion_args);
-
                                 if ($promo_query->have_posts()) :
-                                    $promo_query->the_post();
-                                    $promo_link = get_permalink();
-                                    ?>
-                                    <a href="<?= esc_url($promo_link); ?>" class="services-price-sale-badge text-16-500">
+                                    $promo_query->the_post(); ?>
+                                    <a href="<?= esc_url(get_permalink()); ?>" class="services-price-sale-badge text-16-500">
                                         Акция
                                     </a>
-                                    <?php
-                                    wp_reset_postdata();
-                                endif;
-                                ?>
+                                    <?php wp_reset_postdata(); ?>
+                                <?php endif; ?>
                             </div>
                             <div class="services-price-short-description light-text-300">
                                 <?= esc_html(get_field('service_short_description', $service_id)); ?>
                             </div>
-                            <div class="services-price-link colored-text light-text-300">Подробнее об услуге</div>
+                            <a href="<?= esc_url(get_permalink($service_id)); ?>" class="services-price-link colored-text light-text-300">
+                                Подробнее об услуге
+                            </a>
                         </div>
                     </td>
-                    <?php foreach ($masters as $master) : ?>
-                        <?php
-                        $master_services = get_field('master_services', $master->ID); 
+                    <?php foreach ($masters as $master) :
                         $price = '-';
-                        $class = "";
+                        $class = '';
+                        $master_services = get_field('master_services', $master->ID);
 
                         if ($master_services) {
                             foreach ($master_services as $entry) {
                                 if ($entry['uslyga'] == $service_id) {
-                                    $price = !empty($entry['service_price']) ? $entry['service_price'] . " ₽" : "-";
-                                    $class = !empty($entry['service_price']) ? "price-active" : "";
+                                    $price = !empty($entry['service_price']) ? $entry['service_price'] . ' ₽' : '-';
+                                    $class = !empty($entry['service_price']) ? 'price-active' : '';
                                     break;
                                 }
                             }
                         }
                         ?>
-                        <td class="price text-18-400 <?= $class ?>">
-                            <?= esc_html($price); ?>
+                        <td class="price text-18-400">
+                            <div class="price-button-service <?= $class ?>"
+                                data-master-id="<?= esc_attr($master->ID); ?>"
+                                data-service-id="<?= esc_attr($service_id); ?>">
+                                <?= esc_html($price); ?>
+                            </div>
                         </td>
                     <?php endforeach; ?>
+                </tr>
+                <tr class="first-row">
+                    <td colspan="<?= count($masters) + 1; ?>">
+                        * <span class="text-16-500">Примечание</span> — Цена может варьироваться в зависимости от мастера и выбранной техники
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="button button-primary all-masters">
+
+    <a href="#order" class="button button-primary all-masters">
         Записаться
-    </div>
+    </a>
 </div>
 

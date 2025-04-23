@@ -939,6 +939,12 @@ add_action('acf/init', function() {
                     ),
                 ),
             ),
+            array(
+                'key' => 'field_slider_map_link',
+                'label' => 'Ссылка на карту',
+                'name' => 'slider_map_link',
+                'type' => 'url',
+            ),
         ),
         'location' => array(
             array(

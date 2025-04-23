@@ -45,15 +45,15 @@ if ($services_query->have_posts()):
                 $default_image = get_template_directory_uri() . '/assets/girl-service.png';
                 $background_url = $image ? $image['url'] : $default_image;
                 ?>
-                <div class="subservice-item-photo col" style="background-image: url('<?php echo esc_url($background_url); ?>')">
+                <a href="<?php the_permalink(); ?>" class="subservice-item-photo col" style="background-image: url('<?php echo esc_url($background_url); ?>')">
                     <?php if (get_field('service_promo')): ?>
                         <div class="subservice-item-badge badge-primary">Акция</div>
                     <?php endif; ?>
-                </div>
+                </a>
                 <div class="subservice-item-wrapper col">
-                    <div class="subservice-item-title colored-text">
+                    <a href="<?php the_permalink(); ?>" class="subservice-item-title colored-text">
                         <?php the_title(); ?>
-                    </div>
+                    </a>
                     <div class="subservice-item-text-item row">
                         <div class="subservice-item-text-item-icon icon">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/coinSmall.svg" alt="coin">

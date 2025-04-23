@@ -67,10 +67,13 @@
                             <div class="address-map">
                                 <?= esc_html(get_field('slider_address')); ?>
                             </div>
-                            <?php if ($map_image = get_field('slider_map_image')): ?>
-                                <div class="map-image">
+                            <?php 
+                            $map_image = get_field('slider_map_image');
+                            $map_link = get_field('slider_map_link');
+                            if ($map_image): ?>
+                                <a href="<?= esc_url($map_link ?: '#'); ?>" class="map-image" target="_blank" rel="noopener">
                                     <img src="<?= esc_url($map_image['url']); ?>" width="290" height="96">
-                                </div>
+                                </a>
                             <?php endif; ?>
                         </div>
                         <div class="work-time-wrapper col">

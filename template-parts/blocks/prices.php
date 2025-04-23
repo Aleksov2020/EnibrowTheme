@@ -28,7 +28,7 @@ foreach ($masters as $master) {
             $category_id = get_field('usl_cat_field', $service_id);
             if ($category_id) {
                 $category = get_post($category_id);
-                $category_name = $category ? $category->post_title : 'Без категории';
+                $category_name = $category ? get_field('cat_short_name', $category_id) : 'Без категории';
                 $category_link = get_permalink($category_id);
             } else {
                 $category_name = 'Без категории';
@@ -41,7 +41,7 @@ foreach ($masters as $master) {
             }
 
             // Добавляем услугу в категорию с ценой от текущего мастера
-            $services_by_category[$category_name][$service_id]['title'] = get_the_title($service_id);
+            $services_by_category[$category_name][$service_id]['title'] = get_field('service_short_name', $service_id);
             $services_by_category[$category_name][$service_id]['short_description'] = get_field('service_short_description', $service_id);
             $services_by_category[$category_name][$service_id]['link'] = get_permalink($service_id);
             $services_by_category[$category_name][$service_id]['masters'][$master->ID] = $service_price;
@@ -160,7 +160,11 @@ foreach ($masters as $master) {
                                     $price = isset($service['masters'][$master->ID]) ? $service['masters'][$master->ID] : "-";
                                     $class = isset($service['masters'][$master->ID]) ? "price-active" : "";
                                     ?>
-                                    <div class="price-button-service <?= $class ?>"><?= esc_html($price); ?></div>
+                                    <div class="price-button-service <?= $class ?>"
+                                        data-master-id="<?= esc_attr($master->ID); ?>"
+                                        data-service-id="<?= esc_attr($service_id); ?>">
+                                        <?= esc_html($price); ?>
+                                    </div>
                                 </td>
                             <?php endforeach; ?>
                         </tr>

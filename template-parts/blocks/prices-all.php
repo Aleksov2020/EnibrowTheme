@@ -45,7 +45,7 @@ foreach ($masters as $master) {
             $category_id = get_field('usl_cat_field', $service_id);
             if ($category_id) {
                 $category = get_post($category_id);
-                $category_name = $category ? $category->post_title : 'Без категории';
+                $category_name = $category ? get_field('cat_short_name', $category_id) : 'Без категории';
                 $category_link = get_permalink($category_id);
             } else {
                 $category_name = 'Без категории';
@@ -58,7 +58,7 @@ foreach ($masters as $master) {
             }
 
             // Добавляем услугу в категорию с ценой от текущего мастера
-            $services_by_category[$category_name][$service_id]['title'] = get_the_title($service_id);
+            $services_by_category[$category_name][$service_id]['title'] = get_field('service_short_name', $service_id);
             $services_by_category[$category_name][$service_id]['short_description'] = get_field('service_short_description', $service_id);
             $services_by_category[$category_name][$service_id]['link'] = get_permalink($service_id);
             $services_by_category[$category_name][$service_id]['masters'][$master->ID] = $service_price;
@@ -91,13 +91,12 @@ foreach ($masters as $master) {
                     </th>
                     <?php foreach ($masters as $master) : ?>
                         <th class="<?= get_field('master_rank', $master->ID) ? 'top-master-label' : ''; ?>">
-                            <?php if ($master_rank = get_field('master_rank', $master->ID)) : ?>
-                                <div class="label-fot-top-master"><?= esc_html($master_rank); ?></div>
+                            <?php if ($rank = get_field('master_rank', $master->ID)) : ?>
+                                <div class="label-fot-top-master"><?= esc_html($rank); ?></div>
                             <?php endif; ?>
-                            <a href="<?= get_permalink($master->ID)?>">
+                            <a href="<?= get_permalink($master->ID); ?>">
                                 <?= esc_html(get_field('master_name', $master->ID)); ?>
                             </a>
-                           
                         </th>
                     <?php endforeach; ?>
                 </tr>
@@ -128,31 +127,39 @@ foreach ($masters as $master) {
                                             </a>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="services-price-short-description light-text-300"><?= esc_html($service['short_description']); ?></div>
-                                    <a href="<?= esc_url($service['link']); ?>" class="services-price-link colored-text light-text-300">Подробнее об услуге</a>
+                                    <div class="services-price-short-description light-text-300">
+                                        <?= esc_html($service['short_description']); ?>
+                                    </div>
+                                    <a href="<?= esc_url($service['link']); ?>" class="services-price-link colored-text light-text-300">
+                                        Подробнее об услуге
+                                    </a>
                                 </div>
                             </td>
-
                             <?php foreach ($masters as $master) : ?>
+                                <?php
+                                $price = isset($service['masters'][$master->ID]) ? $service['masters'][$master->ID] : "-";
+                                $class = isset($service['masters'][$master->ID]) ? "price-active" : "";
+                                ?>
                                 <td class="price text-18-400">
-                                    <?php
-                                    $price = isset($service['masters'][$master->ID]) ? $service['masters'][$master->ID] : "-";
-                                    $class = isset($service['masters'][$master->ID]) ? "price-active" : "";
-                                    ?>
-                                    <div class="price-button-service  <?= $class ?>"><?= esc_html($price); ?></div>
+                                    <div class="price-button-service <?= $class ?>"
+                                        data-master-id="<?= esc_attr($master->ID); ?>"
+                                        data-service-id="<?= esc_attr($service_id); ?>">
+                                        <?= esc_html($price); ?>
+                                    </div>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
                     <?php $is_first_row = false; ?>
                 <?php endforeach; ?>
-                
+
                 <tr class="first-row">
                     <td colspan="<?= count($masters) + 1; ?>">
-                        * <span class="text-16-500">Примечание</span> - Итоговая стоимость зависит от желаемого вида татуажа и мастера
+                        * <span class="text-16-500">Примечание</span> — Итоговая стоимость зависит от желаемого вида татуажа и мастера
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+

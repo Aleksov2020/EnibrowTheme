@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = currentGallery[currentIndex];
         if (!data) return;
 
-        galleryImage.src = data.imageUrl;
+        animateImageChange(data.imageUrl, 'right');
         masterAvatar.style.backgroundImage = `url(${data.masterAvatar})`;
         masterName.textContent = data.masterName || 'Мастер';
         masterRank.textContent = data.masterRank || '';
@@ -389,6 +389,32 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.overflow = '';
         }
     });
+
+    function animateImageChange(newSrc, direction = 'right') {
+    const oldImg = galleryImage;
+    const newImg = document.createElement('img');
+    newImg.className = 'modal-gallery-image-data';
+    newImg.src = newSrc;
+
+    // Стили начальной позиции для нового изображения
+    newImg.classList.add(`fade-in-${direction}`);
+    modal.querySelector('.gallery-image').appendChild(newImg);
+
+    // Запуск анимации
+    requestAnimationFrame(() => {
+        // Старое изображение уходит
+        oldImg.classList.add(`fade-out-${direction}`);
+
+        // Новое приходит
+        newImg.classList.remove(`fade-in-${direction}`);
+    });
+
+    // После окончания анимации — удаляем старое изображение
+    setTimeout(() => {
+        oldImg.remove();
+        newImg.classList.remove(`fade-out-${direction}`, `fade-in-${direction}`);
+    }, 400);
+}
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -421,10 +447,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const serviceSelect3 = document.getElementById('service-3');
     const tattooButtons = document.querySelectorAll('.modal-order-btn');
     const masterSelect = document.querySelector('.master-select');
-    let selectedServices = [];
+    var selectedServices = [];
     let selectedMaster = null;
     let selectedTattoo = 'Нет';
-
+    
     // Функция для открытия/закрытия селекта
     function toggleSelect(select) {
         const isOpen = select.classList.contains('open');
@@ -568,8 +594,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     $('#close-order-modal').click(() => {
-        $('.modal-order-background').removeClass('show');
-        document.querySelector('body').style.overflow = 'auto';
+        if (!e.target.closest('.modal-order')) {
+            document.getElementById('close-order-modal').click();
+        }
     })
 
     document.getElementById('submit-order').addEventListener('click', function () {
@@ -623,6 +650,85 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Ошибка при отправке формы');
         });
     });
+
+    // Обработка клика по кнопке цены в таблице
+    document.querySelectorAll('.price-button-service.price-active').forEach(button => {
+        button.addEventListener('click', () => {
+            const masterId = button.dataset.masterId;
+            const serviceId = button.dataset.serviceId;
+
+            // Открываем модалку
+            document.querySelector('.modal-order-background').classList.add('show');
+            document.querySelector('body').style.overflow = 'hidden';
+
+            // Находим мастера по ID
+            const option = document.querySelector(`.master-select .option[data-id="${masterId}"]`);
+            if (option) {
+                const name = option.querySelector('.option-name').innerText.replace(/\n/g, '').trim();
+                const image = option.querySelector('.option-avatar').style.backgroundImage
+                    .replace('url(', '')
+                    .replace(')', '')
+                    .replace(/"/g, '');
+                
+                // Используем функцию напрямую
+                selectMaster(masterId, name, image);
+            }
+
+            // Имитация клика по нужной услуге (в первый селект)
+            const serviceOption = document.querySelector(`#service-1 .option[data-id="${serviceId}"]`);
+            if (serviceOption) {
+                const name = serviceOption.querySelector('.option-name').innerText.replace(/\n/g, '').trim();
+                const image = serviceOption.querySelector('.option-avatar').style.backgroundImage
+                    .replace('url(', '')
+                    .replace(')', '')
+                    .replace(/"/g, '');
+
+                selectService(serviceSelect1, serviceId, name, image);
+            }
+        });
+    });
+
+
+    $('#close-order-modal').click(() => {
+        $('.modal-order-background').removeClass('show');
+        document.querySelector('body').style.overflow = 'auto';
+
+        // Очищаем выбранного мастера
+        selectedMaster = null;
+        const masterText = masterSelect.querySelector('.option-text');
+        const masterAvatar = masterSelect.querySelector('.avatar-placeholder');
+        masterText.textContent = 'Мастер не выбран';
+        masterAvatar.style.backgroundImage = `url(${masterAvatar.dataset.default})`; // или placeholder
+
+        // Очищаем выбранные услуги
+        selectedServices.length = 0; 
+
+        // Первый селект услуги сбрасываем
+        const resetServiceSelect = (selectEl) => {
+            selectEl.classList.remove('hidden');
+            selectEl.querySelector('.option-text').textContent = 'Услуга не выбрана';
+            selectEl.querySelector('.avatar-placeholder').removeAttribute('style');
+        };
+
+        resetServiceSelect(serviceSelect1);
+        resetServiceSelect(serviceSelect2);
+        resetServiceSelect(serviceSelect3);
+
+        serviceSelect2.classList.add('hidden');
+        serviceSelect3.classList.add('hidden');
+
+        // Показываем кнопку "Добавить услугу"
+        addServiceButton.style.display = 'flex';
+
+        // Сброс старого татуажа
+        tattooButtons.forEach(btn => btn.classList.remove('active'));
+        tattooButtons[0].classList.add('active');
+        selectedTattoo = 'Нет';
+
+        // Очистка полей формы
+        document.querySelector('#name_modal_order').value = '';
+        document.querySelector('#phone_modal_order').value = '';
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -670,6 +776,7 @@ function handleLike(element) {
         likeCounter.textContent = Number(likeCounter.textContent) + 1;
     }
 }
+
 </script>
 
 <?php wp_footer(); ?>
