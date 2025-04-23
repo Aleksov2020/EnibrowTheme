@@ -84,6 +84,7 @@ ob_start();
                                 $master_avatar = $master_photo ? esc_url($master_photo['url']) : '';
                         
                                 $reviews_gallery_data[$gallery_id][] = [
+                                    'id'           => $portfolio_id,
                                     'imageUrl'     => esc_url($image['url']),
                                     'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
                                     'masterRank'   => esc_html($master_rank),

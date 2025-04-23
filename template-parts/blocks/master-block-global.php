@@ -60,12 +60,12 @@ if ($masters_query->have_posts()) :
 
                 <div class="master-card row">
                     <!-- Фото мастера -->
-                    <div class="master-photo" style="background-image: url(<?php echo esc_url($master_photo['url']); ?>);"></div>
+                    <a href="<?= get_permalink($master_id) ?>" class="master-photo" style="background-image: url(<?php echo esc_url($master_photo['url']); ?>);"></a>
 
                     <!-- Информация о мастере -->
                     <div class="master-info col">
                         <div class="master-info-title-wrapper row">
-                            <div class="master-title row">
+                            <a href="<?= get_permalink($master_id) ?>" class="master-title row">
                                 <div class="master-name colored-text">
                                     <?php echo esc_html($master_name); ?> <?php echo esc_html($master_surname); ?>&nbsp;
                                 </div>
@@ -74,7 +74,7 @@ if ($masters_query->have_posts()) :
                                         <?php echo esc_html($master_rank); ?>
                                     </div>
                                 <?php endif; ?>
-                            </div>
+                            </a>
                             <div class="master-rate-wrapper col">
                                 <div class="master-rate-inner-wrapper row">
                                     <div class="master-rate-icon">
@@ -92,12 +92,12 @@ if ($masters_query->have_posts()) :
 
                         <!-- Бейджи -->
                         <div class="master-badges-wrapper row">
-                            <div class="master-badge light-text row colored-text">
+                            <a href="<?= get_permalink($master_id) ?>" class="master-badge light-text row colored-text">
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/badge-master.svg"> Квалификация подтверждена
-                            </div>
-                            <div class="master-badge light-text row colored-text">
+                            </a>
+                            <a href="<?= get_permalink($master_id) ?>" class="master-badge light-text row colored-text">
                                 Стаж <?php echo esc_html($master_experience); ?> лет
-                            </div>
+                            </a>
                         </div>
 
                         <!-- Описание и галерея -->
@@ -159,9 +159,9 @@ if ($masters_query->have_posts()) :
                                     <div class="button button-primary">
                                         Записаться
                                     </div>
-                                    <div class="button-more colored-text">
+                                    <a href="<?= get_permalink($master_id) ?>" class="button-more colored-text">
                                         Подробнее
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

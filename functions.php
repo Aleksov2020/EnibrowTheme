@@ -239,6 +239,41 @@ acf_add_options_page(array(
   'redirect'   => false
 ));
 
+
+
+add_action('wp_ajax_toggle_portfolio_like', 'toggle_portfolio_like');
+add_action('wp_ajax_nopriv_toggle_portfolio_like', 'toggle_portfolio_like');
+
+function toggle_portfolio_like() {
+    $post_id = intval($_POST['post_id']);
+    $increment = $_POST['increment'] === '1';
+
+    if (!$post_id) {
+        wp_send_json_error('No post ID provided');
+    }
+
+    $likes = intval(get_post_meta($post_id, 'portfolio_likes', true));
+    $likes = $increment ? $likes + 1 : max(0, $likes - 1);
+
+    update_post_meta($post_id, 'portfolio_likes', $likes);
+
+    wp_send_json_success(['likes' => $likes]);
+}
+
+add_action('wp_ajax_get_portfolio_likes', 'get_portfolio_likes');
+add_action('wp_ajax_nopriv_get_portfolio_likes', 'get_portfolio_likes');
+
+function get_portfolio_likes() {
+    $post_id = intval($_POST['post_id']);
+    if (!$post_id) {
+        wp_send_json_error('Invalid ID');
+    }
+
+    $likes = intval(get_post_meta($post_id, 'portfolio_likes', true));
+    wp_send_json_success(['likes' => $likes]);
+}
+
+
 // Подключаем файлы
 //require_once get_template_directory() . '/include/permalinks.php';
 require_once get_template_directory() . '/include/post-types.php';

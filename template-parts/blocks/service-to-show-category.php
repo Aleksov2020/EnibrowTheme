@@ -52,7 +52,7 @@ if ($services_query->have_posts()):
                 </a>
                 <div class="subservice-item-wrapper col">
                     <a href="<?php the_permalink(); ?>" class="subservice-item-title colored-text">
-                        <?php the_title(); ?>
+                        <?= esc_html(get_field('service_short_name', get_the_ID())) ?>
                     </a>
                     <div class="subservice-item-text-item row">
                         <div class="subservice-item-text-item-icon icon">

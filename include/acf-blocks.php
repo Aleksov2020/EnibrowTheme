@@ -533,9 +533,6 @@ function register_custom_acf_blocks() {
         'category'        => 'enibrow-gallery',
         'icon'            => 'images-alt2',
         'keywords'        => array('portfolio', 'filter', 'gallery'),
-        'supports'        => array(
-            'align' => true,
-        ),
     ));
 
     acf_register_block_type(array(
@@ -568,12 +565,7 @@ function register_custom_acf_blocks() {
         'category'        => 'enibrow-gallery',
         'icon'            => 'format-gallery',
         'keywords'        => array('портфолио', 'галерея', 'работы мастеров'),
-        'supports'        => array(
-            'align'    => true,
-            'anchor'   => true,
-            'mode'     => false,
-            'jsx'      => true,
-        ),
+        'mode' => 'edit',
     ));
 
 }

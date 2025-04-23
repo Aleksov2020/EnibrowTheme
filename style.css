@@ -1743,7 +1743,8 @@ td.price {
 .table-wrapper {
     overflow-x: auto;  /* Добавляем горизонтальную прокрутку */
     -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
-    margin-bottom: 20px; /* Если нужно добавить немного отступа снизу */
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     width: 100%;
     padding-top: 20px;
 }
@@ -4777,19 +4778,18 @@ padding-top: 22px;
 }
 
 .delete-option-button {
-    background-color: #825E69;
+    border-radius: 50%;
+    border: 1px solid #825E69;
     font-family: Montserrat;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 30px;
-    letter-spacing: 0%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #FFF;
-    padding: 0 9px;
     position: absolute;
-    right: 25px;
-    top: 50%;
-    border-radius: 5px;
-    transform: translate3d(0, -50%, 0);
+    right: -25px;
+    top: 0px;
 }
 
 .service-select.hidden {
@@ -4867,6 +4867,8 @@ padding-top: 22px;
     border-bottom: 1px solid #825E6933;
     padding-bottom: 10px;
     padding-top: 10px;
+    align-items: center;
+    display: flex;
 }
 
 .option-category {
@@ -5201,6 +5203,7 @@ padding-top: 22px;
     .price-animation-wrapper {
         display: flex;
         margin-top: 30px;
+        margin-bottom: 12px;
     }
 
     .table-wrapper {

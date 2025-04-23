@@ -165,6 +165,7 @@ if ($query->have_posts()) :
                 $master_link = $master_id ? get_permalink($master_id) : '#';
 
                 $gallery_data[] = [
+                    'id'           => $portfolio_id,
                     'imageUrl'     => esc_url($image['url']),
                     'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
                     'masterRank'   => esc_html($master_rank),

@@ -2207,6 +2207,10 @@ td.price {
     background-color: #E4FFD7;
 }
 
+.acf-block-component {
+    background: #33333345;
+}
+
 .blue-badge {
     background-color: #D7E7FF;
 }

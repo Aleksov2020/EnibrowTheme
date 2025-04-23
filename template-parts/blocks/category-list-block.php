@@ -40,14 +40,14 @@ if (!empty($categories)): ?>
                 <div class="service-filter col">
                     <div class="service-title text-30-400 colored-text">
                         <a href="<?php echo esc_url(get_permalink($category->ID)); ?>">
-                            <?php echo esc_html(get_the_title($category->ID)); ?>
+                            <?php echo esc_html(get_field('cat_short_name', $category->ID)); ?>
                         </a>
                     </div>
                     <div class="service-item-wrapper col">
                         <?php foreach ($services as $service): ?>
                             <div class="service-item colored-text">
                                 <a href="<?php echo esc_url(get_permalink($service->ID)); ?>">
-                                    <?php echo esc_html(get_the_title($service->ID)); ?>
+                                    <?php echo esc_html(get_field('service_short_name', $service->ID)); ?>
                                 </a>
                             </div>
                         <?php endforeach; ?>

@@ -16,6 +16,10 @@ $args = array(
     ),
 );
 
+$gallery_id = 'masterReviewsGallery_' . $master_id;
+// Подготовка данных для модалки
+$master_gallery_data = [];
+
 $query = new WP_Query($args);
 ?>
 
@@ -42,6 +46,33 @@ $query = new WP_Query($args);
             $review_rating = get_field('review_rating', get_the_ID());
             $review_comment = get_field('review_comment', get_the_ID());
             $review_images = get_field('review_images', get_the_ID());
+
+            if ($review_images) {
+                foreach ($review_images as $index => $portfolio_id) {
+                    $image = get_field('portfolio_image', $portfolio_id);
+                    $likes = get_field('portfolio_likes', $portfolio_id);
+
+                    $master_id = get_field('portfolio_master', $portfolio_id);
+                    $master_name = $master_id ? get_field('master_name', $master_id) : '';
+                    $master_surname = $master_id ? get_field('master_surname', $master_id) : '';
+                    $master_rank = $master_id ? get_field('master_rank', $master_id) : 'Мастер';
+                    $master_photo = $master_id ? get_field('master_photo', $master_id) : null;
+                    $master_link = $master_id ? get_permalink($master_id) : '#';
+                    $master_avatar = $master_photo ? esc_url($master_photo['url']) : '';
+                    
+                    error_log($portfolio_id);
+
+                    $master_gallery_data[$gallery_id][] = [
+                        'id'           => $portfolio_id,
+                        'imageUrl'     => esc_url($image['url']),
+                        'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
+                        'masterRank'   => esc_html($master_rank),
+                        'masterLikes'  => esc_html($likes),
+                        'masterAvatar' => $master_avatar,
+                        'masterLink'   => esc_url($master_link),
+                    ];
+                }
+            }
             ?>
             <div class="review-page-item row">
                 <div class="review-page-item-header col">
@@ -79,13 +110,12 @@ $query = new WP_Query($args);
                     </div>
                     <?php if ($review_images) : ?>
                         <div class="review-page-item-body-gallery-wrapper row">
-                            <?php foreach ($review_images as $portfolio_id) : ?>
-                                <?php
+                            <?php foreach ($review_images as $index => $portfolio_id) :
                                 $img = get_field('portfolio_image', $portfolio_id);
                                 if (!$img) continue;
                                 ?>
-                                <div class="review-card-gallery-item">
-                                    <img src="<?php echo esc_url($img['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
+                                <div class="review-card-gallery-item" onclick="openGallery(<?= $index ?>, '<?= $gallery_id ?>')">
+                                    <img src="<?= esc_url($img['sizes']['thumbnail']); ?>" alt="review-image" width="66" height="66">
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -99,3 +129,10 @@ $query = new WP_Query($args);
     <?php endif; ?>
 
 </div>
+
+<script>
+window.galleryDataMap = window.galleryDataMap || {};
+<?php foreach ($master_gallery_data as $galleryId => $items): ?>
+window.galleryDataMap["<?= $galleryId ?>"] = <?= json_encode($items) ?>;
+<?php endforeach; ?>
+</script>

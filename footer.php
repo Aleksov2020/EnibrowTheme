@@ -15,7 +15,7 @@ $services_by_category = [];
 foreach ($services as $service) {
     // Получаем категорию услуги
     $category_id = get_field('usl_cat_field', $service->ID); // Правильное поле для категории
-    $category_name = $category_id ? get_the_title($category_id) : 'Без категории';
+    $category_name = $category_id ? get_field('cat_short_name', $category_id) : 'Без категории';
 
     // Получаем последние фото из работ портфолио, связанных с услугой
     $portfolio_works = get_field('service_portfolio_works', $service->ID);
@@ -98,6 +98,14 @@ foreach ($services as $service) {
                         <span class="arrow">&#9660;</span>
                     </div>
                     <ul class="options-list">
+                        <li class="option" data-id="consultation">
+                            <div class="option-wrapper row">
+                                <div class="option-avatar" style="background-image: url(<?php echo get_template_directory_uri(); ?>/assets/avatar-placeholder.png);"></div>
+                                <div class="option-name-wrapper col">
+                                    <div class="option-name">Консультация</div>
+                                </div>
+                            </div>
+                        </li>
                         <?php foreach ($services_by_category as $category_name => $services): ?>
                             <li class="option-category"><?= esc_html($category_name); ?></li>
                             <?php foreach ($services as $service_data): ?>
@@ -108,7 +116,7 @@ foreach ($services as $service) {
                                         <div class="option-avatar" style="background-image: url(<?= esc_url($image_url); ?>);"></div>
                                         <div class="option-name-wrapper col">
                                             <div class="option-name">
-                                                <?= esc_html(get_the_title($service->ID)); ?>
+                                                <?= esc_html(get_field('service_short_name', $service->ID)); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +127,9 @@ foreach ($services as $service) {
                 </div>
                 <div class="custom-select service-select hidden" id="service-2">
                     <div class="delete-option-button">
-                        Удалить
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
+                            <path d="M7.93688 8.19932L4.57812 4.84056M4.57812 4.84056L1.21937 1.4818M4.57812 4.84056L7.93688 1.4818M4.57812 4.84056L1.21937 8.19932" stroke="#825E69" stroke-linecap="round"/>
+                        </svg>
                     </div>
                     <div class="selected-option">
                         <div class="avatar-placeholder" style="background-image: url(<?php echo get_template_directory_uri() . '/assets/avatar-placeholder.png'?>);"></div>
@@ -127,6 +137,14 @@ foreach ($services as $service) {
                         <span class="arrow">&#9660;</span>
                     </div>
                     <ul class="options-list">
+                        <li class="option" data-id="consultation">
+                            <div class="option-wrapper row">
+                                <div class="option-avatar" style="background-image: url(<?php echo get_template_directory_uri(); ?>/assets/avatar-placeholder.png);"></div>
+                                <div class="option-name-wrapper col">
+                                    <div class="option-name">Консультация</div>
+                                </div>
+                            </div>
+                        </li>
                         <?php foreach ($services_by_category as $category_name => $services): ?>
                             <li class="option-category"><?= esc_html($category_name); ?></li>
                             <?php foreach ($services as $service_data): ?>
@@ -137,7 +155,7 @@ foreach ($services as $service) {
                                         <div class="option-avatar" style="background-image: url(<?= esc_url($image_url); ?>);"></div>
                                         <div class="option-name-wrapper col">
                                             <div class="option-name">
-                                                <?= esc_html(get_the_title($service->ID)); ?>
+                                                <?= esc_html(get_field('service_short_name', $service->ID)); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +166,9 @@ foreach ($services as $service) {
                 </div>
                 <div class="custom-select service-select hidden" id="service-3">
                     <div class="delete-option-button">
-                        Удалить
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
+                            <path d="M7.93688 8.19932L4.57812 4.84056M4.57812 4.84056L1.21937 1.4818M4.57812 4.84056L7.93688 1.4818M4.57812 4.84056L1.21937 8.19932" stroke="#825E69" stroke-linecap="round"/>
+                        </svg>
                     </div>
                     <div class="selected-option">
                         <div class="avatar-placeholder" style="background-image: url(<?php echo get_template_directory_uri() . '/assets/avatar-placeholder.png'?>);"></div>
@@ -156,6 +176,14 @@ foreach ($services as $service) {
                         <span class="arrow">&#9660;</span>
                     </div>
                     <ul class="options-list">
+                        <li class="option" data-id="consultation">
+                            <div class="option-wrapper row">
+                                <div class="option-avatar" style="background-image: url(<?php echo get_template_directory_uri(); ?>/assets/avatar-placeholder.png);"></div>
+                                <div class="option-name-wrapper col">
+                                    <div class="option-name">Консультация</div>
+                                </div>
+                            </div>
+                        </li>
                         <?php foreach ($services_by_category as $category_name => $services): ?>
                             <li class="option-category"><?= esc_html($category_name); ?></li>
                             <?php foreach ($services as $service_data): ?>
@@ -166,7 +194,7 @@ foreach ($services as $service) {
                                         <div class="option-avatar" style="background-image: url(<?= esc_url($image_url); ?>);"></div>
                                         <div class="option-name-wrapper col">
                                             <div class="option-name">
-                                                <?= esc_html(get_the_title($service->ID)); ?>
+                                                <?= esc_html(get_field('service_short_name', $service->ID)); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -268,7 +296,7 @@ foreach ($services as $service) {
                     </div>
                 </a>
                 <div class="modal-gallery-master-likes col">
-                    <div class="row clickable modal-like-icon" id="like-button">
+                    <div class="row clickable modal-like-icon" id="like-button" data-id="<?= esc_attr($work_id); ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17" fill="none">
                             <path d="M9.14945 3.42589L10 4.80155L10.8506 3.42589C11.5789 2.24796 12.858 1.5 14.3182 1.5C16.5889 1.5 18.5 3.42492 18.5 5.83333C18.5 6.87433 18.0316 8.0043 17.2012 9.16973C16.3776 10.3257 15.2585 11.4311 14.1059 12.4018C12.9578 13.3685 11.805 14.178 10.9365 14.7468C10.5626 14.9916 10.2432 15.1908 10.0019 15.3375C9.76029 15.1896 9.44036 14.9888 9.06581 14.742C8.19701 14.1696 7.04368 13.3558 5.89518 12.386C4.742 11.4122 3.62241 10.305 2.79834 9.15033C1.96702 7.98551 1.5 6.86161 1.5 5.83333C1.5 3.42492 3.41107 1.5 5.68182 1.5C7.14196 1.5 8.42115 2.24796 9.14945 3.42589Z" stroke="#C0C0C0" stroke-width="2"/>
                         </svg>
@@ -311,6 +339,7 @@ foreach ($portfolio_works as $index => $work) {
     $master_rank = get_field('master_rank', $master_id);
 
     $gallery_data[] = [
+        'id'           => $work->ID,
         'imageUrl'     => esc_url($image['url']),
         'masterName'   => esc_html($master_name),
         'masterRank'   => esc_html($master_rank),
@@ -348,97 +377,232 @@ document.addEventListener('DOMContentLoaded', function () {
     window.openGallery = function (index, galleryId) {
         currentGallery = window.galleryDataMap[galleryId] || [];
         currentIndex = index;
-        updateModal();
+        updateModal('right');
+        console.log('Открываем галерею:', currentGallery);
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
     };
 
-    function updateModal() {
+    function hasLiked(postId) {
+        const liked = localStorage.getItem('likedGalleryItems');
+        if (!liked) return false;
+        if (!postId) return false;
+        postId = postId.toString(); // Приводим к строке
+        return JSON.parse(liked).includes(postId);
+    }
+
+    function setLiked(postId, liked = true) {
+        let likedList = localStorage.getItem('likedGalleryItems');
+        likedList = likedList ? JSON.parse(likedList) : [];
+
+        if (liked && !likedList.includes(postId)) {
+            likedList.push(postId);
+        } else if (!liked) {
+            likedList = likedList.filter(id => id !== postId);
+        }
+
+        localStorage.setItem('likedGalleryItems', JSON.stringify(likedList));
+    }
+
+    function updateModal(orientation) {
         const data = currentGallery[currentIndex];
         if (!data) return;
 
-        animateImageChange(data.imageUrl, 'right');
+        const likeButton = document.getElementById("like-button");
+        const likeCounter = document.getElementById("like-counter");
+        const isLiked = hasLiked(data.id);
+
+        likeButton.classList.toggle("active", isLiked);
+        likeButton.dataset.id = data.id;
+
+        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                action: 'get_portfolio_likes',
+                post_id: data.id
+            })
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                likeCounter.textContent = response.data.likes;
+            }
+        });
+
+        animateImageChange(data.imageUrl, orientation);
         masterAvatar.style.backgroundImage = `url(${data.masterAvatar})`;
         masterName.textContent = data.masterName || 'Мастер';
         masterRank.textContent = data.masterRank || '';
-        masterLikes.textContent = data.masterLikes || '0';
         masterLink.href = data.masterLink;
         moreLink.href = data.masterLink;
     }
 
+    function handleLike(element) {
+        const likeIcon = element.querySelector('.like-icon');
+        const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
+        const postId = element.dataset.id;
+
+        if (!likeIcon || !likeCounter || !postId) return;
+
+        const isLiked = hasLiked(postId);
+        const newLikes = isLiked
+            ? Math.max(0, Number(likeCounter.textContent) - 1)
+            : Number(likeCounter.textContent) + 1;
+
+        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                action: 'toggle_portfolio_like',
+                post_id: postId,
+                increment: isLiked ? '0' : '1'
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                likeCounter.textContent = data.data.likes;
+                likeIcon.classList.toggle('active');
+                setLiked(postId, !isLiked);
+            } else {
+                alert("Ошибка при сохранении лайка");
+            }
+        });
+    }
+
+    document.querySelectorAll('.gallery-master-cards-likes-wrapper').forEach(el => {
+        const postId = el.dataset.id;
+        if (hasLiked(postId)) {
+            el.querySelector('.like-icon')?.classList.add('active');
+        }
+    });
+
+    document.getElementById('like-button').addEventListener('click', function () {
+        const postId = currentGallery[currentIndex].id;
+        console.log(currentGallery[currentIndex]);
+
+        console.log('Клик по лайку в модалке', postId);
+        if (!postId) return;
+
+        const isLiked = this.classList.contains('active');
+        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                action: 'toggle_portfolio_like',
+                post_id: postId,
+                increment: isLiked ? '0' : '1'
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                this.classList.toggle('active');
+                document.getElementById('like-counter').textContent = data.data.likes;
+                setLiked(postId.toString(), !isLiked);
+            }
+        });
+    });
+
     leftButton.addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
-        document.getElementById("like-button").classList.remove("active");
-        updateModal();
+        updateModal('left');
     });
 
     rightButton.addEventListener('click', () => {
         currentIndex = (currentIndex + 1) % currentGallery.length;
-        document.getElementById("like-button").classList.remove("active");
-        updateModal();
+        updateModal('right');
     });
 
     closeButton.addEventListener('click', () => {
         modal.classList.remove('show');
         document.body.style.overflow = '';
+
+        // Обновим лайки после выхода
+        const likedItems = JSON.parse(localStorage.getItem('likedGalleryItems') || '[]');
+
+        likedItems.forEach(postId => {
+            // Запрашиваем текущее количество лайков
+            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'get_portfolio_likes',
+                    post_id: postId
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.syncLikeAcrossGalleries(postId, data.data.likes, true);
+                }
+            });
+        });
     });
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.remove('show');
             document.body.style.overflow = '';
+            // Обновим лайки после выхода
+            const likedItems = JSON.parse(localStorage.getItem('likedGalleryItems') || '[]');
+
+            likedItems.forEach(postId => {
+                // Запрашиваем текущее количество лайков
+                fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'get_portfolio_likes',
+                        post_id: postId
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        window.syncLikeAcrossGalleries(postId, data.data.likes, true);
+                    }
+                });
+            });
         }
     });
 
     function animateImageChange(newSrc, direction = 'right') {
-    const oldImg = galleryImage;
-    const newImg = document.createElement('img');
-    newImg.className = 'modal-gallery-image-data';
-    newImg.src = newSrc;
+        const oldImg = galleryImage;
+        const newImg = document.createElement('img');
+        newImg.className = 'modal-gallery-image-data';
+        newImg.src = newSrc;
 
-    // Стили начальной позиции для нового изображения
-    newImg.classList.add(`fade-in-${direction}`);
-    modal.querySelector('.gallery-image').appendChild(newImg);
+        // Стили начальной позиции для нового изображения
+        newImg.classList.add(`fade-in-${direction}`);
+        modal.querySelector('.gallery-image').appendChild(newImg);
 
-    // Запуск анимации
-    requestAnimationFrame(() => {
-        // Старое изображение уходит
-        oldImg.classList.add(`fade-out-${direction}`);
+        // Запуск анимации
+        requestAnimationFrame(() => {
+            // Старое изображение уходит
+            oldImg.classList.add(`fade-out-${direction}`);
 
-        // Новое приходит
-        newImg.classList.remove(`fade-in-${direction}`);
+            // Новое приходит
+            newImg.classList.remove(`fade-in-${direction}`);
+        });
+
+        // После окончания анимации — удаляем старое изображение
+        setTimeout(() => {
+            oldImg.remove();
+            newImg.classList.remove(`fade-out-${direction}`, `fade-in-${direction}`);
+        }, 400);
+    }
+});
+
+function updateGalleryLikeUI(postId, newCount, isLiked) {
+    document.querySelectorAll(`[data-id='${postId}']`).forEach(el => {
+        const icon = el.querySelector('.like-icon');
+        const counter = el.querySelector('.gallery-master-cards-likes-counter');
+        if (icon) icon.classList.toggle('active', isLiked);
+        if (counter) counter.textContent = newCount;
     });
-
-    // После окончания анимации — удаляем старое изображение
-    setTimeout(() => {
-        oldImg.remove();
-        newImg.classList.remove(`fade-out-${direction}`, `fade-in-${direction}`);
-    }, 400);
 }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const likeButton = document.getElementById("like-button");
- 
-    if (!likeButton) return;
-    const likeCounter = document.getElementById("like-counter");
-
-    likeButton.addEventListener("click", function () {
-
-        if (!likeCounter) return;
-
-        if (likeButton.classList.contains("active")) {
-            likeButton.classList.remove("active");
-            likeCounter.textContent = Math.max(0, Number(likeCounter.textContent) - 1);
-        } else {
-            likeButton.classList.add("active");
-            likeCounter.textContent = Number(likeCounter.textContent) + 1;
-        }
-    });
-});
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
     const addServiceButton = document.querySelector('.button-add-service');
@@ -762,20 +926,63 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-function handleLike(element) {
-    const likeIcon = element.querySelector('.like-icon');
-    const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
-
-    if (!likeIcon || !likeCounter) return;
-
-    if (likeIcon.classList.contains('active')) {
-        likeIcon.classList.remove('active');
-        likeCounter.textContent = Math.max(0, Number(likeCounter.textContent) - 1);
-    } else {
-        likeIcon.classList.add('active');
-        likeCounter.textContent = Number(likeCounter.textContent) + 1;
+document.addEventListener("DOMContentLoaded", function () {
+    function hasLiked(postId) {
+        const liked = localStorage.getItem('likedGalleryItems');
+        if (!liked) return false;
+        return JSON.parse(liked).includes(postId.toString());
     }
-}
+
+    function setLiked(postId, liked = true) {
+        let likedList = localStorage.getItem('likedGalleryItems');
+        likedList = likedList ? JSON.parse(likedList) : [];
+
+        if (liked && !likedList.includes(postId)) {
+            likedList.push(postId);
+        } else if (!liked) {
+            likedList = likedList.filter(id => id !== postId);
+        }
+
+        localStorage.setItem('likedGalleryItems', JSON.stringify(likedList));
+    }
+
+    // 1. При загрузке отметить лайки
+    document.querySelectorAll('.gallery-master-cards-likes-wrapper').forEach(el => {
+        const postId = el.dataset.id;
+        const icon = el.querySelector('.like-icon');
+        if (hasLiked(postId)) icon.classList.add('active');
+    });
+
+    // 2. Обработка кликов на лайк
+    document.querySelectorAll('.gallery-master-cards-likes-wrapper').forEach(el => {
+        el.addEventListener('click', function () {
+            const postId = this.dataset.id;
+            const icon = this.querySelector('.like-icon');
+            const counter = this.querySelector('.gallery-master-cards-likes-counter');
+            const isLiked = hasLiked(postId);
+
+            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'toggle_portfolio_like',
+                    post_id: postId,
+                    increment: isLiked ? '0' : '1'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setLiked(postId, !isLiked);
+                    updateGalleryLikeUI(postId, data.data.likes, !isLiked);
+                }
+            });
+        });
+    });
+
+    // 3. Функция доступна из модалки
+    window.syncLikeAcrossGalleries = updateGalleryLikeUI;
+});
 
 </script>
 
