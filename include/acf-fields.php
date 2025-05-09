@@ -447,12 +447,6 @@ add_action('acf/init', function() {
                 'instructions' => 'Пример: 6 месяцев, 1 год',
             ),
             array(
-                'key' => 'field_service_duration_minutes',
-                'label' => 'Длительность услуги (минут)',
-                'name' => 'service_duration_minutes',
-                'type' => 'text',
-            ),
-            array(
                 'key' => 'field_service_price_rub',
                 'label' => 'Стоимость услуги (руб.)',
                 'name' => 'service_price_rub',
@@ -730,6 +724,29 @@ add_action('acf/init', function() {
                                 'label' => 'Заголовок',
                                 'name'  => 'title',
                                 'type'  => 'text',
+                            ),
+                        ),
+                    ),
+                    'links_block' => array(
+                        'key' => 'layout_links_block',
+                        'name' => 'links_block',
+                        'label' => 'Блок ссылок',
+                        'display' => 'row',
+                        'sub_fields' => array(
+                            array(
+                                'key' => 'field_links_repeater',
+                                'label' => 'Ссылки',
+                                'name' => 'links',
+                                'type' => 'repeater',
+                                'button_label' => 'Добавить ссылку',
+                                'sub_fields' => array(
+                                    array(
+                                        'key' => 'field_link_text',
+                                        'label' => 'Текст ссылки',
+                                        'name' => 'text',
+                                        'type' => 'text',
+                                    ),
+                                ),
                             ),
                         ),
                     ),

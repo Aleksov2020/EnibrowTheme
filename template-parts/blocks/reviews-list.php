@@ -60,17 +60,18 @@ $query = new WP_Query($args);
                     $master_link = $master_id ? get_permalink($master_id) : '#';
                     $master_avatar = $master_photo ? esc_url($master_photo['url']) : '';
                     
-                    error_log($portfolio_id);
+                    if ($image) {	
+						$master_gallery_data[$gallery_id][] = [
+							'id'           => $portfolio_id,
+							'imageUrl'     => esc_url($image['url']),
+							'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
+							'masterRank'   => esc_html($master_rank),
+							'masterLikes'  => esc_html($likes),
+							'masterAvatar' => $master_avatar,
+							'masterLink'   => esc_url($master_link),
+						];
+					}
 
-                    $master_gallery_data[$gallery_id][] = [
-                        'id'           => $portfolio_id,
-                        'imageUrl'     => esc_url($image['url']),
-                        'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
-                        'masterRank'   => esc_html($master_rank),
-                        'masterLikes'  => esc_html($likes),
-                        'masterAvatar' => $master_avatar,
-                        'masterLink'   => esc_url($master_link),
-                    ];
                 }
             }
             ?>

@@ -39,14 +39,14 @@ if ($posts) :
                         </div>
                     </a>
                     <div class="blog-item-text-wrapper col">
-                        <div class="blog-item-title colored-text">
+                        <a href="<?php echo esc_url($permalink); ?>" class="blog-item-title colored-text">
                             <?php echo esc_html($title); ?>
-                        </div>
+                        </a>
                         <div class="blog-item-buttons-wrapper col">
                             <div class="blog-item-time-read-wrapper row">
-                                <div class="blog-item-time-read-icon">
+                                <a href="<?php echo esc_url($permalink); ?>" class="blog-item-time-read-icon">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/clockIcon.svg" width="17" height="17" alt="clock">
-                                </div>
+                                </a>
                                 <div class="blog-item-time-read-value light-text">
                                     Время чтения <?php echo esc_html($read_time); ?> минут
                                 </div>

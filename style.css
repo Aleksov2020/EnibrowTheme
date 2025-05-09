@@ -72,6 +72,7 @@ img {
     background-repeat: no-repeat;
     background-color: #F8EFE8;
     align-items: center;
+    padding-bottom: 20px;
 }
 
 .master-service-button-wrapper .button, .reviews-button-wrapper .button {
@@ -2299,6 +2300,7 @@ td.price {
     margin-top: 37px;
     align-items: center;
     gap: 38px;
+    padding-bottom: 30px;
 }
 
 .video-subtitle {
@@ -2580,6 +2582,19 @@ td.price {
 
 .roll-with-button-wrapper {
     align-items: center;
+}
+
+.roll-block-links {
+    display: flex;
+    row-gap: 8px;
+    column-gap: 8px;
+    flex-wrap: wrap;
+}
+
+.roll-block-link {
+    padding: 3px 10px;
+    border-radius: 90px;
+    border: 1px solid #825E69;
 }
 
 .roll-block {
@@ -3821,6 +3836,7 @@ padding-top: 22px;
 
 .sale-archive-page {
     gap: 30px;
+    padding-top: 30px;
 }
 
 .discont-slide {
@@ -3829,6 +3845,7 @@ padding-top: 22px;
 
 .discont {
     transition: .3s;
+    margin-bottom: 30px;
 }
 
 .discont-slide svg {
@@ -6737,6 +6754,26 @@ padding-top: 22px;
 
     .pagination-numbers {
         gap: 5px;
+    }
+
+    
+    .close-gallery-modal-icon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background-color: #FFF;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-gallery-modal-icon > svg {
+        width: 15px;
+        height: 15px;
     }
 
     .pagination-arrow {

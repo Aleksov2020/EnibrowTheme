@@ -7,7 +7,7 @@ $service_name = get_the_title();
 $service_category = get_field('cat_uslyga'); // Категория услуги
 $service_duration = get_field('service_duration');
 $service_persistence = get_field('service_persistence');
-$service_price = get_field('service_price');
+$service_price_rub = get_field('service_price_rub');
 
 // Получаем связанные работы из портфолио
 $portfolio_works = get_field('service_portfolio_works');
@@ -52,7 +52,7 @@ $portfolio_works = get_field('service_portfolio_works');
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/coins.png" width="35" height="38"/>
                         </div>
                         <div class="con-name text-16-300">
-                            от <?php echo esc_html($service_price); ?> ₽
+                            <?php echo esc_html($service_price_rub); ?>
                         </div>
                     </div>
                     <div class="con-item row">
