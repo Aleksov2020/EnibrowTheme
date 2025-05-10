@@ -22,6 +22,10 @@ $portfolio_works = get_field('service_portfolio_works');
                         <a href="<?php echo site_url(); ?>">Главная</a>
                     </div>
                     <div class="breabcrumbs-separator"></div>
+                    <div class="breabcrumbs-page-name light-text-300">
+                        <a href="<?php echo get_permalink($service_category) ?>"> <?php echo get_the_title($service_category)?> </a>
+                    </div>
+                    <div class="breabcrumbs-separator"></div>
                     <div class="breabcrumbs-page-name light-text-300 active">
                         <?php echo esc_html(get_the_title()); ?>
                     </div>

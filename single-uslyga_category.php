@@ -51,7 +51,6 @@
                     <div class="breabcrumbs-separator"></div>
                     <div class="breadcrumbs-page-name light-text-300 active">
                         <a href="<?php echo get_permalink( $page_id); ?>"><?php the_title(); ?></a>
-                        
                     </div>
                 </div>
                 <div class="title">

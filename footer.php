@@ -447,39 +447,6 @@ document.addEventListener('DOMContentLoaded', function () {
         moreLink.href = data.masterLink;
     }
 
-    function handleLike(element) {
-        const likeIcon = element.querySelector('.like-icon');
-        const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
-        const postId = element.dataset.id;
-
-        if (!likeIcon || !likeCounter || !postId) return;
-
-        const isLiked = hasLiked(postId);
-        const newLikes = isLiked
-            ? Math.max(0, Number(likeCounter.textContent) - 1)
-            : Number(likeCounter.textContent) + 1;
-
-        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-                action: 'toggle_portfolio_like',
-                post_id: postId,
-                increment: isLiked ? '0' : '1'
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                likeCounter.textContent = data.data.likes;
-                likeIcon.classList.toggle('active');
-                setLiked(postId, !isLiked);
-            } else {
-                alert("Ошибка при сохранении лайка");
-            }
-        });
-    }
-
     document.querySelectorAll('.gallery-master-cards-likes-wrapper').forEach(el => {
         const postId = el.dataset.id;
         if (hasLiked(postId)) {
@@ -604,6 +571,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+window.handleLike = function(element) {
+    const likeIcon = element.querySelector('.like-icon');
+    const likeCounter = element.querySelector('.gallery-master-cards-likes-counter');
+    const postId = element.dataset.id;
+
+    if (!likeIcon || !likeCounter || !postId) return;
+
+    const isLiked = localStorage.getItem('likedGalleryItems')?.includes(postId);
+    const newLikes = isLiked
+        ? Math.max(0, Number(likeCounter.textContent) - 1)
+        : Number(likeCounter.textContent) + 1;
+
+    fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            action: 'toggle_portfolio_like',
+            post_id: postId,
+            increment: isLiked ? '0' : '1'
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            likeCounter.textContent = data.data.likes;
+            likeIcon.classList.toggle('active');
+            const likedList = JSON.parse(localStorage.getItem('likedGalleryItems') || '[]');
+            const updated = isLiked
+                ? likedList.filter(id => id !== postId)
+                : [...likedList, postId];
+            localStorage.setItem('likedGalleryItems', JSON.stringify(updated));
+        } else {
+            alert("Ошибка при сохранении лайка");
+        }
+    });
+}
+
 function updateGalleryLikeUI(postId, newCount, isLiked) {
     document.querySelectorAll(`[data-id='${postId}']`).forEach(el => {
         const icon = el.querySelector('.like-icon');
@@ -653,7 +657,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Выбранный мастер:', selectedMaster);
     }
 
-    // Функция выбора услуги
     function selectService(serviceSelect, serviceId, serviceName, serviceImage) {
         const selectedOption = serviceSelect.querySelector('.selected-option .option-text');
         const avatarPlaceholder = serviceSelect.querySelector('.avatar-placeholder');
@@ -662,14 +665,29 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedOption.innerText = serviceName;
         avatarPlaceholder.style.backgroundImage = `url(${serviceImage})`;
 
-        // Проверяем, не была ли услуга уже выбрана
-        const serviceExists = selectedServices.some(service => service.id === serviceId);
-        if (!serviceExists) {
-            selectedServices.push({ id: serviceId, name: serviceName, image: serviceImage });
+        const selectId = serviceSelect.getAttribute('id');
+
+        // Проверяем, была ли уже выбрана услуга в этом селекте
+        const existingIndex = selectedServices.findIndex(s => s.selectId === selectId);
+
+        const newService = {
+            id: serviceId,
+            name: serviceName,
+            image: serviceImage,
+            selectId: selectId
+        };
+
+        if (existingIndex !== -1) {
+            // Заменяем старую услугу на новую
+            selectedServices[existingIndex] = newService;
+        } else {
+            // Добавляем новую услугу
+            selectedServices.push(newService);
         }
 
-        // Логика отображения кнопки "Добавить услугу"
-        if (selectedServices.length < 3) {
+        // Контролируем отображение кнопки "Добавить услугу"
+        const visibleServiceCount = selectedServices.length;
+        if (visibleServiceCount < 3) {
             addServiceButton.style.display = 'flex';
         } else {
             addServiceButton.style.display = 'none';
@@ -677,6 +695,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log('Выбранные услуги:', selectedServices);
     }
+
 
     // Обработка клика на кнопку "Добавить услугу"
     function handleAddServiceClick() {
@@ -692,22 +711,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Обработка клика на кнопку "Удалить" селекта
     function handleDeleteServiceClick(deleteButton) {
         const serviceSelect = deleteButton.closest('.service-select');
-        const avatarPlaceholder = serviceSelect.querySelector('.avatar-placeholder');
         const selectedOption = serviceSelect.querySelector('.selected-option .option-text');
+        const avatarPlaceholder = serviceSelect.querySelector('.avatar-placeholder');
 
-        // Возвращаем плейсхолдер
+        // Найти ID удаляемой услуги (по выбранному тексту)
+        const serviceName = selectedOption.innerText.trim();
+        const serviceIndex = selectedServices.findIndex(s => s.name === serviceName);
+
+        if (serviceIndex !== -1) {
+            selectedServices.splice(serviceIndex, 1); // удалить услугу из массива
+        }
+
+        // Сброс отображения
         avatarPlaceholder.removeAttribute('style');
         selectedOption.innerText = 'Услуга не выбрана';
 
-        // Скрываем селект
+        // Скрыть селект
         serviceSelect.classList.add('hidden');
-        addServiceButton.style.display = 'flex';
 
-        console.log('Удалена услуга');
+        // Показать кнопку добавления, если теперь меньше 3
+        if (selectedServices.length < 3) {
+            addServiceButton.style.display = 'flex';
+        }
+
+        console.log('Удалена услуга, текущие:', selectedServices);
     }
+
 
     // Добавляем обработчики кликов на все селекты
     document.querySelectorAll('.custom-select').forEach(select => {
@@ -778,22 +809,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const name = nameInput.value.trim();
         const phone = phoneInput.value.trim();
 
-        nameInput.classList.remove('error');
-        phoneInput.classList.remove('error');
+        let valid = true;
 
         // Проверка имени
         const nameValid = /^[А-Яа-яA-Za-z\s-]{2,}$/.test(name);
         if (!nameValid) {
+            nameInput.classList.remove('error');
+            void nameInput.offsetWidth;
             nameInput.classList.add('error');
+            valid = false;
         }
 
         // Проверка телефона
         const digitsOnly = phone.replace(/\D/g, '');
         if (digitsOnly.length < 7) {
+            phoneInput.classList.remove('error');
+            void phoneInput.offsetWidth;
             phoneInput.classList.add('error');
+            valid = false;
         }
 
-        if (!nameValid || digitsOnly.length < 7) return;
+        if (!valid) return;
 
         const masterId = selectedMaster ? selectedMaster.id : null;
         const serviceIds = selectedServices.map(s => s.id);
@@ -822,6 +858,17 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(() => {
             alert('Ошибка при отправке формы');
         });
+    });
+
+    // Живое удаление ошибки
+    document.querySelector('#name_modal_order').addEventListener('input', () => {
+
+        if (/^[А-Яа-яA-Za-z\s-]{2,}$/.test(document.querySelector('#name_modal_order').value.trim())) {
+            document.querySelector('#name_modal_order').classList.remove('error');
+        }
+    });
+    document.querySelector('#phone_modal_order').addEventListener('focus', () => {
+        document.querySelector('#phone_modal_order').classList.remove('error');
     });
 
     // Обработка клика по кнопке цены в таблице
