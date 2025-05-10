@@ -94,7 +94,7 @@ $gallery_data = [];
                     </div>
                 </div>
                 <div class="buttons-wrapper col">
-                    <div class="button button-primary">
+                    <div class="button button-primary open-order-modal"  data-master-id="<?= esc_attr($master_id); ?>">
                         Записаться
                     </div>
                     <div class="button-label">

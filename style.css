@@ -4706,7 +4706,7 @@ padding-top: 22px;
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 200;
     justify-content: end;
     visibility: hidden;
     opacity: 0;

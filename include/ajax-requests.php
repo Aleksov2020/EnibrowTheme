@@ -133,7 +133,7 @@ function filter_portfolio() {
                     </div>
                 </div>
                 <div class="buttons-wrapper col">
-                    <div class="button button-primary text-16-500">
+                    <div class="button button-primary text-16-500 open-order-modal"  data-master-id="<?= esc_attr($master_id); ?>">
                         Записаться
                     </div>
                     <a href="<?= get_permalink($master_id)?>" class="button-label">

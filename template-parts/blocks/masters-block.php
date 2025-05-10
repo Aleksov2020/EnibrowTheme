@@ -193,7 +193,7 @@ if ($masters_query->have_posts()) :
 
                                 <!-- Кнопки -->
                                 <div class="master-service-button-wrapper row">
-                                    <div class="button button-primary">
+                                    <div class="button button-primary open-order-modal"  data-master-id="<?= esc_attr($master_id); ?>">
                                         Записаться
                                     </div>
                                     <a href="<?= get_permalink($master_id) ?>" class="button-more colored-text">

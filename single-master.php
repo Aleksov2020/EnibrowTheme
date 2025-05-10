@@ -2,6 +2,7 @@
 
 <?php
 // Получаем данные мастера
+$master_id = get_the_ID();
 $master_name = get_field('master_name');
 $master_surname = get_field('master_surname');
 $master_rank = get_field('master_rank');
@@ -135,7 +136,7 @@ $master_extra_education = get_field('master_extra_education') ?: [];
 
                         <div class="button row button-primary button-animation-left-to-right">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/whitePlus.svg" width="14" height="14"/>
-                            <div class="button-label">
+                            <div class="button-label open-order-modal"  data-master-id="<?= esc_attr($master_id); ?>">
                                 Записаться к мастеру
                             </div>
                         </div>
