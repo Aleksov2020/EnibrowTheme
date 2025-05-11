@@ -79,7 +79,7 @@ if (empty($masters)) {
                         <div class="services-price-wrapper-name col">
                             <div class="services-price-name-wrapper row">
                                 <div class="services-price-name text-20-400">
-                                    <?= esc_html(get_field('service_short_name', $service_id);); ?>
+                                    <?= esc_html(get_field('service_short_name', $service_id)); ?>
                                 </div>
                                 <?php
                                 $promotion_args = [

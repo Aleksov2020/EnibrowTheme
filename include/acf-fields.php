@@ -1240,7 +1240,31 @@ add_action('acf/init', function() {
         ),
     ));
     
-
+    //Услуги мастера
+    acf_add_local_field_group([
+        'key' => 'group_master_price_block',
+        'title' => 'Настройки блока цен мастера',
+        'fields' => [
+            [
+                'key' => 'field_master_for_price_table',
+                'label' => 'Выберите мастера',
+                'name' => 'selected_master',
+                'type' => 'post_object',
+                'post_type' => ['master'],
+                'return_format' => 'id',
+                'required' => 1,
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/master_price_table',
+                ],
+            ],
+        ],
+    ]);
 
 });
 

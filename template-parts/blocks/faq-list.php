@@ -17,7 +17,7 @@ $query = new WP_Query($args);
             <?php $permalink = get_permalink(); ?>
             <a href="<?= esc_url($permalink); ?>" class="faq-page-item-wrapper col">
                 <div class="faq-page-item-title">
-                    <?php the_title(); ?>
+                    <?php echo get_the_title(); ?>
                 </div>
                 <div class="faq-page-item-buttons-wrapper row">
                     <div class="faq-item-button-wrapper row">
@@ -25,7 +25,7 @@ $query = new WP_Query($args);
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/liIcon.svg" alt="li-icon" width="8" height="14">
                         </div>
                         <div class="faq-item-button-label text-16-500 colored-text">
-                            <a href="<?php the_permalink(); ?>">Читать ответ</a>
+                            <div>Читать ответ</div>
                         </div>
                     </div>
                     <div class="faq-item-views-wrapper row">

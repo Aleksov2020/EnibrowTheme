@@ -661,13 +661,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedOption = serviceSelect.querySelector('.selected-option .option-text');
         const avatarPlaceholder = serviceSelect.querySelector('.avatar-placeholder');
 
-        // Обновляем текст и картинку выбранной услуги
         selectedOption.innerText = serviceName;
         avatarPlaceholder.style.backgroundImage = `url(${serviceImage})`;
 
         const selectId = serviceSelect.getAttribute('id');
-
-        // Проверяем, была ли уже выбрана услуга в этом селекте
         const existingIndex = selectedServices.findIndex(s => s.selectId === selectId);
 
         const newService = {
@@ -678,16 +675,16 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         if (existingIndex !== -1) {
-            // Заменяем старую услугу на новую
             selectedServices[existingIndex] = newService;
         } else {
-            // Добавляем новую услугу
             selectedServices.push(newService);
         }
 
-        // Контролируем отображение кнопки "Добавить услугу"
-        const visibleServiceCount = selectedServices.length;
-        if (visibleServiceCount < 3) {
+        // Показывать кнопку, если есть еще скрытые селекты
+        if (
+            (serviceSelect2.classList.contains('hidden') || serviceSelect3.classList.contains('hidden')) &&
+            selectedServices.length < 3
+        ) {
             addServiceButton.style.display = 'flex';
         } else {
             addServiceButton.style.display = 'none';
@@ -697,7 +694,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // Обработка клика на кнопку "Добавить услугу"
     function handleAddServiceClick() {
         if (serviceSelect2.classList.contains('hidden')) {
             serviceSelect2.classList.remove('hidden');
@@ -705,10 +701,8 @@ document.addEventListener('DOMContentLoaded', function () {
             serviceSelect3.classList.remove('hidden');
         }
 
-        // Скрываем кнопку после добавления третьего селекта
-        if (selectedServices.length >= 2) {
-            addServiceButton.style.display = 'none';
-        }
+        // Скрываем кнопку до тех пор, пока пользователь не выберет услугу
+        addServiceButton.style.display = 'none';
     }
 
     function handleDeleteServiceClick(deleteButton) {

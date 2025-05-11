@@ -36,13 +36,13 @@
                 </div>
             </div>
             <div class="contact-widget-buttons-wrapper row">
-                <div class="contact-widget-button-map button">
+                <a href="#" class="contact-widget-button-map button">
                     <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M5.75297 14.924C5.75314 14.9241 5.75327 14.9242 6 14.5835L5.75297 14.924Z" fill="#FF0000"/>
                     </svg>
                     Перейти на карты
-                </div>
-                <div class="contact-widget-button button button-primary">
+                </a>
+                <div class="contact-widget-button button button-primary order-button">
                     Оставить заявку
                 </div>
             </div>

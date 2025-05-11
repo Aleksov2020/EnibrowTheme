@@ -6,9 +6,9 @@
 
         // Получаем ACF поля услуги
         $slider_subtitle = get_field('category_subtitle', $page_id);
-        $duration = get_field('service_duration', $page_id);
-        $price = get_field('service_price', $page_id);
-        $durability = get_field('service_durability', $page_id);
+        $duration = get_field('category_duration', $page_id);
+        $price = get_field('category_price_from', $page_id);
+        $durability = get_field('category_persistence', $page_id);
         $slider_images = [];
 
         $related_services = get_posts([
@@ -70,7 +70,7 @@
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/smart-watch.png" width="40" height="40"/>
                             </div>
                             <div class="con-name text-16-300">
-                                Длительность: <?php echo esc_html($duration); ?> минут
+                                <?php echo esc_html($duration); ?>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -81,7 +81,7 @@
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/coins.png" width="35" height="38"/>
                             </div>
                             <div class="con-name text-16-300">
-                                Стоимость от <?php echo esc_html($price); ?> руб.
+                                <?php echo esc_html($price); ?>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -92,7 +92,7 @@
                                 <img src="<?php echo get_template_directory_uri(); ?>/assets/birds.png" width="46" height="34"/>
                             </div>
                             <div class="con-name text-16-300">
-                                Стойкость от <?php echo esc_html($durability); ?> года
+                                <?php echo esc_html($durability); ?>
                             </div>
                         </div>
                     <?php endif; ?>

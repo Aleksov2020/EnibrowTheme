@@ -568,6 +568,17 @@ function register_custom_acf_blocks() {
         'mode' => 'edit',
     ));
 
+    acf_register_block_type([
+        'name'            => 'master_price_table',
+        'title'           => 'Таблица цен мастера',
+        'description'     => 'Выводит таблицу всех услуг мастера по категориям.',
+        'render_template' => get_template_directory() . '/template-parts/blocks/master-price-table.php',
+        'category'        => 'enibrow-prices',
+        'icon'            => 'money-alt',
+        'keywords'        => ['мастер', 'услуги', 'цены'],
+        'mode'            => 'edit',
+    ]);
+
 }
 
 // Добавляем страницу настроек в админку

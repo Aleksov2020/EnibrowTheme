@@ -39,7 +39,7 @@ if ($blog_query->have_posts()) :
                 ?>
 
                 <div class="blog-item col">
-                    <div class="blog-item-photo col" style="background-image: url('<?php echo esc_url($blog_image['url']); ?>');">
+                    <a href="<?php the_permalink(); ?>" class="blog-item-photo col" style="background-image: url('<?php echo esc_url($blog_image['url']); ?>');">
                         <div class="blog-item-counters-wrapper text-16-300 row">
                             <div class="blog-item-counter-wrapper row">
                                 <div class="blog-item-counter-icon">
@@ -58,7 +58,7 @@ if ($blog_query->have_posts()) :
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <div class="blog-item-text-wrapper col">
                         <a href="<?php the_permalink(); ?>" class="blog-item-title colored-text">
                             <?php the_title(); ?>

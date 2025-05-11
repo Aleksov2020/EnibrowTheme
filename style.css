@@ -73,6 +73,7 @@ img {
     background-color: #F8EFE8;
     align-items: center;
     padding-bottom: 20px;
+    margin-top: 20px;
 }
 
 .master-service-button-wrapper .button, .reviews-button-wrapper .button {
@@ -1800,6 +1801,7 @@ td.price {
     margin-top: 22px;
     border-radius: 10px;
     transition: .3s;
+    margin-bottom: 22px;
 }
 
 .slider-home-wrapper:hover {
@@ -2631,6 +2633,12 @@ td.price {
 .roll-block-text, .roll-block-item-text, .roll-block-dangerous-text {
     line-height: 30px;
     display: inline;
+}
+
+.roll-block-text {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .roll-block-items-wrapper {
@@ -3845,7 +3853,6 @@ padding-top: 22px;
 
 .discont {
     transition: .3s;
-    margin-bottom: 30px;
 }
 
 .discont-slide svg {
@@ -5486,6 +5493,15 @@ padding-top: 22px;
 @media (max-width: 1190px) {
     .header__right-part .button {
         width: 160px;
+    }
+
+    .gallery-item .gallery-text {
+        height: 0;
+        visibility: hidden;
+    }
+
+    .gallery-item:hover .gallery-text {
+        opacity: 0;
     }
 
     .service-slider::before {

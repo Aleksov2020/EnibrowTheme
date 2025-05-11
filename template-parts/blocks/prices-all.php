@@ -155,7 +155,7 @@ foreach ($masters as $master) {
 
                 <tr class="first-row">
                     <td colspan="<?= count($masters) + 1; ?>">
-                        * <span class="text-16-500">Примечание</span> — Итоговая стоимость зависит от желаемого вида татуажа и мастера
+                        * <div class="text-16-500">Примечание</div> — Итоговая стоимость зависит от желаемого вида татуажа и мастера
                     </td>
                 </tr>
             </tbody>

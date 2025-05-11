@@ -15,6 +15,20 @@ $master_rating = (float) get_field('master_rating');
 $services_prices = get_field('services_prices');
 $master_bio = get_field('master_bio') ?: 'Информация отсутствует';
 $master_extra_education = get_field('master_extra_education') ?: [];
+
+
+$portfolio_works = get_posts([
+    'post_type' => 'portfolio_work',
+    'numberposts' => 5,
+    'meta_query' => [
+        [
+            'key' => 'portfolio_master',
+            'value' => $master_id,
+            'compare' => '=',
+        ]
+    ]
+]);
+
 ?>
 <div class="main-wrapper page-master-wrapper col">
 
@@ -26,7 +40,11 @@ $master_extra_education = get_field('master_extra_education') ?: [];
                         <div class="breadcrumbs-page-name light-text-300">
                             <a href="<?php echo home_url(); ?>">Главная</a>
                         </div>
-                        <div class="breadcrumbs-separator"></div>
+                        <div class="breabcrumbs-separator"></div>
+                        <div class="breadcrumbs-page-name light-text-300">
+                            <a href="/master/">Мастера</a>
+                        </div>
+                        <div class="breabcrumbs-separator"></div>
                         <div class="breadcrumbs-page-name light-text-300 active">
                             <a href="<?php echo get_permalink(get_the_ID()); ?>"><?php the_title(); ?></a>
                         </div>
@@ -133,6 +151,45 @@ $master_extra_education = get_field('master_extra_education') ?: [];
                                 <?php endif; ?>
                             </div>
                         </div>
+
+                        <?php
+                        $gallery_id = 'masterGallery_' . $master_id;
+                        $gallery_data = [];
+
+                        if ($portfolio_works) :
+                        ?>
+                        <div class="master-page-slider-works row">
+                            <?php foreach ($portfolio_works as $index => $portfolio_id) :
+                                $img = get_field('portfolio_image', $portfolio_id);
+                                if (!$img) continue;
+
+                                $gallery_data[$gallery_id][] = [
+                                    'id'           => $portfolio_id,
+                                    'imageUrl'     => esc_url($img['url']),
+                                    'masterName'   => esc_html($master_name . ' ' . $master_surname),
+                                    'masterRank'   => esc_html($master_rank ?: 'Мастер'),
+                                    'masterLikes'  => esc_html($master_likes),
+                                    'masterAvatar' => esc_url($master_photo['url']),
+                                    'masterLink'   => esc_url(get_permalink($master_id)),
+                                ];
+                            ?>
+                                <div class="master-page-slider-works-item" onclick="openGallery(<?= $index ?>, '<?= $gallery_id ?>')">
+                                    <img src="<?= esc_url($img['sizes']['thumbnail']) ?>" alt="work" width="100" height="100">
+                                </div>
+                            <?php endforeach; ?>
+                            <div class="master-page-slider-works-button-more">
+                                <a class="master-page-slider-works-button-more-filter col" href="<?= home_url('/portfolio/?master=' . $master_id); ?>">
+                                    <div class="icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="29" height="22" viewBox="0 0 29 22" fill="none">
+                                            <path d="M18.7843 10.9998C18.7843 13.3668 16.8656 15.2855 14.4986 15.2855C12.1317 15.2855 10.2129 13.3668 10.2129 10.9998C10.2129 8.63283 12.1317 6.71411 14.4986 6.71411C16.8656 6.71411 18.7843 8.63283 18.7843 10.9998Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M14.5009 1C8.10423 1 2.68954 5.20411 0.869141 11C2.68951 16.7959 8.10423 21 14.5009 21C20.8975 21 26.3122 16.7959 28.1326 11C26.3122 5.20416 20.8975 1 14.5009 1Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    Все работы
+                                </a>
+                            </div>
+                        </div>
+                        <?php endif; ?>
 
                         <div class="button row button-primary button-animation-left-to-right">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/whitePlus.svg" width="14" height="14"/>
@@ -242,4 +299,9 @@ $master_extra_education = get_field('master_extra_education') ?: [];
     <?php get_footer(); ?>
 </div>
 
-
+<script>
+window.galleryDataMap = window.galleryDataMap || {};
+<?php if ($gallery_data) : ?>
+window.galleryDataMap["<?= $gallery_id ?>"] = <?= json_encode($gallery_data[$gallery_id]) ?>;
+<?php endif; ?>
+</script>

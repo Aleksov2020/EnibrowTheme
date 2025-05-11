@@ -6,7 +6,7 @@ $args = array(
     'order'          => 'ASC',
 );
 $masters_query = new WP_Query($args);
-
+$gallery_map_master_all = [];
 if ($masters_query->have_posts()) :
 ?>
 <div class="masters wrapper wrapper-laptop col">
@@ -56,6 +56,10 @@ if ($masters_query->have_posts()) :
                     )
                 );
                 $portfolio_query = new WP_Query($portfolio_args);
+
+                $gallery_id = 'masterGalleryAll_' . $master_id;
+                $gallery_map_master_all[$gallery_id] = [];
+                $portfolio_index = 0;
                 ?>
 
                 <div class="master-card row">
@@ -109,10 +113,21 @@ if ($masters_query->have_posts()) :
                                 <div class="master-gallery-small row">
                                     <?php if ($portfolio_query->have_posts()) : ?>
                                         <?php while ($portfolio_query->have_posts()) : $portfolio_query->the_post(); ?>
-                                            <?php $portfolio_image = get_field('portfolio_image', get_the_ID()); ?>
+                                            <?php 
+                                            $portfolio_image = get_field('portfolio_image', get_the_ID()); 
+                                            $gallery_map_master_all[$gallery_id][] = [
+                                                'imageUrl'     => esc_url($portfolio_image['url']),
+                                                'masterName'   => esc_html($master_name . ' ' . $master_surname),
+                                                'masterRank'   => esc_html($master_rank),
+                                                'masterLikes'  => esc_html($master_likes),
+                                                'masterAvatar' => esc_url($master_photo['url']),
+                                                'masterLink'   => esc_url(get_permalink($master_id)),
+                                            ];
+                                            ?>
                                             <?php if ($portfolio_image) : ?>
-                                                <div class="gallery-item-small" style="background-image: url(<?php echo esc_url($portfolio_image['url']); ?>);"></div>
+                                                <div class="gallery-item-small" style="background-image: url(<?php echo esc_url($portfolio_image['url']); ?>);" onclick="openGallery(<?= $portfolio_index ?>, '<?= $gallery_id ?>')"                                                ></div>
                                             <?php endif; ?>
+                                            <?php $portfolio_index++; ?>
                                         <?php endwhile; ?>
                                         <?php wp_reset_postdata(); ?>
                                     <?php endif; ?>
@@ -177,3 +192,9 @@ endif;
 wp_reset_postdata();
 ?>
 </div>
+<script>
+window.galleryDataMap = window.galleryDataMap || {};
+<?php foreach ($gallery_map_master_all as $galleryId => $images): ?>
+window.galleryDataMap["<?= $galleryId ?>"] = <?= json_encode($images); ?>;
+<?php endforeach; ?>
+</script>

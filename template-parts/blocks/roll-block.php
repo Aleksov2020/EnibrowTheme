@@ -9,7 +9,7 @@ if ($roll_content):
                 <div class="roll-block-links text-16-300">
                     <?php if (!empty($block['links'])): ?>
                         <?php foreach ($block['links'] as $link): ?>
-                            <a href="/#<?php echo esc_html($link['text']); ?>" target="_blank" rel="noopener" class="roll-block-link">
+                            <a href="/#<?php echo esc_html($link['text']); ?>" rel="noopener" class="roll-block-link">
                                 <?php echo esc_html($link['text']); ?>
                             </a>
                         <?php endforeach; ?>

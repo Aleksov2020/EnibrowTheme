@@ -131,8 +131,8 @@ if ($masters_query->have_posts()) :
                                 endif; ?>
                             </div>
                         </div>
-                                                    <!-- Услуги -->
-                                                    <div class="master-services-wrapper col">
+                        <!-- Услуги -->
+                        <div class="master-services-wrapper col">
                                 <div class="master-services-inner-wrapper col">
                                     <div class="master-services-title light-text-600 colored-text">
                                         Цены на процедуры:
