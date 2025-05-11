@@ -50,13 +50,11 @@ foreach ($services as $service) {
         <!-- AJAX контент -->
     </div>
 
-    <?php if (count($portfolio_works) > 10) : ?>
-        <div class="gallery-load-more-wrapper row">
-            <div id="load-more-button" class="button button-primary">
-                Загрузить еще
-            </div>
+    <div class="gallery-load-more-wrapper row">
+        <div id="load-more-button" class="button button-primary">
+            Загрузить еще
         </div>
-    <?php endif; ?>
+    </div>
 </div>
 
 <script>
@@ -113,18 +111,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     fetchPortfolioWorks("all");
-});
-
-
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const galleryDataExample = <?php echo json_encode($gallery_data); ?>;
-
-    document.querySelectorAll(".gallery-photo").forEach((el, index) => {
-        el.addEventListener("click", () => {
-            openGallery(index, galleryDataExample);
-        });
-    });
 });
 </script>

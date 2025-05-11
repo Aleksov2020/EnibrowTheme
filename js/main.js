@@ -69,33 +69,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(".review-card");
     const nextButton = document.querySelector(".reviews-button.prev-button");
     const prevButton = document.querySelector(".reviews-button.next-button");
-    const gap = window.innerWidth < 700 ? 12 : 50;
+
+    if (!track || slides.length === 0) return;
+
     let currentIndex = 0;
-    const slideWidth = slides[0].offsetWidth + gap;
+    let slideWidth, slidesPerView, maxIndex;
+
+    function calculateSizes() {
+        const gap = window.innerWidth < 700 ? 12 : 50;
+        slideWidth = slides[0].offsetWidth + gap;
+        const trackWidth = track.offsetWidth || track.parentElement.offsetWidth;
+        slidesPerView = Math.max(1, Math.floor(trackWidth / slideWidth));
+        maxIndex = Math.max(0, slides.length - slidesPerView);
+    }
 
     function updateSlidePosition() {
         track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
     }
 
-    nextButton.addEventListener("click", () => {
-        if (currentIndex < slides.length - 3) {
-            currentIndex++;
-        } else {
-            currentIndex = 0;
-        }
+    function nextSlide() {
+        currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
         updateSlidePosition();
-    });
+    }
 
-    prevButton.addEventListener("click", () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-        } else {
-            currentIndex = slides.length - 1;
-        }
+    function prevSlide() {
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : maxIndex;
         updateSlidePosition();
-    });
+    }
 
-    // Добавляем поддержку свайпа
+    nextButton.addEventListener("click", nextSlide);
+    prevButton.addEventListener("click", prevSlide);
+
+    // Свайп
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -105,28 +110,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     track.addEventListener("touchend", function (e) {
         touchEndX = e.changedTouches[0].screenX;
-        handleGesture();
+        const deltaX = touchEndX - touchStartX;
+        const threshold = 50;
+
+        if (deltaX < -threshold) nextSlide();
+        else if (deltaX > threshold) prevSlide();
     }, { passive: true });
 
-    function handleGesture() {
-        const swipeThreshold = 50;
-        if (touchEndX < touchStartX - swipeThreshold) {
-            if (currentIndex < slides.length - 3) {
-                currentIndex++;
-            } else {
-                currentIndex = 0;
-            }
-            updateSlidePosition();
-        } else if (touchEndX > touchStartX + swipeThreshold) {
-            if (currentIndex > 0) {
-                currentIndex--;
-            } else {
-                currentIndex = slides.length - 1;
-            }
-            updateSlidePosition();
-        }
-    }
+    // Первичный расчёт и адаптация при изменении ширины экрана
+    calculateSizes();
+    updateSlidePosition();
+    window.addEventListener("resize", () => {
+        calculateSizes();
+        updateSlidePosition(); // Пересчитываем позицию после ресайза
+    });
 });
+
+
 
 
 
@@ -383,81 +383,62 @@ document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(".master-card");
     const prevButton = document.querySelector(".masters-button-slider.prev-button");
     const nextButton = document.querySelector(".masters-button-slider.next-button");
+
+    if (!track || slides.length === 0) return;
+
     let currentIndex = 0;
-    const slideWidth = slides[0].offsetWidth + 30;  // Используем ширину слайда для корректного перемещения
+    const slideWidth = slides[0].offsetWidth + 30;
 
-    // Функция для обновления позиции слайдов
     function updateSlidePosition() {
-        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`; // Двигаем слайды на ширину одного слайда
+        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
     }
 
-    // Переход к следующему слайду
     function nextSlide() {
-        if (currentIndex < slides.length - 1) {
-            currentIndex++;
-        } else {
-            currentIndex = 0; // Циклический переход
-        }
+        currentIndex = (currentIndex + 1) % slides.length;
         updateSlidePosition();
     }
 
-    // Переход к предыдущему слайду
     function prevSlide() {
-        if (currentIndex > 0) {
-            currentIndex--;
-        } else {
-            currentIndex = slides.length - 1; // Циклический переход
-        }
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
         updateSlidePosition();
     }
 
-    // Обработчики кликов по кнопкам
-    nextButton.addEventListener("click", () => {
-        nextSlide();
-        resetAutoSlide(); // Остановить автопрокрутку при клике
+    nextButton.addEventListener("click", nextSlide);
+    prevButton.addEventListener("click", prevSlide);
+
+    // Swipe logic
+    let startX = 0;
+    let isSwiping = false;
+
+    track.addEventListener("pointerdown", (e) => {
+        startX = e.clientX;
+        isSwiping = true;
+        console.log(startX)
     });
 
-    prevButton.addEventListener("click", () => {
-        prevSlide();
-        resetAutoSlide(); // Остановить автопрокрутку при клике
-    });
+    window.addEventListener("pointerup", (e) => {
+        if (!isSwiping) return;
 
-    // Автопрокрутка слайдов
-    let autoSlideInterval;
-
-    // function startAutoSlide() {
-    //     autoSlideInterval = setInterval(nextSlide, 3000);  // Каждые 3 секунды переходит к следующему слайду
-    // }
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    track.addEventListener("touchstart", function (e) {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    track.addEventListener("touchend", function (e) {
-        touchEndX = e.changedTouches[0].screenX;
-        handleGesture();
-    }, { passive: true });
-
-    function handleGesture() {
-        const swipeThreshold = 50; // минимальное расстояние свайпа
-        if (touchEndX < touchStartX - swipeThreshold) {
+        const deltaX = e.clientX - startX;
+        const threshold = 50;
+        console.log(e.clientX)
+        if (deltaX < -threshold) {
             nextSlide();
-            resetAutoSlide();
-        } else if (touchEndX > touchStartX + swipeThreshold) {
+        } else if (deltaX > threshold) {
             prevSlide();
-            resetAutoSlide();
         }
-    }
 
-    // Остановить автопрокрутку
-    function resetAutoSlide() {
-        clearInterval(autoSlideInterval);  // Останавливаем текущую автопрокрутку
-        startAutoSlide();  // Запускаем новую автопрокрутку
-    }
+        isSwiping = false;
+    });
+
+    window.addEventListener("pointercancel", () => {
+        isSwiping = false;
+        console.log("cancel")
+    });
 });
+
+
+
 
 
 /* header open menu */

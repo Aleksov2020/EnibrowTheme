@@ -46,7 +46,7 @@ foreach ($services as $service) {
         </svg>
         Позвонить
     </a>
-    <div class="button-header-footer">Записаться</div>
+    <div class="button-header-footer open-order-modal">Записаться<span class="flare"></span></div>
 </div>
 
 
@@ -257,8 +257,8 @@ foreach ($services as $service) {
                 </div>
             </div>
             <div class="custom-select-wrapper col">
-                <div class="button row button-primary">
-                    <div class="button-label"  id="submit-order">Запись онлайн</div>
+                <div class="button row button-primary" id="submit-order">
+                    <div class="button-label">Запись онлайн</div>
                 </div>
             </div>
             <div class="checkbox-wrapper row">
@@ -820,6 +820,17 @@ document.addEventListener('DOMContentLoaded', function () {
             phoneInput.classList.remove('error');
             void phoneInput.offsetWidth;
             phoneInput.classList.add('error');
+            valid = false;
+        }
+
+        const checkboxWrapper = document.querySelector('.modal-order-body .checkbox-wrapper');
+        const checkbox = checkboxWrapper.querySelector('.checkbox');
+
+        // Удалим возможную прошлую ошибку
+        checkboxWrapper.classList.remove('error');
+
+        if (!checkbox.classList.contains('checked')) {
+            checkboxWrapper.classList.add('error');
             valid = false;
         }
 

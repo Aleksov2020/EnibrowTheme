@@ -81,7 +81,6 @@ img {
     background-color: #F8EFE8;
     align-items: center;
     padding-bottom: 20px;
-    margin-top: 20px;
 }
 
 .master-service-button-wrapper .button, .reviews-button-wrapper .button {
@@ -3121,6 +3120,36 @@ footer {
 .slide-visible-one:hover img, .slide-visible-one:hover, .slide-visible-two:hover img {
     box-shadow: 0px 0px 25px 0px #825E6980;
 
+}
+
+.masters-wrapper-track {
+    touch-action: pan-y;
+}
+
+.button-header-footer {
+    position: relative; 
+    overflow-x: hidden;  
+}
+
+.button-header-footer .flare {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 45px;
+    transform: skewX(-45deg);
+    animation: flareAnimation;
+    left: -150%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.4));
+    animation: flareAnimation 3s infinite linear; // Время и тип анимации можно менять
+}
+
+@keyframes flareAnimation {
+    0% {
+        left: -150%;
+    }
+    100% {
+        left: 150%;
+    }
 }
 
 /*======= SERVICE-CONTENT ===================*/
@@ -7055,6 +7084,10 @@ padding-top: 22px;
         justify-content: start;
         padding: 20px;
         transition: transform 0.3s ease-in-out;
+    }
+
+    .page-all-masters .masters-wrapper-track {
+        flex-direction: column;
     }
 
     .masters-wrapper-slider {

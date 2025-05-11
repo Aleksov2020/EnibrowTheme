@@ -6,7 +6,7 @@
 
 get_header(); ?>
 
-<div class="main-wrapper page-index-wrapper col">
+<div class="main-wrapper page-index-wrapper page-all-masters col">
 <?php
 /* Template Name: Мастера */
 get_header();

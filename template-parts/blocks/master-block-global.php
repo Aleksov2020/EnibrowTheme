@@ -140,33 +140,58 @@ if ($masters_query->have_posts()) :
                                     <div class="master-services-title light-text-600 colored-text">
                                         Цены на процедуры:
                                     </div>
-                                    <div class="master-service-wrapper light-text-300 row">
-                                        <div class="master-service-name">
-                                            Брови
+
+                                    <?php
+                                    $master_services = get_field('master_services', $master_id);
+                                    $category_prices = [];
+
+                                    if (!empty($master_services)) {
+                                        foreach ($master_services as $service_item) {
+                                            $service_id = $service_item['uslyga'];
+                                            $price = $service_item['service_price'];
+
+                                            if (!$service_id || !$price) {
+                                                continue;
+                                            }
+
+                                            $category_id = get_field('usl_cat_field', $service_id);
+                                            if (!$category_id) {
+                                                continue;
+                                            }
+
+                                            $category_name = get_field('cat_short_name', $category_id);
+
+
+                                            if (!isset($category_prices[$category_name])) {
+                                                $category_prices[$category_name] = $price;
+                                            } else {
+                                                $category_prices[$category_name] = min($category_prices[$category_name], $price);
+                                            }
+                                        }
+                                    }
+
+                                    if (!empty($category_prices)) :
+                                        foreach ($category_prices as $cat_name => $min_price) :
+                                    ?>
+                                        <div class="master-service-wrapper light-text-300 row">
+                                            <div class="master-service-name">
+                                                <?php echo esc_html($cat_name); ?>
+                                            </div>
+                                            <div class="master-service-separator"></div>
+                                            <div class="master-service-price">
+                                                от <?php echo number_format($min_price, 0, '', ' '); ?> ₽
+                                            </div>
                                         </div>
-                                        <div class="master-service-separator"></div>
-                                        <div class="master-service-price">
-                                            от 10.000 ₽
+                                    <?php
+                                        endforeach;
+                                    else :
+                                    ?>
+                                        <div class="master-service-wrapper light-text-300 row">
+                                            <div class="master-service-name">
+                                                Услуги не найдены
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="master-service-wrapper light-text-300 row">
-                                        <div class="master-service-name">
-                                            Губы
-                                        </div>
-                                        <div class="master-service-separator"></div>
-                                        <div class="master-service-price">
-                                            от 12.000 ₽
-                                        </div>
-                                    </div>
-                                    <div class="master-service-wrapper light-text-300 row">
-                                        <div class="master-service-name">
-                                            Межресничка
-                                        </div>
-                                        <div class="master-service-separator"></div>
-                                        <div class="master-service-price">
-                                            от 14.000 ₽
-                                        </div>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
 
                                 <!-- Кнопки -->

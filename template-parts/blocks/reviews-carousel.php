@@ -85,7 +85,7 @@ ob_start();
                         
                                 $reviews_gallery_data[$gallery_id][] = [
                                     'id'           => $portfolio_id,
-                                    'imageUrl'     => esc_url($image['url']),
+                                    'imageUrl'     => $image ? esc_url($image['url']) : '',
                                     'masterName'   => esc_html(trim($master_name . ' ' . $master_surname)),
                                     'masterRank'   => esc_html($master_rank),
                                     'masterLikes'  => esc_html($likes),

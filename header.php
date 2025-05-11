@@ -11,6 +11,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php wp_title(''); ?></title>
   <?php wp_head(); ?>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  />
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <!-- Подключение библиотеки jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- Подключение jQuery плагина Masked Input -->
@@ -99,7 +105,7 @@
                 <?php the_field('site_work_time', 'option'); ?>
               </div>
             </div>
-            <div class="button row button-primary button-animation-left-to-right">
+            <div class="button row button-primary button-animation-left-to-right open-order-modal">
               <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/whitePlus.svg'); ?>" alt="plus" width="14" height="14"/>
               <div class="button-label">Запись онлайн</div>
             </div>
