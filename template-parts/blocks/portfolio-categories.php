@@ -29,7 +29,7 @@ foreach ($services as $service) {
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Фото работ</h2>
+            <h2><?= esc_html(get_field('title') ?: 'Фото работ'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>
@@ -50,11 +50,13 @@ foreach ($services as $service) {
         <!-- AJAX контент -->
     </div>
 
-    <div class="gallery-load-more-wrapper row">
-        <div id="load-more-button" class="button button-primary" style="display: none;">
-            Загрузить еще
+    <?php if (count($portfolio_works) > 10) : ?>
+        <div class="gallery-load-more-wrapper row">
+            <div id="load-more-button" class="button button-primary">
+                Загрузить еще
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
 </div>
 
 <script>

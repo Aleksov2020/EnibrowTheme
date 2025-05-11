@@ -19,7 +19,7 @@ if ($videos->have_posts()) {
     echo '            <div class="circle-title"></div>';
     echo '        </div>';
     echo '        <div class="title">';
-    echo '            <h2>Видео о процедуре</h2>';
+    echo '            <h2>'.get_field('title').'</h2>';
     echo '        </div>';
     echo '        <div class="title-right-arrow row">';
     echo '            <div class="circle-title"></div>';

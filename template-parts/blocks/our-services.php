@@ -9,7 +9,7 @@ if ($services): ?>
                 <div class="circle-title"></div>
             </div>
             <div class="title">
-                <h2>Наши услуги</h2>
+                <h2><?= esc_html(get_field('title') ?: 'Наши услуги'); ?></h2>
             </div>
             <div class="title-right-arrow row">
                 <div class="circle-title"></div>

@@ -16,7 +16,7 @@ if ($masters_query->have_posts()) :
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Все мастера</h2>
+            <h2><?= esc_html(get_field('title') ?: 'Все мастера'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>

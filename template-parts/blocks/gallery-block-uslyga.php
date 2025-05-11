@@ -25,7 +25,7 @@ $gallery_data = [];
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Фото работ</h2>
+            <h2><?= esc_html(get_field('title') ?: 'Фото работ'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>
@@ -97,9 +97,9 @@ $gallery_data = [];
                     <div class="button button-primary open-order-modal"  data-master-id="<?= esc_attr($master_id); ?>">
                         Записаться
                     </div>
-                    <div class="button-label">
+                    <a href="<?= get_permalink($master_id); ?>" class="button-label">
                         Подробнее о мастере
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

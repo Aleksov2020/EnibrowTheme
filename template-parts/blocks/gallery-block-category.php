@@ -33,7 +33,7 @@ $gallery_id = 'cat-' . $category_id;
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Фото работ</h2>
+            <h2><?= esc_html(get_field('gallery_title') ?: 'Фото работ'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>
@@ -104,9 +104,11 @@ $gallery_id = 'cat-' . $category_id;
         <?php endforeach; ?>
     </div>
 
-    <div class="gallery-items-button-wrapper row">
-        <div class="button button-primary" id="load-more-button">Еще фотографии</div>
-    </div>
+    <?php if (count($portfolio_works) > 10): ?>
+        <div class="gallery-items-button-wrapper row">
+            <div class="button button-primary" id="load-more-button">Еще фотографии</div>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?php

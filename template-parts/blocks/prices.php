@@ -58,7 +58,7 @@ foreach ($masters as $master) {
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Стоимость услуг</h2>
+            <h2><?= esc_html(get_field('title') ?: 'Стоимость услуг'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>

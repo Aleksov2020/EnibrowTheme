@@ -17,7 +17,7 @@ function register_custom_acf_blocks() {
 
     acf_register_block_type(array(
         'name'            => 'video_gallery',
-        'title'           => __('Видео Галерея'),
+        'title'           => __('Видео Галерея (на главной)'),
         'description'     => __('Выводит видео, отмеченные как "показывать на сайте"'),
         'render_template' => get_template_directory() . '/template-parts/blocks/video-block.php',
         'category'        => 'enibrow',
@@ -512,7 +512,7 @@ function register_custom_acf_blocks() {
     acf_register_block_type(array(
         'name' => 'gallery_block',
         'title' => __('Галерея работ (Все работы)', 'textdomain'),
-        'description' => __('Вывод всез работ', 'textdomain'),
+        'description' => __('Вывод всех работ', 'textdomain'),
         'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block.php',
         'category' => 'enibrow-gallery',
         'icon' => 'images-alt2',
@@ -537,7 +537,8 @@ function register_custom_acf_blocks() {
         'render_template' => get_template_directory() . '/template-parts/blocks/gallery-block-category.php',
         'category'        => 'enibrow-gallery',
         'icon'            => 'format-gallery',
-        'keywords'        => array('галерея', 'работы', 'портфолио')
+        'keywords'        => array('галерея', 'работы', 'портфолио'),
+        'supports' => ['align' => false],
     ));
 
 

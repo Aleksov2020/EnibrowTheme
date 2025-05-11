@@ -30,7 +30,7 @@ $query = new WP_Query($args);
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Отзывы о мастере</h2>
+            <h2><?= esc_html(get_field('title') ?: 'Отзывы о мастере'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>

@@ -25,7 +25,7 @@ if (!$portfolio_works) {
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Фото работ</h2>
+            <h2><?= esc_html(get_field('title') ?: 'Фото работ'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>
@@ -96,11 +96,11 @@ if (!$portfolio_works) {
         <?php endforeach; ?>
     </div>
 
-    <div class="gallery-items-button-wrapper row">
-        <div class="button button-primary">
-            Еще фотографии
+    <?php if (count($portfolio_works) > 10): ?>
+        <div class="gallery-items-button-wrapper row">
+            <div class="button button-primary" id="load-more-button">Еще фотографии</div>
         </div>
-    </div>
+    <?php endif; ?>
 </div>
 <script>
 function handleLike(element) {

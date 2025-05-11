@@ -26,7 +26,7 @@ $master_photo = get_field('master_photo', $master_id);
 <div class="gallery wrapper wrapper-laptop col" id="gallery-master">
     <div class="title-wrapper row">
         <div class="title-left-arrow row"><div class="spacer-title"></div><div class="circle-title"></div></div>
-        <div class="title"><h2>Работы мастера</h2></div>
+        <div class="title"><h2><?= esc_html(get_field('gallery_title') ?: 'Работы мастера'); ?></h2></div>
         <div class="title-right-arrow row"><div class="circle-title"></div><div class="spacer-title"></div></div>
     </div>
 

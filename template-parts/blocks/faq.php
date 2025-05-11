@@ -1,7 +1,7 @@
 <?php
 // Получаем выбранные вопросы
 $selected_faqs = get_field('selected_faqs');
-
+$faq_title = get_field('faq_title');
 if ($selected_faqs) :
 ?>
 <div class="faq col wrapper">
@@ -11,7 +11,7 @@ if ($selected_faqs) :
             <div class="circle-title"></div>
         </div>
         <div class="title">
-            <h2>Отвечаем на вопросы</h2>
+            <h2><?= esc_html(get_field('gallery_title') ?: 'Отвечаем на вопросы'); ?></h2>
         </div>
         <div class="title-right-arrow row">
             <div class="circle-title"></div>
