@@ -69,9 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(".review-card");
     const nextButton = document.querySelector(".reviews-button.prev-button");
     const prevButton = document.querySelector(".reviews-button.next-button");
-    const gap = window.innerWidth < 700 ? 10 : 50; // Определяем gap по разрешению
+    const gap = window.innerWidth < 700 ? 12 : 50;
     let currentIndex = 0;
-    const slideWidth = slides[0].offsetWidth + gap; // Ширина слайда + gap (30px)
+    const slideWidth = slides[0].offsetWidth + gap;
 
     function updateSlidePosition() {
         track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (currentIndex < slides.length - 3) {
             currentIndex++;
         } else {
-            currentIndex = 0; // Возвращаемся к первому слайду
+            currentIndex = 0;
         }
         updateSlidePosition();
     });
@@ -90,11 +90,44 @@ document.addEventListener("DOMContentLoaded", function () {
         if (currentIndex > 0) {
             currentIndex--;
         } else {
-            currentIndex = slides.length - 1; // Переход к последнему слайду
+            currentIndex = slides.length - 1;
         }
         updateSlidePosition();
     });
+
+    // Добавляем поддержку свайпа
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener("touchstart", function (e) {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener("touchend", function (e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleGesture();
+    }, { passive: true });
+
+    function handleGesture() {
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+            if (currentIndex < slides.length - 3) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            updateSlidePosition();
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = slides.length - 1;
+            }
+            updateSlidePosition();
+        }
+    }
 });
+
 
 
 
@@ -392,8 +425,31 @@ document.addEventListener("DOMContentLoaded", function () {
     // Автопрокрутка слайдов
     let autoSlideInterval;
 
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(nextSlide, 3000);  // Каждые 3 секунды переходит к следующему слайду
+    // function startAutoSlide() {
+    //     autoSlideInterval = setInterval(nextSlide, 3000);  // Каждые 3 секунды переходит к следующему слайду
+    // }
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener("touchstart", function (e) {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener("touchend", function (e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleGesture();
+    }, { passive: true });
+
+    function handleGesture() {
+        const swipeThreshold = 50; // минимальное расстояние свайпа
+        if (touchEndX < touchStartX - swipeThreshold) {
+            nextSlide();
+            resetAutoSlide();
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+            prevSlide();
+            resetAutoSlide();
+        }
     }
 
     // Остановить автопрокрутку

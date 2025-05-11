@@ -126,6 +126,7 @@ foreach ($masters as $master) {
                                                 Акция
                                             </a>
                                         <?php endif; ?>
+                                        <div class="separator-punkt"> </div>
                                     </div>
                                     <div class="services-price-short-description light-text-300">
                                         <?= esc_html($service['short_description']); ?>

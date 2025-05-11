@@ -178,7 +178,7 @@ $portfolio_works = get_posts([
                                 </div>
                             <?php endforeach; ?>
                             <div class="master-page-slider-works-button-more">
-                                <a class="master-page-slider-works-button-more-filter col" href="<?= home_url('/portfolio/?master=' . $master_id); ?>">
+                                <a class="master-page-slider-works-button-more-filter col" href="#gallery-master">
                                     <div class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="29" height="22" viewBox="0 0 29 22" fill="none">
                                             <path d="M18.7843 10.9998C18.7843 13.3668 16.8656 15.2855 14.4986 15.2855C12.1317 15.2855 10.2129 13.3668 10.2129 10.9998C10.2129 8.63283 12.1317 6.71411 14.4986 6.71411C16.8656 6.71411 18.7843 8.63283 18.7843 10.9998Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>

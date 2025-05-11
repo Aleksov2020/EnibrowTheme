@@ -509,11 +509,6 @@ function register_custom_acf_blocks() {
         'supports'          => array('align' => false),
     ));
 
-
-
-    //Галереи
-
-
     acf_register_block_type(array(
         'name' => 'gallery_block',
         'title' => __('Галерея работ (Все работы)', 'textdomain'),
@@ -566,6 +561,18 @@ function register_custom_acf_blocks() {
         'icon'            => 'format-gallery',
         'keywords'        => array('портфолио', 'галерея', 'работы мастеров'),
         'mode' => 'edit',
+    ));
+
+    
+    acf_register_block_type(array(
+        'name'              => 'master_gallery',
+        'title'             => 'Галерея мастера',
+        'description'       => 'Выводит все работы мастера в виде галереи.',
+        'render_template'   => get_template_directory() . '/template-parts/blocks/gallery-block-master.php',
+        'category'          => 'enibrow-gallery', // Твоя кастомная категория
+        'icon'              => 'format-gallery',
+        'keywords'          => ['мастер', 'галерея', 'портфолио'],
+        'mode'              => 'preview',
     ));
 
     acf_register_block_type([

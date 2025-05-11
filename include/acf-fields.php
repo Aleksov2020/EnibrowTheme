@@ -416,9 +416,15 @@ add_action('acf/init', function() {
     
     // услуги
     acf_add_local_field_group(array(
-        'key'    => 'group_service_fields',
+        'key'    => 'group_service_fields1',
         'title'  => 'Детали услуги',
         'fields' => array(
+            array(
+                'key'   => 'field_service_bread',
+                'label' => 'Хлебная крошка',
+                'name'  => 'bread',
+                'type'  => 'text',
+            ),
             array(
                 'key'   => 'field_service_short_name',
                 'label' => 'Короткое имя услуги (для фильтра и меню)',
@@ -559,6 +565,12 @@ add_action('acf/init', function() {
                 'name'  => 'cat_short_name',
                 'type'  => 'text',
                 'instructions' => 'Например: Брови, Губы, Межресничка',
+            ),
+            array(
+                'key' => 'field_category_bread',
+                'label' => 'Хлебная крошка',
+                'name' => 'bread',
+                'type' => 'text',
             ),
             array(
                 'key'   => 'field_category_subtitle',
@@ -767,29 +779,6 @@ add_action('acf/init', function() {
                             ),
                         ),
                     ),
-                    'list_item' => array(
-                        'key' => 'layout_list_item',
-                        'name' => 'list_item',
-                        'label' => 'Элемент списка',
-                        'display' => 'row',
-                        'sub_fields' => array(
-                            array(
-                                'key'   => 'field_list_item_title',
-                                'label' => 'Название элемента',
-                                'name'  => 'list_title',
-                                'type'  => 'text',
-                            ),
-                            array(
-                                'key'   => 'field_list_item_text',
-                                'label' => 'Описание элемента',
-                                'name'  => 'list_text',
-                                'type' => 'wysiwyg',
-                                'tabs' => 'visual',
-                                'toolbar' => 'basic',
-                                'media_upload' => 0,
-                            ),
-                        ),
-                    ),
                     'danger_block' => array(
                         'key' => 'layout_danger_block',
                         'name' => 'danger_block',
@@ -980,6 +969,12 @@ add_action('acf/init', function() {
         'title' => 'Дополнительные поля блога',
         'fields' => array(
             array(
+                'key' => 'field_blog_bread1',
+                'label' => 'Хлебная крошка',
+                'name' => 'bread',
+                'type' => 'text',
+            ),
+            array(
                 'key' => 'field_blog_views',
                 'label' => 'Количество просмотров',
                 'name' => 'blog_views',
@@ -1061,6 +1056,12 @@ add_action('acf/init', function() {
                 'name'  => 'faq_views',
                 'type'  => 'number',
                 'default_value' => 0,
+            ),
+            array(
+                'key' => 'field_faq_bread2',
+                'label' => 'Хлебная крошка',
+                'name' => 'bread',
+                'type' => 'text',
             ),
             array(
                 'key'   => 'field_faq_date',

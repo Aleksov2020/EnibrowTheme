@@ -99,6 +99,7 @@ if (empty($masters)) {
                                     </a>
                                     <?php wp_reset_postdata(); ?>
                                 <?php endif; ?>
+                                <div class="separator-punkt"> </div>
                             </div>
                             <div class="services-price-short-description light-text-300">
                                 <?= esc_html(get_field('service_short_description', $service_id)); ?>

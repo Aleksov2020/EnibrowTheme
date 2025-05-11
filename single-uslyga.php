@@ -4,10 +4,13 @@
 <?php
 // Данные услуги
 $service_name = get_the_title();
-$service_category = get_field('cat_uslyga'); // Категория услуги
+$service_category = get_field('usl_cat_field', get_the_ID()); // Категория услуги
 $service_duration = get_field('service_duration');
 $service_persistence = get_field('service_persistence');
 $service_price_rub = get_field('service_price_rub');
+
+$bread1 = get_field('bread', $service_category);
+$bread2 = get_field('bread');
 
 // Получаем связанные работы из портфолио
 $portfolio_works = get_field('service_portfolio_works');
@@ -23,11 +26,11 @@ $portfolio_works = get_field('service_portfolio_works');
                     </div>
                     <div class="breabcrumbs-separator"></div>
                     <div class="breabcrumbs-page-name light-text-300">
-                        <a href="<?php echo get_permalink($service_category) ?>"> <?php echo get_the_title($service_category)?> </a>
+                        <a href="<?php echo get_the_permalink($service_category); ?>"> <?php echo $bread1; ?> </a>
                     </div>
                     <div class="breabcrumbs-separator"></div>
                     <div class="breabcrumbs-page-name light-text-300 active">
-                        <?php echo esc_html(get_the_title()); ?>
+                        <?php echo $bread2; ?>
                     </div>
                 </div>
 

@@ -13,6 +13,10 @@ Text Domain: enibrow-theme
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: "Montserrat", serif;
     font-weight: 400;
@@ -20,6 +24,10 @@ body {
     font-size: 16px;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
+}
+
+.services-price-short-description {
+    max-width: 80%;
 }
 
 img {
@@ -1634,7 +1642,13 @@ th a:hover {
 
 .services-price-name-wrapper {
     gap: 20px;
+    align-items: center;
     min-width: 450px;
+}
+
+.separator-punkt {
+    width: 100%;
+    border: 1px dashed #825E69;
 }
 
 .services-price-sale-badge {
@@ -2639,6 +2653,33 @@ td.price {
     gap: 15px;
     display: flex;
     flex-direction: column;
+}
+
+.roll-block-text ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.roll-block-text ul li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.roll-block-text ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    background-image: url('/wp-content/themes/EnibrowTheme/assets/liIcon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .roll-block-items-wrapper {
@@ -4983,6 +5024,31 @@ padding-top: 22px;
     display: none;
 }
 
+.button-table-add-service {
+    width: 70px;
+    padding-top: 12px;
+}
+
+.button-table-add-service-inner {
+    border: 1px solid #825E69;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 40px;
+    line-height: 30px;
+    color: #825E69;
+    transition: .3s;
+}
+
+.button-table-add-service-inner:hover {
+    color: #FFF;
+    background-color: #825E69;
+}
+
+.button-table-add-service:hover {
+    background: unset !important;
+    color: #FFF;
+}
+
 @keyframes moveBottom {
     0% {
         bottom: 20px;
@@ -6597,6 +6663,7 @@ padding-top: 22px;
         flex-direction: column;
         position: relative;
         display: flex;
+        padding: 32px;
     }
 
     .master-card:nth-last-of-type(-n+2) {
@@ -6615,8 +6682,8 @@ padding-top: 22px;
         position: absolute;
         background-color: #FFF;
         border-radius: 10px;
-        top: 124px;
-        right: 31px;
+        top: 141px;
+        right: 38px;
         gap: 3px;
         padding: 5px 10px;
     }

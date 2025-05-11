@@ -1,4 +1,6 @@
-<?php get_header(); ?>
+<?php get_header(); 
+$bread = get_field('bread');
+?>
 <div class="main-wrapper page-faq-wrapper col">
     <div class="faq-page page wrapper col">
         <div class="page-title-wrapper col">
@@ -7,8 +9,12 @@
                     <a href="<?php echo home_url(); ?>">Главная</a>
                 </div>
                 <div class="breabcrumbs-separator"></div>
+                    <a href="/questions/" class="breadcrumbs-page-name light-text-300">
+                        Вопросы
+                    </a>
+                <div class="breabcrumbs-separator"></div>
                 <div class="breadcrumbs-page-name light-text-300 active">
-                    <?php the_title(); ?>
+                    <?php echo $bread; ?>
                 </div>
             </div>
 

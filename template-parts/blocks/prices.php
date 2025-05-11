@@ -146,6 +146,7 @@ foreach ($masters as $master) {
                                         wp_reset_postdata();
                                     endif;
                                     ?>
+                                    <div class="separator-punkt"> </div>
                                 </div>
 
                                     <div class="services-price-short-description light-text-300"><?= esc_html($service['short_description']); ?></div>

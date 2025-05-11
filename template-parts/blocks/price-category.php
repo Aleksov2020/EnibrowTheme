@@ -90,6 +90,7 @@ $masters = get_posts(array(
                                         <?php if (get_field('is_promotion', $service->ID)) : ?>
                                             <a href="<?= esc_url(get_permalink($service->ID)); ?>" class="services-price-sale-badge text-16-500">Акция</a>
                                         <?php endif; ?>
+                                        <div class="separator-punkt"> </div>
                                     </div>
                                     <div class="services-price-short-description light-text-300"><?= esc_html(get_field('service_short_description', $service->ID)); ?></div>
                                     <a href="<?= esc_url(get_permalink($service->ID)); ?>" class="services-price-link colored-text light-text-300">Подробнее об услуге</a>

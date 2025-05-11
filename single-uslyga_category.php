@@ -8,6 +8,7 @@
         $slider_subtitle = get_field('category_subtitle', $page_id);
         $duration = get_field('category_duration', $page_id);
         $price = get_field('category_price_from', $page_id);
+        $bread = get_field('bread', $page_id);
         $durability = get_field('category_persistence', $page_id);
         $slider_images = [];
 
@@ -50,7 +51,7 @@
                     </div>
                     <div class="breabcrumbs-separator"></div>
                     <div class="breadcrumbs-page-name light-text-300 active">
-                        <a href="<?php echo get_permalink( $page_id); ?>"><?php the_title(); ?></a>
+                        <a href="<?php echo get_permalink( $page_id); ?>"><?php echo $bread; ?></a>
                     </div>
                 </div>
                 <div class="title">

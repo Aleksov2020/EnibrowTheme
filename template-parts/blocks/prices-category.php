@@ -111,6 +111,7 @@ if (empty($services)) {
                                     <?php if ($has_promo) : ?>
                                         <a href="<?= esc_url($promo_link); ?>" class="services-price-sale-badge text-16-500">Акция</a>
                                     <?php endif; ?>
+                                    <div class="separator-punkt"> </div>
                                 </div>
                                 <div class="services-price-short-description light-text-300">
                                     <?= esc_html($description); ?>

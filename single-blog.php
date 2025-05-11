@@ -7,6 +7,8 @@ $blog_read_time = get_field('blog_read_time') ?: 5;
 $blog_image = get_field('blog_image');
 $blog_date = get_the_date('d.m.Y');
 $blog_tags = get_the_terms(get_the_ID(), 'post_tag'); // Получаем теги
+
+$bread = get_field('bread', get_the_ID()); 
 ?>
 
 <?php
@@ -34,11 +36,11 @@ add_filter('the_content', 'add_ids_to_h2');?>
                         </div>
                         <div class="breabcrumbs-separator"></div>
                         <div class="breabcrumbs-page-name light-text-300">
-                            <a href="<?php echo home_url('/blog-page/'); ?>">Статьи</a>
+                            <a href="/blog-page/"> Блог </a>
                         </div>
                         <div class="breabcrumbs-separator"></div>
                         <div class="breabcrumbs-page-name light-text-300 active">
-                            <?php the_title(); ?>
+                            <?php echo $bread; ?> 
                         </div>
                     </div>
 
